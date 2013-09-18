@@ -31,22 +31,21 @@
   <exec dir="${basedir}/module/Application/test/" executable="phpunit" failonerror="true"/>
  </target> 
 
- <target name="phpcs"
-         description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
+ <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer">
   <exec executable="phpcs">
-   <arg value="--standard=${basedir}/build/phpcs.xml" />
-   <arg path="${basedir}" />
-  </exec>
+   <arg value="--standard=${basedir}/build/phpcs.xml"/>
+   <arg value="--ignore=autoload.php"/>
+   <arg path="${basedir}"/>
+ </exec>
  </target>
-
- <target name="phpcs-ci" 
-         description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
+ <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer">
   <exec executable="phpcs" output="/dev/null">
-   <arg value="--report=checkstyle" />
-   <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
-   <arg value="--standard=${basedir}/build/phpcs.xml" />
+   <arg value="--report=checkstyle"/>
+   <arg value="--report-file=${basedir}/build/logs/checkstyle.xml"/>
+   <arg value="--standard=${basedir}/build/phpcs.xml"/>
+   <arg value="--ignore=vendor/*,data/*,config/*"/>
    <arg value="--extensions=php" />
-   <arg path="${basedir}/" />
+   <arg path="${basedir}/"/>
   </exec>
  </target>
 </project>
