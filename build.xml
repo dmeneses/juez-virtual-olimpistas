@@ -34,16 +34,17 @@
  <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer">
   <exec executable="phpcs">
    <arg value="--standard=${basedir}/build/phpcs.xml"/>
-   <arg value="--ignore=autoload.php"/>
+   <arg value="--ignore=init_autoloader.php"/>
    <arg path="${basedir}"/>
  </exec>
+ 
  </target>
  <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer">
   <exec executable="phpcs" output="/dev/null">
    <arg value="--report=checkstyle"/>
    <arg value="--report-file=${basedir}/build/logs/checkstyle.xml"/>
    <arg value="--standard=${basedir}/build/phpcs.xml"/>
-   <arg value="--ignore=vendor/*,data/*,config/*"/>
+   <arg value="--ignore=init_autoloader.php,vendor/*,data/*,config/*"/>
    <arg value="--extensions=php" />
    <arg path="${basedir}/"/>
   </exec>
