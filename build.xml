@@ -31,6 +31,14 @@
   <exec dir="${basedir}/module/Application/test/" executable="phpunit" failonerror="true"/>
  </target> 
 
+ <target name="phpcs"
+         description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
+  <exec executable="phpcs">
+   <arg value="--standard=${basedir}/build/phpcs.xml" />
+   <arg path="${basedir}" />
+  </exec>
+ </target>
+
  <target name="phpcs-ci" 
          description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
   <exec executable="phpcs" output="/dev/null">
