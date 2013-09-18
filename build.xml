@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="VirtualJudge" default="build">
- <target name="build" depends="prepare,lint,phpunit,phpcs-ci,phpmd-ci"/>
+ <target name="build" depends="prepare,lint,phpunit,phpcs-ci,phpmd-ci,phpcpd"/>
  
  <target name="clean" description="Cleanup build artifacts">
     <delete dir="${basedir}/build/logs"/>
@@ -66,6 +66,15 @@
    <arg value="${basedir}/build/phpmd.xml" />
    <arg value="--reportfile" />
    <arg value="${basedir}/build/logs/pmd.xml" />
+  </exec>
+ </target>
+ 
+ <target name="phpcpd" description="Find duplicate code using PHPCPD">
+  <exec executable="phpcpd">   
+   <arg value="--log-pmd" />
+   <arg value="${basedir}/build/logs/pmd-cpd.xml" />  
+   <arg path="${basedir}/public" />
+   <arg path="${basedir}/module" />
   </exec>
  </target>
 </project>
