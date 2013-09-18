@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="VirtualJudge" default="build">
- <target name="build" depends="prepare,lint,phpunit"/>
-
+ <target name="build" depends="prepare,lint,phpunit,phpcs-ci"/>
+ 
  <target name="clean" description="Cleanup build artifacts">
     <delete dir="${basedir}/build/logs"/>
  </target>
@@ -27,7 +27,18 @@
   </apply>
  </target>
  
-<target name="phpunit">
+ <target name="phpunit">
   <exec dir="${basedir}/module/Application/test/" executable="phpunit" failonerror="true"/>
  </target> 
+
+ <target name="phpcs-ci" 
+         description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
+  <exec executable="phpcs" output="/dev/null">
+   <arg value="--report=checkstyle" />
+   <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+   <arg value="--standard=${basedir}/build/phpcs.xml" />
+   <arg value="--extensions=php" />
+   <arg path="${basedir}/" />
+  </exec>
+ </target>
 </project>
