@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="VirtualJudge" default="build">
- <target name="build" depends="prepare,lint,phpunit,phpcs-ci,phpmd-ci,phpcpd,phploc,pdepend"/>
+ <target name="build" depends="prepare,lint,phpunit,phpcs-ci,phpmd-ci,phpcpd,phploc,pdepend,phpdox"/>
  
  <target name="clean" description="Cleanup build artifacts">
+    <delete dir="${basedir}/build/docs"/>
     <delete dir="${basedir}/build/logs"/>
     <delete dir="${basedir}/build/pdepend"/>
  </target>
 
  <target name="prepare" depends="clean" description="Prepare for build">
+     <mkdir dir="${basedir}/build/docs"/>
      <mkdir dir="${basedir}/build/logs"/>
      <mkdir dir="${basedir}/build/pdepend"/>
  </target>
@@ -96,5 +98,9 @@
    <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
    <arg path="${basedir}/public,${basedir}/module" />
   </exec>
+ </target>
+ 
+ <target name="phpdox" description="Generate API documentation using phpDox">
+  <exec executable="phpdox"/>
  </target>
 </project>
