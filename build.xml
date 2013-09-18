@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="VirtualJudge" default="build">
- <target name="build" depends="prepare,lint,phpunit,phpcs-ci,phpmd-ci,phpcpd"/>
+ <target name="build" depends="prepare,lint,phpunit,phpcs-ci,phpmd-ci,phpcpd,phploc"/>
  
  <target name="clean" description="Cleanup build artifacts">
     <delete dir="${basedir}/build/logs"/>
@@ -73,6 +73,15 @@
   <exec executable="phpcpd">   
    <arg value="--log-pmd" />
    <arg value="${basedir}/build/logs/pmd-cpd.xml" />  
+   <arg path="${basedir}/public" />
+   <arg path="${basedir}/module" />
+  </exec>
+ </target>
+ 
+ <target name="phploc" description="Measure project size using PHPLOC">
+  <exec executable="phploc">
+   <arg value="--log-csv" />
+   <arg value="${basedir}/build/logs/phploc.csv" />
    <arg path="${basedir}/public" />
    <arg path="${basedir}/module" />
   </exec>
