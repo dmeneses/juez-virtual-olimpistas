@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="VirtualJudge" default="build">
- <target name="build" depends="prepare,lint,phpunit,phpcs-ci,phpmd-ci,phpcpd,phploc"/>
+ <target name="build" depends="prepare,lint,phpunit,phpcs-ci,phpmd-ci,phpcpd,phploc,pdepend"/>
  
  <target name="clean" description="Cleanup build artifacts">
     <delete dir="${basedir}/build/logs"/>
+    <delete dir="${basedir}/build/pdepend"/>
  </target>
 
  <target name="prepare" depends="clean" description="Prepare for build">
      <mkdir dir="${basedir}/build/logs"/>
+     <mkdir dir="${basedir}/build/pdepend"/>
  </target>
 
  <target name="lint" description="Perform syntax check of sourcecode files">
@@ -84,6 +86,15 @@
    <arg value="${basedir}/build/logs/phploc.csv" />
    <arg path="${basedir}/public" />
    <arg path="${basedir}/module" />
+  </exec>
+ </target>
+ 
+  <target name="pdepend" description="Calculate software metrics using PHP_Depend">
+  <exec executable="pdepend">
+   <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
+   <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
+   <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
+   <arg path="${basedir}/public,${basedir}/module" />
   </exec>
  </target>
 </project>
