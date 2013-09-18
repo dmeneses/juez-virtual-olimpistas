@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="VirtualJudge" default="build">
+ <target name="build" depends="prepare,lint,phpunit"/>
+
+ <target name="clean" description="Cleanup build artifacts">
+    <delete dir="${basedir}/build/logs"/>
+ </target>
+
+ <target name="prepare" depends="clean" description="Prepare for build">
+     <mkdir dir="${basedir}/build/logs"/>
+ </target>
+
+ <target name="lint" description="Perform syntax check of sourcecode files">
+  <apply executable="php" failonerror="true">
+   <arg value="-l" />
+
+   <fileset dir="${basedir}/public">
+    <include name="**/*.php" />
+    <modified />
+   </fileset>
+
+   <fileset dir="${basedir}/module">
+    <include name="**/*.php" />
+    <modified />
+   </fileset>
+  </apply>
+ </target>
+ 
+<target name="phpunit">
+  <exec dir="${basedir}/module/Application/test/" executable="phpunit" failonerror="true"/>
+ </target> 
+</project>
