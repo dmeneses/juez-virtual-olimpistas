@@ -1,0 +1,141 @@
+html, body {
+    background:#fbfbfb;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    color:#444;
+    font-size:13.5px;
+    line-height:1.5em;
+    margin:0;
+    padding:0;
+    height:100%;
+}
+
+#wrapper {
+    min-height:100%;
+    position:relative;
+}
+
+header {
+    background: #EDEDED url("../img/HEADER.png") no-repeat center;
+    height: 75px;
+    padding:10px;
+    -moz-box-shadow:    0px 1px 2px rgba(0,0,0,0.55);
+    -webkit-box-shadow: 0px 1px 2px rgba(0,0,0,0.55);
+    -khtml-box-shadow:  0px 1px 2px rgba(0,0,0,0.55);
+    box-shadow:         0px 1px 2px rgba(0,0,0,0.55);
+}
+
+nav {
+    background: #EDEDED;
+    border-top:  1px solid darkgrey;
+    border-bottom: 1px solid darkgray;
+    color:#333;
+    text-shadow:1px 1px 0 rgba(255,255,255,0.6);
+    width:100%;
+    height:20px;
+}
+nav a {
+    padding-left:  10px;
+}
+
+page {
+    padding-bottom:40px;
+}
+
+aside {
+    margin: 10px;
+    width: 20%;
+    float: left;
+}
+
+#content {
+    margin: 10px;
+    width: 70%;
+    float: right;
+}
+
+footer {
+    text-align: center;
+    background:#ffab62;
+    border-top:1px solid #ff4b02;
+    text-shadow:1px 1px 0 rgba(255,255,255,0.6);
+
+    width:100%;
+    height:40px;
+    position:absolute;
+    bottom:0;
+    left:0;
+}
+
+footer p {
+    padding: 0px;
+}
+
+a, a:visited {
+    color:navy;    
+    text-decoration: none;
+    font-style: oblique;
+}
+
+a:hover, a:focus, a:active {
+    color:#ff4b02;
+    text-decoration:underline;
+}
+a.link, a.link:visited {
+    background: #222 url('http://www.cssreset.com/site/wp-content/themes/cssreset/images/bg/alert-overlay.png') repeat-x;
+    display: inline-block;
+    padding: 5px 10px 6px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(0,0,0,0.25);
+    position: relative;
+    cursor: pointer;
+    font-size:13px; 
+}
+
+a.link:hover, a.link:focus {
+    text-decoration: none;
+    color:#fff;
+}
+a.link::-moz-focus-inner { padding:0; outline:0; border:0; margin:0 }
+a.large.link { font-size: 14px; padding: 8px 14px 9px }
+a.blue.link { background-color: #2daebf }
+a.blue.link:focus, a.blue.link:hover { background-color: #4daebf }
+
+input.button, input.button:visited {
+    background: #222 url('http://www.cssreset.com/site/wp-content/themes/cssreset/images/bg/alert-overlay.png') repeat-x;
+    display: inline-block;
+    padding: 5px 10px 6px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,0.25);
+    position: relative;
+    cursor: pointer;
+    font-size:13px;
+}
+input.button:hover, input.button:focus {
+    text-decoration: none;
+    color:#fff;
+}
+input.button::-moz-focus-inner { padding:0; outline:0; border:0; margin:0 }
+input.large.button { font-size: 14px; padding: 8px 14px 9px }
+input.blue.button { background-color: #2daebf }
+input.blue.button:focus, a.blue.button:hover { background-color: #4daebf }
+
+input.small.text { width: 100px }
+input.medium.text { width: 150px }
+input.large.text { width: 200px}
