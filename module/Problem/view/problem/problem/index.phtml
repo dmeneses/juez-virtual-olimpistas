@@ -1,0 +1,78 @@
+<div class="content">
+    <h1> Proponer Problema </h1>
+    <form id="problemForm" method="post" action="">
+        <table>	
+            <tr>
+                <td valign="mid"><label for="problemName">Nombre</label></td>
+                <td><input type="text" name="problemName" placeholder="Nombre del problema" 
+                           title="Ingrese el nombre del problema" required="true"> </td>
+            </tr>
+
+            <tr>
+                <td valign="mid"><label for="name">Autor</label></td>
+                <td><input type="text" name="name" placeholder="Nombre del autor" 
+                           title="Ingrese el nombre del autor" required="true"> </td>
+            </tr>
+            <tr>
+                <td valign="mid"><label for="languages-list">Lenguaje</label></td>
+                <td><select name = "languages-list" style="width: 200px">
+                        <option value ="C++" selected="selected">C++</option>
+                        <option value="ANSI C">ANSI C</option>
+                    </select></td>
+            </tr>
+
+            <tr>
+                <td valign="top"><label for="message">Descripcion</label></td>
+                <td><textarea name="message" placeholder="Descripcion del problema" required="true"></textarea></td>
+            </tr>
+            <tr>
+                <td valign="mid"><label for="type">Tipo</label></td>
+                <td><input type = "radio"
+                           name = "problemType"
+                           id = "simpleProblem"
+                           value = "simple"
+                           checked = "checked" />
+                    <label for = "sizeSmall">Simple</label>
+                    <input type = "radio"
+                           name = "problemType"
+                           id = "multipleProblem"
+                           value = "multiple"
+                           disabled="true"/>
+                    <label for = "sizeMed">Solucion Multiple</label></td>
+            </tr>
+            <tr>
+                <td valign="mid"><label for="inputFile">Entrada</label></td>
+                <td><input type="file" accept=".in" name="inputFile" title="Archivo de entrada para pruebas .in" required="true"><td>
+            </tr>
+            <tr>
+                <td valign="mid"><label for="outputFile">Salida</label></td>
+                <td><input type="file" accept=".out" name="outputFile" title="Archivo de salida para pruebas .out" required="true"></td>
+            </tr>
+            <tr>
+                <td><label for="compareType">Comparacion</label></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type = "radio"
+                           name = "compareType"
+                           id = "strict"
+                           value = "strict"
+                           checked="true"/>
+                    <label for = "sizeMed">Estricta</label></td>
+            </tr>
+            <tr>
+                <td/>
+                <td><input type = "radio"
+                           name = "compareType"
+                           id = "withToken"
+                           value = "token"
+                           disabled="true"/>
+                    <label for = "sizeSmall">Omitir token</label>
+                    <input type="text" name="token" placeholder="Token a omitir" 
+                           title="Expresion regular para comparacion" disabled="true"></td>
+            <tr>
+        </table>
+
+        <input type="submit" name="submit" class="button" id="submit" value="Guardar" />
+    </form>
+</div>
