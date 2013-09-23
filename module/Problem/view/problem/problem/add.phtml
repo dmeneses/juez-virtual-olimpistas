@@ -1,0 +1,58 @@
+<?php
+$title = 'Proponer Problema';
+$this->headTitle($title);
+
+$form->setAttribute('action', $this->url('problem', array('action' => 'add')));
+$form->prepare();
+?>
+<div class="content">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    <?php 
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('problem_id'));
+    ?>
+    <table>	
+        <tr>
+            <td valign="mid"><label for="problem_name">Nombre</label></td>
+            <td><?php echo $this->formInput($form->get('problem_name')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('problem_name')); ?></td>
+        </tr>
+
+        <tr>
+            <td valign="mid"><label for="author">Autor</label></td>
+            <td><?php echo $this->formInput($form->get('author')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('author')); ?></td>
+        </tr>
+        <tr>
+            <td valign="top"><label for="problem_description">Descripcion</label></td>
+            <td><?php echo $this->formTextarea($form->get('problem_description')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('problem_description')); ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="is_simple">Tipo</label></td>
+            <td><?php echo $this->formRadio($form->get('is_simple')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('is_simple')); ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="fileIn">Entrada</label></td>
+            <td><?php echo $this->formFile($form->get('fileIn')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('fileIn')); ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="fileOut">Salida</label></td>
+            <td><?php echo $this->formFile($form->get('fileOut')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('fileOut')); ?></td>
+        </tr>
+        <tr>
+            <td><label for="compareType">Comparacion</label></td>
+            <td><?php echo $this->formRadio($form->get('compare_type')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('compare_type')); ?></td>
+        </tr>
+
+    </table>
+
+    <?php
+    echo $this->formSubmit($form->get('submit'));
+    echo $this->form()->closeTag();
+    ?>   
+</div>
