@@ -39,6 +39,7 @@ class ProblemForm extends Form {
 
         $submit = new Element\Submit('submit');
         $submit->setValue('Proponer');
+        $submit->setAttribute('class', 'button');
 
         $this->add($problemID);
         $this->add($problemName);
