@@ -4,6 +4,8 @@ namespace Problem\Model;
 
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Input;
+use Zend\InputFilter\FileInput;
+use Zend\Filter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\Validator;
@@ -27,12 +29,8 @@ class Problem implements InputFilterAwareInterface {
         $this->problem_description = (!empty($data['problem_description'])) ? $data['problem_description'] : null;
         $this->is_simple = (!empty($data['is_simple'])) ? $data['is_simple'] : null;
         $this->compare_type = (!empty($data['compare_type'])) ? $data['compare_type'] : null;
-        $this->fileIn = 'IN';
-        $this->fileOut = 'OUT';
-    }
-
-    private function getFileName(array $data) {
-        return 'FILES';
+        $this->fileIn = (!empty($data['fileIn'])) ? $data['fileIn']['tmp_name']: null;
+        $this->fileOut = (!empty($data['fileOut'])) ? $data['fileOut']['tmp_name'] : null;
     }
 
     public function getInputFilter() {
@@ -42,33 +40,43 @@ class Problem implements InputFilterAwareInterface {
             $nameValidator = new Input('problem_name');
             $nameValidator->getFilterChain()
                     ->attachByName('stringtrim')
-                    ->attachByName('alpha')
-                    ->attach(new Validator\StringLength(array(
-                        'encoding' => 'UTF-8',
-                        'min' => 3,
-                        'max' => 45)));
+                    ->attachByName('alpha');
 
             $authorValidator = new Input('author');
             $authorValidator->getFilterChain()
                     ->attachByName('stringtrim')
-                    ->attachByName('alpha')
-                    ->attach(new Validator\StringLength(array(
-                        'encoding' => 'UTF-8',
-                        'min' => 3,
-                        'max' => 60)));
+                    ->attachByName('alpha');
 
             $descriptionValidator = new Input('problem_description');
             $descriptionValidator->getFilterChain()
                     ->attachByName('stringtrim')
-                    ->attachByName('alpha')
-                    ->attach(new Validator\StringLength(array(
-                        'encoding' => 'UTF-8',
-                        'min' => 3,
-                        'max' => 1000)));
+                    ->attachByName('alpha');
+
+            $fileIn = new FileInput('fileIn'); 
+            $fileIn->getValidatorChain()
+                    ->addValidator(new Validator\File\UploadFile());
+            $fileIn->getFilterChain()
+                    ->attach(new Filter\File\RenameUpload(array(
+                        'target' => './data/tmpuploads/fileIn',
+                        'randomize' => true,
+            )));
+            
+            $fileOut = new FileInput('fileOut'); 
+            $fileOut->getValidatorChain()
+                    ->addValidator(new Validator\File\UploadFile());
+            $fileOut->getFilterChain()
+                    ->attach(new Filter\File\RenameUpload(array(
+                        'target' => './data/tmpuploads/fileOut',
+                        'randomize' => true,
+            )));
+
 
             $inputFilter->add($nameValidator);
             $inputFilter->add($authorValidator);
             $inputFilter->add($descriptionValidator);
+            $inputFilter->add($fileIn);
+            $inputFilter->add($fileOut);
+            
 
             $this->inputFilter = $inputFilter;
         }

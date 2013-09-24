@@ -32,7 +32,13 @@ class ProblemController extends AbstractActionController {
         if ($request->isPost()) {
             $problem = new Problem();
             $form->setInputFilter($problem->getInputFilter());
-            $form->setData($request->getPost());
+           
+            $post = array_merge_recursive(
+                    $request->getPost()->toArray(), 
+                    $request->getFiles()->toArray()
+            );
+            
+            $form->setData($post);
 
             if ($form->isValid()) {
                 $problem->exchangeArray($form->getData());
