@@ -44,7 +44,7 @@ aside {
 .content {
     width: 70%;
     float: right;
-    padding: 10px 20px 20px 20px;
+    padding: 20px 20px 20px 20px;
     margin: 0 auto;
     margin-right: 10px;
     margin-bottom: 20px;
@@ -78,10 +78,12 @@ footer p {
 }
 
 form {
-    margin-top: 20px;
+    margin: 25px;
+    text-align: center;
 }
 
 form input[type="text"], textarea {
+    margin: 3px 0 0 0;
     padding: 6px; 
     width: 260px; 
     font-family: arial, sans-serif; 
@@ -91,9 +93,14 @@ form input[type="text"], textarea {
     background: -moz-linear-gradient(top, #FFFFFF, #f4f4f4 1px, #FFFFFF 15px);
 }
 
+input[type="radio"] {
+  margin-left: 40px;
+  margin-right: 3px;
+}
+
 form textarea {
-    width: 400px; 
-    height: 150px;
+    width: 500px; 
+    height: 200px;
 }
 
 form label {
@@ -101,7 +108,15 @@ form label {
     color: #666;
     margin-top: 10px;
     font-weight: bold;
-    padding-right: 15px;
+    line-height: 40px;
+}
+
+form table {
+    text-align: right;
+}
+
+form .placeholder {
+    color: #aaa;
 }
 
 form .button {
@@ -114,7 +129,7 @@ form .button {
     display: inline-block;
     font-weight: bold;
     line-height: 1;
-    margin: 0;
+    margin-top: 40px;
     outline: none;    
     position: relative;
     text-align: center;

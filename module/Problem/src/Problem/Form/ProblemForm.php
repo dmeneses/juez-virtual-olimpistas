@@ -27,6 +27,7 @@ class ProblemForm extends Form {
             '1' => 'Simple',
             '0' => 'Solucion Multiple',
         ));       
+        $type->setChecked('0');
 
         $compareType = new Element\Radio('compare_type');
         $compareType->setValueOptions(array(
