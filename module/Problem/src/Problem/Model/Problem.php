@@ -36,21 +36,26 @@ class Problem implements InputFilterAwareInterface {
     public function getInputFilter() {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
-
+            $lengthValidator = new Validator\StringLength(array('min' => 3, 'max' => 50));
             $nameValidator = new Input('problem_name');
+            $nameValidator->getValidatorChain()
+                    ->addValidator($lengthValidator);
             $nameValidator->getFilterChain()
                     ->attachByName('stringtrim')
                     ->attachByName('alpha');
 
             $authorValidator = new Input('author');
+            $authorValidator->getValidatorChain()
+                    ->addValidator($lengthValidator);
             $authorValidator->getFilterChain()
                     ->attachByName('stringtrim')
                     ->attachByName('alpha');
 
             $descriptionValidator = new Input('problem_description');
+            $descriptionValidator->getValidatorChain()
+                    ->addValidator(new Validator\StringLength(array('min'=> 10)));
             $descriptionValidator->getFilterChain()
-                    ->attachByName('stringtrim')
-                    ->attachByName('alpha');
+                    ->attachByName('stringtrim');
 
             $fileIn = new FileInput('fileIn'); 
             $fileIn->getValidatorChain()
@@ -87,5 +92,4 @@ class Problem implements InputFilterAwareInterface {
     public function setInputFilter(InputFilterInterface $inputFilter) {
         throw new \Exception("Not used");
     }
-
 }

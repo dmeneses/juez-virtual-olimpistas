@@ -21,19 +21,20 @@ class ProblemForm extends Form {
         $description = new Element\Textarea('problem_description');
         $description->setAttribute('placeholder', 'Descripcion del problema');
 
-
         $type = new Element\Radio('is_simple');
         $type->setValueOptions(array(
-            '1' => 'Simple',
-            '0' => 'Solucion Multiple',
+            'TRUE' => 'Simple',
+            'FALSE' => 'Solucion Multiple',
         ));       
+        $type->setValue('TRUE');
 
         $compareType = new Element\Radio('compare_type');
         $compareType->setValueOptions(array(
             'STRICT' => 'Estricta',
             'TOKEN' => 'Omitir token',
         ));
-
+        $compareType->setValue('STRICT');
+        
         $fileIn = new Element\File('fileIn');
         $fileOut = new Element\File('fileOut');
 
