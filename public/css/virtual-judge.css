@@ -119,6 +119,11 @@ form .placeholder {
     color: #aaa;
 }
 
+form ul {
+    color: red;
+    list-style-type: none
+}
+
 form .button {
     background: #2ba6cb;
     border: 1px solid #1e728c;

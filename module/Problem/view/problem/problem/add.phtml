@@ -35,8 +35,7 @@ $form->prepare();
     <?php echo $this->formElementErrors($form->get('problem_description')); ?><br/>
 
     <label for="is_simple">Tipo</label><br/>
-    <?php echo $this->formRadio($form->get('is_simple')); ?> 
-    <?php echo $this->formElementErrors($form->get('is_simple')); ?><br/>
+    <?php echo $this->formRadio($form->get('is_simple')); ?> <br/>
 
     <label>Archivos de Validacion</label><br/>
     <center>
@@ -55,8 +54,7 @@ $form->prepare();
     </center>
     
     <label for="compareType">Comparacion</label></br>
-    <?php echo $this->formRadio($form->get('compare_type')); ?>
-    <?php echo $this->formElementErrors($form->get('compare_type')); ?><br/>
+    <?php echo $this->formRadio($form->get('compare_type')); ?><br/>
 
     <?php
     echo $this->formSubmit($form->get('submit'));
