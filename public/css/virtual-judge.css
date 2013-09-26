@@ -9,7 +9,7 @@ html, body {
     margin:0;
     padding:0;
     height: 100%;
-    min-width: 800px;
+    min-width: 1000px;
 }
 .wrapper {
     position:relative;
@@ -43,14 +43,14 @@ aside {
 
 .content {
     width: 70%;
+    min-width: 500px;
     float: right;
     padding: 20px 20px 20px 20px;
     margin: 0 auto;
     margin-right: 10px;
     margin-bottom: 20px;
     border: 0;
-    background-color: #fff;
-    text-align: left;
+    background-color: #fff;   
     border-radius: 8px;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
@@ -79,7 +79,6 @@ footer p {
 
 form {
     margin: 25px;
-    text-align: center;
 }
 
 form input[type="text"], textarea {
@@ -94,7 +93,6 @@ form input[type="text"], textarea {
 }
 
 input[type="radio"] {
-  margin-left: 40px;
   margin-right: 3px;
 }
 
@@ -109,15 +107,15 @@ form label {
     color: #666;
     margin-top: 10px;
     font-weight: bold;
-    line-height: 40px;
-}
-
-form table {
-    text-align: left;
+    text-align: center;
 }
 
 form .placeholder {
     color: #aaa;
+}
+
+form td{
+    padding-bottom: 10px;
 }
 
 form ul {
@@ -149,4 +147,9 @@ form .button:hover {
     -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.2) inset;
     -moz-box-shadow: 0 1px 0 rgba(0,0,0,0.2) inset;
     box-shadow: 0 1px 0 rgba(0,0,0,0.2) inset;
+}
+
+form h2 {
+    margin-top: 10px;
+    margin-bottom: 20px;
 }

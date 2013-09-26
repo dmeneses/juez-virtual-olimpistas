@@ -18,6 +18,10 @@ class ProblemForm extends Form {
         $author = new Element\Text('author');
         $author->setAttribute('placeholder', 'Nombre del autor');
         
+        $time = new Element\Text('time_limit');
+        $memory = new Element\Text('memory_limit');
+        $source = new Element\Text('source_limit');
+        
         $description = new Element\Textarea('problem_description');
         $description->setAttribute('placeholder', 'Descripcion del problema');
 
@@ -44,7 +48,10 @@ class ProblemForm extends Form {
 
         $this->add($problemID);
         $this->add($problemName);
-        $this->add($author);        
+        $this->add($author);     
+        $this->add($time);
+        $this->add($memory);
+        $this->add($source);
         $this->add($description);
         $this->add($type);
         $this->add($compareType);

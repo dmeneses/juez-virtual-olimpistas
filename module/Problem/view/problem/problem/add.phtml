@@ -12,45 +12,104 @@ $form->prepare();
     echo $this->form()->openTag($form);
     echo $this->formHidden($form->get('problem_id'));
     ?>
+
+    <h2>Datos Principales</h2>
     <table>	
         <tr>
             <td valign="mid"><label for="problem_name">Nombre</label></td>
             <td><?php echo $this->formInput($form->get('problem_name')); ?></td>
+        </tr>
+        <tr>
+            <td/>
             <td><?php echo $this->formElementErrors($form->get('problem_name')); ?></td>
         </tr>
 
         <tr>
             <td valign="mid"><label for="author">Autor</label></td>
             <td><?php echo $this->formInput($form->get('author')); ?></td>
+        </tr>
+        <tr>
+            <td/>
             <td><?php echo $this->formElementErrors($form->get('author')); ?></td>
         </tr>
         <tr>
             <td valign="top"><label for="problem_description">Descripcion</label></td>
             <td><?php echo $this->formTextarea($form->get('problem_description')); ?></td>
+        </tr>
+        <tr>
+            <td/>
             <td><?php echo $this->formElementErrors($form->get('problem_description')); ?></td>
         </tr>
+    </table>
+    
+    <h2>Restricciones</h2>
+    
+    
+    <table>	
+        <tr>
+            <td valign="mid"><label for="time_limit">Tiempo</label></td>
+            <td><?php echo $this->formInput($form->get('time_limit')); ?></td>
+            <td><label>Segundos</label></td>
+        </tr>
+        <tr>
+            <td/>
+            <td><?php echo $this->formElementErrors($form->get('time_limit')); ?></td>
+        </tr>
+
+        <tr>
+            <td valign="mid"><label for="memory_limit">Memoria</label></td>
+            <td><?php echo $this->formInput($form->get('memory_limit')); ?></td>
+            <td><label>MB</label></td>
+        </tr>
+        <tr>
+            <td/>
+            <td><?php echo $this->formElementErrors($form->get('memory_limit')); ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="source_limit">Codigo</label></td>
+            <td><?php echo $this->formInput($form->get('source_limit')); ?></td>
+            <td><label>Bytes</label></td>
+        </tr>
+        <tr>
+            <td/>
+            <td><?php echo $this->formElementErrors($form->get('source_limit')); ?></td>
+        </tr>
+    </table>
+    
+    
+    <h2>Opciones de Juzgamiento</h2>
+    <table>
         <tr>
             <td valign="mid"><label for="is_simple">Tipo</label></td>
             <td><?php echo $this->formRadio($form->get('is_simple')); ?></td>
-            <td><?php echo $this->formElementErrors($form->get('is_simple')); ?></td>
         </tr>
+
         <tr>
-            <td valign="mid"><label for="fileIn">Entrada</label></td>
-            <td><?php echo $this->formFile($form->get('fileIn')); ?></td>
-            <td><?php echo $this->formElementErrors($form->get('fileIn')); ?></td>
+            <td/>
+            <td>
+                <table style="border: black dashed thin">
+                    <tr>
+                        <td valign="mid"><label for="fileIn">Entrada</label></td>
+                        <td><?php echo $this->formFile($form->get('fileIn')); ?></td>
+                        <td><?php echo $this->formElementErrors($form->get('fileIn')); ?></td>
+                    </tr>
+                    <tr>
+                        <td valign="mid"><label for="fileOut">Salida</label></td>
+                        <td><?php echo $this->formFile($form->get('fileOut')); ?></td>
+                        <td><?php echo $this->formElementErrors($form->get('fileOut')); ?></td>
+                    </tr>
+                </table>
+            </td>
         </tr>
-        <tr>
-            <td valign="mid"><label for="fileOut">Salida</label></td>
-            <td><?php echo $this->formFile($form->get('fileOut')); ?></td>
-            <td><?php echo $this->formElementErrors($form->get('fileOut')); ?></td>
-        </tr>
+        <tr><td style="padding-top: 10px"/></tr>
         <tr>
             <td><label for="compareType">Comparacion</label></td>
             <td><?php echo $this->formRadio($form->get('compare_type')); ?></td>
-            <td><?php echo $this->formElementErrors($form->get('compare_type')); ?></td>
         </tr>
 
     </table>
+
+    <input type="button" name="cancel" class="button" onsubmit="" value="Cancelar">
 
     <?php
     echo $this->formSubmit($form->get('submit'));
