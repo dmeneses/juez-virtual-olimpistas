@@ -1,106 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="VirtualJudge" default="build">
- <target name="build" depends="prepare,lint,phpunit,phpcs-ci,phpmd-ci,phpcpd,phploc,pdepend,phpdox"/>
+    <target name="build" depends="prepare,lint,phpunit,phpcs-ci,phpmd-ci,phpcpd,phploc,pdepend,phpdox"/>
  
- <target name="clean" description="Cleanup build artifacts">
-    <delete dir="${basedir}/build/docs"/>
-    <delete dir="${basedir}/build/logs"/>
-    <delete dir="${basedir}/build/pdepend"/>
- </target>
+    <target name="clean" description="Cleanup build artifacts">
+        <delete dir="${basedir}/build/coverage/report"/>
+        <delete dir="${basedir}/build/coverage"/>
+        <delete dir="${basedir}/build/docs"/>
+        <delete dir="${basedir}/build/logs"/>
+        <delete dir="${basedir}/build/pdepend"/>
+    </target>
 
- <target name="prepare" depends="clean" description="Prepare for build">
-     <mkdir dir="${basedir}/build/docs"/>
-     <mkdir dir="${basedir}/build/logs"/>
-     <mkdir dir="${basedir}/build/pdepend"/>
- </target>
+    <target name="prepare" depends="clean" description="Prepare for build">
+        <mkdir dir="${basedir}/build/coverage"/>
+        <mkdir dir="${basedir}/build/coverage/report"/>
+        <mkdir dir="${basedir}/build/docs"/>
+        <mkdir dir="${basedir}/build/logs"/>
+        <mkdir dir="${basedir}/build/pdepend"/>
+    </target>
 
- <target name="lint" description="Perform syntax check of sourcecode files">
-  <apply executable="php" failonerror="true">
-   <arg value="-l" />
+    <target name="lint" description="Perform syntax check of sourcecode files">
+        <apply executable="php" failonerror="true">
+            <arg value="-l" />
 
-   <fileset dir="${basedir}/public">
-    <include name="**/*.php" />
-    <modified />
-   </fileset>
+            <fileset dir="${basedir}/public">
+                <include name="**/*.php" />
+                <modified />
+            </fileset>
 
-   <fileset dir="${basedir}/module">
-    <include name="**/*.php" />
-    <modified />
-   </fileset>
-  </apply>
- </target>
+            <fileset dir="${basedir}/module">
+                <include name="**/*.php" />
+                <modified />
+            </fileset>
+        </apply>
+    </target>
  
- <target name="phpunit">
-  <exec dir="${basedir}/module/Application/test/" executable="phpunit" failonerror="true"/>
- </target> 
+    <target name="phpunit">
+        <exec dir="." executable="/bin/bash" osfamily="unix">
+            <arg value="runTests"/>
+        </exec>
+    </target> 
+    
+    <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer">
+        <exec executable="phpcs">
+            <arg value="--standard=${basedir}/build/phpcs.xml"/>
+            <arg value="--ignore=init_autoloader.php"/>
+            <arg path="${basedir}"/>
+        </exec>
+    </target>
+ 
+    <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer">
+        <exec executable="phpcs" output="/dev/null">
+            <arg value="--report=checkstyle"/>
+            <arg value="--report-file=${basedir}/build/logs/checkstyle.xml"/>
+            <arg value="--standard=${basedir}/build/phpcs.xml"/>
+            <arg value="--ignore=init_autoloader.php,vendor/*,data/*,config/*"/>
+            <arg value="--extensions=php" />
+            <arg path="${basedir}/"/>
+        </exec>
+    </target>
+ 
+    <target name="phpmd"
+            description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
+        <exec executable="phpmd">
+            <arg path="${basedir}/" />
+            <arg value="text"/>
+            <arg value="${basedir}/build/phpmd.xml" />
+        </exec>
+    </target>
 
- <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer">
-  <exec executable="phpcs">
-   <arg value="--standard=${basedir}/build/phpcs.xml"/>
-   <arg value="--ignore=init_autoloader.php"/>
-   <arg path="${basedir}"/>
- </exec>
- </target>
+    <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
+        <exec executable="phpmd">
+            <arg path="${basedir}/module,${basedir}/public" />
+            <arg value="xml" />
+            <arg value="${basedir}/build/phpmd.xml" />
+            <arg value="--reportfile" />
+            <arg value="${basedir}/build/logs/pmd.xml" />
+        </exec>
+    </target>
  
- <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer">
-  <exec executable="phpcs" output="/dev/null">
-   <arg value="--report=checkstyle"/>
-   <arg value="--report-file=${basedir}/build/logs/checkstyle.xml"/>
-   <arg value="--standard=${basedir}/build/phpcs.xml"/>
-   <arg value="--ignore=init_autoloader.php,vendor/*,data/*,config/*"/>
-   <arg value="--extensions=php" />
-   <arg path="${basedir}/"/>
-  </exec>
- </target>
+    <target name="phpcpd" description="Find duplicate code using PHPCPD">
+        <exec executable="phpcpd">   
+            <arg value="--log-pmd" />
+            <arg value="${basedir}/build/logs/pmd-cpd.xml" />  
+            <arg path="${basedir}/public" />
+            <arg path="${basedir}/module" />
+        </exec>
+    </target>
  
- <target name="phpmd"
-         description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
-  <exec executable="phpmd">
-   <arg path="${basedir}/" />
-   <arg value="text"/>
-   <arg value="${basedir}/build/phpmd.xml" />
-  </exec>
- </target>
-
- <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
-  <exec executable="phpmd">
-   <arg path="${basedir}/module,${basedir}/public" />
-   <arg value="xml" />
-   <arg value="${basedir}/build/phpmd.xml" />
-   <arg value="--reportfile" />
-   <arg value="${basedir}/build/logs/pmd.xml" />
-  </exec>
- </target>
+    <target name="phploc" description="Measure project size using PHPLOC">
+        <exec executable="phploc">
+            <arg value="--log-csv" />
+            <arg value="${basedir}/build/logs/phploc.csv" />
+            <arg path="${basedir}/public" />
+            <arg path="${basedir}/module" />
+        </exec>
+    </target>
  
- <target name="phpcpd" description="Find duplicate code using PHPCPD">
-  <exec executable="phpcpd">   
-   <arg value="--log-pmd" />
-   <arg value="${basedir}/build/logs/pmd-cpd.xml" />  
-   <arg path="${basedir}/public" />
-   <arg path="${basedir}/module" />
-  </exec>
- </target>
+    <target name="pdepend" description="Calculate software metrics using PHP_Depend">
+        <exec executable="pdepend">
+            <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
+            <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
+            <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
+            <arg path="${basedir}/public,${basedir}/module" />
+        </exec>
+    </target>
  
- <target name="phploc" description="Measure project size using PHPLOC">
-  <exec executable="phploc">
-   <arg value="--log-csv" />
-   <arg value="${basedir}/build/logs/phploc.csv" />
-   <arg path="${basedir}/public" />
-   <arg path="${basedir}/module" />
-  </exec>
- </target>
- 
-  <target name="pdepend" description="Calculate software metrics using PHP_Depend">
-  <exec executable="pdepend">
-   <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
-   <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
-   <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
-   <arg path="${basedir}/public,${basedir}/module" />
-  </exec>
- </target>
- 
- <target name="phpdox" description="Generate API documentation using phpDox">
-  <exec executable="phpdox"/>
- </target>
+    <target name="phpdox" description="Generate API documentation using phpDox">
+        <exec executable="phpdox"/>
+    </target>
 </project>

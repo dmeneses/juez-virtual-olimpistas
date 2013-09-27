@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cd module/Application/test
+phpunit
+cd ../../Problem/test
+phpunit
+cd ../../../build/coverage
+phpcov --merge --clover clover.xml .
+
+
+
+
+
+

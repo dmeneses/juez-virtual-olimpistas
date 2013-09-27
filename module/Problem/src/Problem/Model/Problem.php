@@ -27,12 +27,12 @@ class Problem implements InputFilterAwareInterface {
 
     public function exchangeArray($data) {
         $this->problem_id = (!empty($data['problem_id'])) ? $data['problem_id'] : null;
+        $this->problem_name = (!empty($data['problem_name'])) ? $data['problem_name'] : null;
         $this->author = (!empty($data['author'])) ? $data['author'] : null;
+        $this->problem_description = (!empty($data['problem_description'])) ? $data['problem_description'] : null;
         $this->time_limit = (!empty($data['time_limit'])) ? $data['time_limit'] : null;
         $this->memory_limit = (!empty($data['memory_limit'])) ? $data['memory_limit'] : null;
         $this->source_limit = (!empty($data['source_limit'])) ? $data['source_limit'] : null;
-        $this->problem_name = (!empty($data['problem_name'])) ? $data['problem_name'] : null;
-        $this->problem_description = (!empty($data['problem_description'])) ? $data['problem_description'] : null;
         $this->is_simple = (!empty($data['is_simple'])) ? $data['is_simple'] : null;
         $this->compare_type = (!empty($data['compare_type'])) ? $data['compare_type'] : null;
         $this->fileIn = (!empty($data['fileIn'])) ? $data['fileIn']['tmp_name'] : null;
