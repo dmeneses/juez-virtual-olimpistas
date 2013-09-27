@@ -1,9 +1,9 @@
 #!/bin/bash
 
 cd module/Application/test
-phpunit
+phpunit --coverage-text
 cd ../../Problem/test
-phpunit
+phpunit --coverage-text
 cd ../../../build/coverage
 phpcov --merge --clover clover.xml .
 
