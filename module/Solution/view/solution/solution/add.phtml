@@ -30,7 +30,7 @@ $form->prepare();
             <td/>
             <td><?php echo $this->formElementErrors($form->get('language')); ?></td>
         </tr>
-        
+
         <tr>
             <td valign="top"><label for="solution_source">Archivo de solucion</label></td>
             <td><?php echo $this->formFile($form->get('solution_source')); ?></td>
@@ -40,11 +40,12 @@ $form->prepare();
             <td><?php echo $this->formElementErrors($form->get('solution_source')); ?></td>
         </tr>
     </table>
-    
-    <input type="button" name="cancel" class="button" onsubmit="" value="Cancelar">
 
     <?php
     echo $this->formSubmit($form->get('submit'));
+    ?>
+    <a href="<?php echo $this->url('application', array('action' => 'index',)); ?>" class="button">Cancelar</a>
+    <?php
     echo $this->form()->closeTag();
     ?>   
 </div>

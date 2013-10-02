@@ -139,6 +139,10 @@ form .button {
     text-align: center;
 }
 
+form a {
+    text-decoration: none;
+}
+
 form .button:hover {
     background-color: #2284a1;
 }
