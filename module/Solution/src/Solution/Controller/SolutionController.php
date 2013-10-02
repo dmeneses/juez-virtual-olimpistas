@@ -26,7 +26,13 @@ class SolutionController extends AbstractActionController {
     }
 
     public function addAction() {
+
+        $id = (int) $this->params()->fromRoute('id', 0);
         $form = new SolutionForm();
+
+        if ($id) {
+            $form->get('problem_id')->setAttribute('value', $id);
+        }
 
         $request = $this->getRequest();
 

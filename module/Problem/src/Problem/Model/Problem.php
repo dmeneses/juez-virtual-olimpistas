@@ -35,8 +35,18 @@ class Problem implements InputFilterAwareInterface {
         $this->source_limit = (!empty($data['source_limit'])) ? $data['source_limit'] : null;
         $this->is_simple = (!empty($data['is_simple'])) ? $data['is_simple'] : null;
         $this->compare_type = (!empty($data['compare_type'])) ? $data['compare_type'] : null;
-        //$this->fileIn = (!empty($data['fileIn'])) ? $data['fileIn']['tmp_name'] : null;
-        //$this->fileOut = (!empty($data['fileOut'])) ? $data['fileOut']['tmp_name'] : null;
+        
+        if ( is_array($data['fileIn'])) {
+            $this->fileIn = (!empty($data['fileIn'])) ? $data['fileIn']['tmp_name'] : null;
+        } else {
+            $this->fileIn = (!empty($data['fileIn'])) ? $data['fileIn'] : null;
+        }
+
+        if ( is_array($data['fileOut'])) {
+            $this->fileOut = (!empty($data['fileOut'])) ? $data['fileOut']['tmp_name'] : null;
+        } else {
+            $this->fileOut = (!empty($data['fileOut'])) ? $data['fileOut'] : null;
+        }
     }
 
     public function getInputFilter() {
@@ -58,19 +68,19 @@ class Problem implements InputFilterAwareInterface {
                     ->attachByName('alpha');
 
             $numberValidator = new Validator\Digits();
-           
+
             $timeValidator = new Input('time_limit');
             $timeValidator->getValidatorChain()
                     ->addValidator($numberValidator);
             $timeValidator->getFilterChain()
                     ->attachByName('stringtrim');
-            
+
             $memoryValidator = new Input('memory_limit');
             $memoryValidator->getValidatorChain()
                     ->addValidator($numberValidator);
             $memoryValidator->getFilterChain()
                     ->attachByName('stringtrim');
-            
+
             $sourceValidator = new Input('source_limit');
             $sourceValidator->getValidatorChain()
                     ->addValidator($numberValidator);
@@ -89,7 +99,7 @@ class Problem implements InputFilterAwareInterface {
                     ->addValidator(new Validator\File\UploadFile());
             $fileIn->getFilterChain()
                     ->attach(new Filter\File\RenameUpload(array(
-                        'target' => './data/tmpuploads/fileIn',
+                        'target' => './data/problems/fileIn',
                         'randomize' => true,
             )));
 
@@ -98,7 +108,7 @@ class Problem implements InputFilterAwareInterface {
                     ->addValidator(new Validator\File\UploadFile());
             $fileOut->getFilterChain()
                     ->attach(new Filter\File\RenameUpload(array(
-                        'target' => './data/tmpuploads/fileOut',
+                        'target' => './data/problems/fileOut',
                         'randomize' => true,
             )));
 

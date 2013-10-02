@@ -123,7 +123,7 @@ form ul {
     list-style-type: none
 }
 
-form .button {
+.button {
     background: #2ba6cb;
     border: 1px solid #1e728c;
     color: #fff;   
@@ -139,7 +139,7 @@ form .button {
     text-align: center;
 }
 
-form a {
+a {
     text-decoration: none;
 }
 
