@@ -35,8 +35,8 @@ class Problem implements InputFilterAwareInterface {
         $this->source_limit = (!empty($data['source_limit'])) ? $data['source_limit'] : null;
         $this->is_simple = (!empty($data['is_simple'])) ? $data['is_simple'] : null;
         $this->compare_type = (!empty($data['compare_type'])) ? $data['compare_type'] : null;
-        $this->fileIn = (!empty($data['fileIn'])) ? $data['fileIn']['tmp_name'] : null;
-        $this->fileOut = (!empty($data['fileOut'])) ? $data['fileOut']['tmp_name'] : null;
+        //$this->fileIn = (!empty($data['fileIn'])) ? $data['fileIn']['tmp_name'] : null;
+        //$this->fileOut = (!empty($data['fileOut'])) ? $data['fileOut']['tmp_name'] : null;
     }
 
     public function getInputFilter() {
