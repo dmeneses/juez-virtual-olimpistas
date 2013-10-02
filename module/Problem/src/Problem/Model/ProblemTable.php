@@ -19,8 +19,9 @@ class ProblemTable {
 
     public function getProblem($id) {
         $id = (int) $id;
-        $rowset = $this->tableGateway->select(array('id' => $id));
+        $rowset = $this->tableGateway->select(array('problem_id' => $id));
         $row = $rowset->current();
+        
         if (!$row) {
             throw new \Exception("Could not find row $id");
         }
@@ -46,7 +47,7 @@ class ProblemTable {
             $this->tableGateway->insert($data);
         } else {
             if ($this->getProblem($id)) {
-                $this->tableGateway->update($data, array('id' => $id));
+                $this->tableGateway->update($data, array('problem_id' => $id));
             } else {
                 throw new \Exception('Problem id does not exist');
             }

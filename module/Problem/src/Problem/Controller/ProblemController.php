@@ -32,12 +32,11 @@ class ProblemController extends AbstractActionController {
         if ($request->isPost()) {
             $problem = new Problem();
             $form->setInputFilter($problem->getInputFilter());
-           
+
             $post = array_merge_recursive(
-                    $request->getPost()->toArray(), 
-                    $request->getFiles()->toArray()
+                    $request->getPost()->toArray(), $request->getFiles()->toArray()
             );
-            
+
             $form->setData($post);
 
             if ($form->isValid()) {
@@ -47,5 +46,25 @@ class ProblemController extends AbstractActionController {
             }
         }
         return array('form' => $form);
+    }
+
+    public function displayAction() {      
+        $id = (int) $this->params()->fromRoute('id', 0);
+        
+        if (!$id) {
+            return $this->redirect()->toRoute('problem', array(
+                        'action' => 'add'
+            ));
+        }
+
+        try {
+            $problem = $this->getProblemTable()->getProblem($id);
+        } catch (\Exception $ex) {
+            return $this->redirect()->toRoute('problem');           
+        }
+
+        return new ViewModel(array(
+            'problemData' => $problem
+        ));
     }
 }
