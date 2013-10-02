@@ -53,19 +53,20 @@ class Problem implements InputFilterAwareInterface {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
             $lengthValidator = new Validator\StringLength(array('min' => 3, 'max' => 50));
+            
             $nameValidator = new Input('problem_name');
             $nameValidator->getValidatorChain()
                     ->addValidator($lengthValidator);
             $nameValidator->getFilterChain()
                     ->attachByName('stringtrim')
-                    ->attachByName('alpha');
+                    ->attachByName('alpha', array('allowwhitespace' => true));
 
             $authorValidator = new Input('author');
             $authorValidator->getValidatorChain()
                     ->addValidator($lengthValidator);
             $authorValidator->getFilterChain()
                     ->attachByName('stringtrim')
-                    ->attachByName('alpha');
+                    ->attachByName('alpha', array('allowwhitespace' => true));
 
             $numberValidator = new Validator\Digits();
 
