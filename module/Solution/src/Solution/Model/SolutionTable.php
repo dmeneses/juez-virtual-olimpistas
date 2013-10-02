@@ -36,7 +36,8 @@ class SolutionTable {
 
         $id = (int) $solution->solution_id;
         if ($id == 0) {
-            $this->tableGateway->insert($data);
+            $id = $this->tableGateway->insert($data);
+            $solution->solution_id = $id;
         } else {
             if ($this->getSolution($id)) {
                 $this->tableGateway->update($data, array('id' => $id));

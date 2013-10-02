@@ -10,6 +10,7 @@ use Solution\Form\SolutionForm;
 class SolutionController extends AbstractActionController {
 
     protected $solutionTable;
+    protected $problemTable;
 
     public function indexAction() {
         return new ViewModel(array(
@@ -23,6 +24,14 @@ class SolutionController extends AbstractActionController {
             $this->solutionTable = $sm->get('Solution\Model\SolutionTable');
         }
         return $this->solutionTable;
+    }
+    
+    public function getProblemTable() {
+        if (!$this->problemTable) {
+            $sm = $this->getServiceLocator();
+            $this->problemTable = $sm->get('Problem\Model\ProblemTable');
+        }
+        return $this->problemTable;
     }
 
     public function addAction() {
@@ -49,6 +58,15 @@ class SolutionController extends AbstractActionController {
             if ($form->isValid()) {
                 $solution->exchangeArray($form->getData());
                 $this->getSolutionTable()->saveSolution($solution);
+                
+                $problem = $this->getProblemTable()->getProblem($solution->problem_id);
+                exec('/home/dann/Desktop/VirtualJudge/grader/interface/vjgraderapp ' .
+                        $solution->solution_id . ' ' . 
+                        $solution->solution_source . ' ' .
+                        $problem->fileIn . ' ' .
+                        $problem->fileOut . ' ' .
+                        $solution->language . ' ' .
+                        ' > /tmp/execoutput.txt 2>&1 &');
                 return $this->redirect()->toRoute('solution');
             }
         }
