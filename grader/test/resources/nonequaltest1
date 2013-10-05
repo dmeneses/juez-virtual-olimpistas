@@ -1,0 +1,5 @@
+Compares the C string str1 to the C string str2.
+
+This function starts comparing the first character of each string. If they are equal to each other, it continues with the following pairs until the characters differ or until a terminating null-character is reached.
+
+This function performs a binary comparison of the characters. For a function that takes into account locale-specific rules, see strcoll.
