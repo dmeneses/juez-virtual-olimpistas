@@ -9,6 +9,7 @@
 #define	EXECUTER_H
 
 #include "stageoutput.h"
+#include "solutionattempt.h"
 
 /**
  * Will execute an app changing the default stdin and stdout.
@@ -19,7 +20,7 @@ public:
     Executor(const char* appName, const char* fileIn, const char* fileOut);
     Executor(const Executor& orig);
     virtual ~Executor();
-    void execute(StageOutput& output);
+    void execute(StageOutput& output, const Constraint& constraint);
 private:
     const char* prepareCommand();
     

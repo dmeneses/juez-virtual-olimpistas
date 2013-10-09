@@ -6,6 +6,7 @@
       <in>comparator.h</in>
       <in>compiler.cpp</in>
       <in>compiler.h</in>
+      <in>errorcode.h</in>
       <in>executor.cpp</in>
       <in>executor.h</in>
       <in>languagetype.h</in>
@@ -51,6 +52,8 @@
       <item path="compiler.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="compiler.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="errorcode.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="executor.cpp" ex="false" tool="1" flavor2="0">
       </item>

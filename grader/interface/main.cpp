@@ -4,8 +4,9 @@
 #include <stdio.h>
 #include "vjgrader.cpp"
 #include "solutionattempt.h"
+#include <iostream>
 
-#define INPUT_DATA 6
+#define INPUT_DATA 8
 
 using namespace std;
 
@@ -31,6 +32,9 @@ int main(int argc, char **argv)
     {
         attempt.language = ANSI_C;
     }
+    
+    attempt.constraint.time = atoi(argv[6]);
+    attempt.constraint.memory = atoi(argv[7]);
 
     attempt.status = COMPILATION_ERROR;
     std::ostringstream appNaming;
@@ -46,14 +50,13 @@ int main(int argc, char **argv)
     grade(attempt);
 
     printf("ID: %d\n", attempt.id);
-    if (attempt.status == OK)
+    if (attempt.status == SUCCESS)
     {
         printf("Grade: %d\n", attempt.grade);
     }
     else
     {
-       printf("Error: \n");
-       printf("%s\n", attempt.errorMessage);
+       printf("Error: %s", attempt.errorMessage);
     }
     
     return 0;

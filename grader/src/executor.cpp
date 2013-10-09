@@ -9,10 +9,13 @@
 #include <string>
 #include <cstdlib>
 #include "executor.h"
-
+#include <time.h>
 #include <iostream>
+#include <stdio.h>
 
 using namespace std;
+
+time_t start, stop;
 
 Executor::Executor(const char* appName, const char* fileIn, const char* fileOut)
 {
@@ -49,9 +52,23 @@ const char* Executor::prepareCommand()
     return res.c_str();
 }
 
-void Executor::execute(StageOutput& output)
+void Executor::execute(StageOutput& output, const Constraint& constraint)
 {
     const char* command = prepareCommand();
+
+    time(&start);
     system(command);
-    output.setStatus(SUCCESS);
+    time(&stop);
+
+    double finalTime = difftime(stop, start);
+    
+    if (finalTime > constraint.time)
+    {
+        output.setStatus(TIME_LIMIT_EXCEEDED);
+        output.setErrorMessage("Time limit exceeded");
+    }
+    else
+    {
+        output.setStatus(SUCCESS);
+    }
 }

@@ -9,26 +9,22 @@
 #define	COMPILEROUTPUT_H
 
 #include <string>
-
-enum StageStatus {
-    SUCCESS,
-    FAIL
-};
+#include "errorcode.h"
 
 class StageOutput
 {
 public:
     StageOutput();
-    StageOutput(StageStatus status, const std::string& errorMessage = "");
+    StageOutput(ErrorCode status, const std::string& errorMessage = "");
     StageOutput(const StageOutput& orig);
     virtual ~StageOutput();
-    StageStatus getStatus() const;
+    ErrorCode getStatus() const;
     const std::string& getErrorMessage() const;
-    void setStatus(StageStatus status);
+    void setStatus(ErrorCode status);
     void setErrorMessage(const std::string& errorMessage);
 
 private:    
-    StageStatus status_;
+    ErrorCode status_;
     std::string errorMessage_;
 };
 

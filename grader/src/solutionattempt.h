@@ -10,12 +10,20 @@
 
 #include <string.h>
 #include "languagetype.h"
+#include "errorcode.h"
 
-enum GradeStatus
-{
-    COMPILATION_ERROR,
-    RUNTIME_ERROR,
-    OK
+struct Constraint {
+    
+    Constraint(int time, int memory): time(time), memory(memory) {}
+    
+    Constraint()
+    {
+        time = 0;
+        memory = 0;
+    }
+    
+    int time;
+    int memory;
 };
 
 struct SolutionAttempt
@@ -40,11 +48,12 @@ struct SolutionAttempt
     const char* appToCompile;
     const char* compiledApp;
     LanguageType language;
-    GradeStatus status;
+    ErrorCode status;
     char* errorMessage;
     const char* testInputs;
     const char* generatedOutputs;
     const char* expectedOutputs;
+    Constraint constraint;
     int grade;
 
     void setErrorMessage(const char* message)

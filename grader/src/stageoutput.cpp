@@ -11,7 +11,7 @@ StageOutput::StageOutput() : status_(FAIL)
 {
 }
 
-StageOutput::StageOutput(StageStatus status, const std::string& errorMessage) 
+StageOutput::StageOutput(ErrorCode status, const std::string& errorMessage) 
 : status_(status), errorMessage_(errorMessage)
 {
 }
@@ -25,7 +25,7 @@ StageOutput::~StageOutput()
 }
 
 
-StageStatus StageOutput::getStatus() const
+ErrorCode StageOutput::getStatus() const
 {
     return status_;
 }
@@ -35,7 +35,7 @@ const std::string& StageOutput::getErrorMessage() const
     return errorMessage_;
 }
 
-void StageOutput::setStatus(StageStatus status)
+void StageOutput::setStatus(ErrorCode status)
 {
     status_ = status;
 }

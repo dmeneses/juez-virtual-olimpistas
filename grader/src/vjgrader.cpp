@@ -3,7 +3,7 @@
 #include "executor.h"
 #include "solutionattempt.h"
 
-void grade(SolutionAttempt& attempt) 
+void grade(SolutionAttempt& attempt)
 {
     StageOutput stageOutput;
     Compiler compiler(attempt.appToCompile, attempt.compiledApp, attempt.language);
@@ -18,11 +18,11 @@ void grade(SolutionAttempt& attempt)
 
     stageOutput.setStatus(FAIL);
     Executor executor(attempt.compiledApp, attempt.testInputs, attempt.generatedOutputs);
-    executor.execute(stageOutput);
+    executor.execute(stageOutput, attempt.constraint);
 
-    if (stageOutput.getStatus() == FAIL)
+    if (stageOutput.getStatus() != SUCCESS)
     {
-        attempt.status = RUNTIME_ERROR;
+        attempt.status = stageOutput.getStatus();
         attempt.setErrorMessage(stageOutput.getErrorMessage().c_str());
         return;
     }
@@ -30,10 +30,10 @@ void grade(SolutionAttempt& attempt)
     Comparator comparator;
     bool equal = comparator.compareFiles(attempt.expectedOutputs, attempt.generatedOutputs);
 
-    attempt.status = OK;
-    if (equal) 
+    attempt.status = SUCCESS;
+    if (equal)
         attempt.grade = 100;
-    else 
+    else
         attempt.grade = 0;
-    
-}   
+
+} 
