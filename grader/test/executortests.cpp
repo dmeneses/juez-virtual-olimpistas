@@ -24,7 +24,7 @@ TEST(Executor, ExecuteCPPApp)
     
     StageOutput executeOutput;
     Executor executor(OUTPUT_PATH_CPP, INPUT_FILE, OUTPUT_FILE);
-    executor.execute(executeOutput);
+    executor.execute(executeOutput, Constraint(0,5));
     
     ASSERT_TRUE(exist(OUTPUT_FILE));
     ASSERT_EQ(SUCCESS, executeOutput.getStatus());
