@@ -11,7 +11,7 @@ $form->prepare();
     <?php
     echo $this->form()->openTag($form);
     echo $this->formHidden($form->get('problem_id'));
-    ?>
+    ?> 
 
     <h2>Datos Principales</h2>
     <table>	
@@ -35,16 +35,19 @@ $form->prepare();
         <tr>
             <td valign="top"><label for="problem_description">Descripcion</label></td>
             <td><?php echo $this->formTextarea($form->get('problem_description')); ?></td>
+        <script>
+            CKEDITOR.replace('problem_description');
+        </script>
         </tr>
         <tr>
             <td/>
             <td><?php echo $this->formElementErrors($form->get('problem_description')); ?></td>
         </tr>
     </table>
-    
+
     <h2>Restricciones</h2>
-    
-    
+
+
     <table>	
         <tr>
             <td valign="mid"><label for="time_limit">Tiempo</label></td>
@@ -75,8 +78,8 @@ $form->prepare();
             <td><?php echo $this->formElementErrors($form->get('source_limit')); ?></td>
         </tr>
     </table>
-    
-    
+
+
     <h2>Opciones de Juzgamiento</h2>
     <table>
         <tr>
@@ -111,9 +114,9 @@ $form->prepare();
     <?php
     echo $this->formSubmit($form->get('submit'));
     ?>
-     <a href="<?php echo $this->url('application', array('action' => 'index',)); ?>" class="button">Cancelar</a>
+    <a href="<?php echo $this->url('application', array('action' => 'index',)); ?>" class="button">Cancelar</a>
     <?php
     echo $this->form()->closeTag();
     ?>   
-     
+
 </div>
