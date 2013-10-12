@@ -13,39 +13,39 @@ use Zend\Validator;
 class Problem implements InputFilterAwareInterface {
 
     public $problem_id;
-    public $author;
-    public $time_limit;
-    public $memory_limit;
-    public $source_limit;
     public $problem_name;
+    public $problem_author;
     public $problem_description;
+    public $time_constraint;
+    public $memory_constraint;
+    public $source_constraint;
     public $is_simple;
     public $compare_type;
-    public $fileIn;
-    public $fileOut;
+    public $file_in;
+    public $file_out;
     protected $inputFilter;
 
     public function exchangeArray($data) {
         $this->problem_id = (!empty($data['problem_id'])) ? $data['problem_id'] : null;
         $this->problem_name = (!empty($data['problem_name'])) ? $data['problem_name'] : null;
-        $this->author = (!empty($data['author'])) ? $data['author'] : null;
+        $this->problem_author = (!empty($data['problem_author'])) ? $data['problem_author'] : null;
         $this->problem_description = (!empty($data['problem_description'])) ? $data['problem_description'] : null;
-        $this->time_limit = (!empty($data['time_limit'])) ? $data['time_limit'] : null;
-        $this->memory_limit = (!empty($data['memory_limit'])) ? $data['memory_limit'] : null;
-        $this->source_limit = (!empty($data['source_limit'])) ? $data['source_limit'] : null;
+        $this->time_constraint = (!empty($data['time_constraint'])) ? $data['time_constraint'] : null;
+        $this->memory_constraint = (!empty($data['memory_constraint'])) ? $data['memory_constraint'] : null;
+        $this->source_constraint = (!empty($data['source_constraint'])) ? $data['source_constraint'] : null;
         $this->is_simple = (!empty($data['is_simple'])) ? $data['is_simple'] : null;
         $this->compare_type = (!empty($data['compare_type'])) ? $data['compare_type'] : null;
         
-        if ( is_array($data['fileIn'])) {
-            $this->fileIn = (!empty($data['fileIn'])) ? $data['fileIn']['tmp_name'] : null;
+        if ( is_array($data['file_in'])) {
+            $this->file_in = (!empty($data['file_in'])) ? $data['file_in']['tmp_name'] : null;
         } else {
-            $this->fileIn = (!empty($data['fileIn'])) ? $data['fileIn'] : null;
+            $this->file_in = (!empty($data['file_in'])) ? $data['file_in'] : null;
         }
 
-        if ( is_array($data['fileOut'])) {
-            $this->fileOut = (!empty($data['fileOut'])) ? $data['fileOut']['tmp_name'] : null;
+        if ( is_array($data['file_out'])) {
+            $this->file_out = (!empty($data['file_out'])) ? $data['file_out']['tmp_name'] : null;
         } else {
-            $this->fileOut = (!empty($data['fileOut'])) ? $data['fileOut'] : null;
+            $this->file_out = (!empty($data['file_out'])) ? $data['file_out'] : null;
         }
     }
 
@@ -61,7 +61,7 @@ class Problem implements InputFilterAwareInterface {
                     ->attachByName('stringtrim')
                     ->attachByName('alpha', array('allowwhitespace' => true));
 
-            $authorValidator = new Input('author');
+            $authorValidator = new Input('problem_author');
             $authorValidator->getValidatorChain()
                     ->addValidator($lengthValidator);
             $authorValidator->getFilterChain()
@@ -70,19 +70,19 @@ class Problem implements InputFilterAwareInterface {
 
             $numberValidator = new Validator\Digits();
 
-            $timeValidator = new Input('time_limit');
+            $timeValidator = new Input('time_constraint');
             $timeValidator->getValidatorChain()
                     ->addValidator($numberValidator);
             $timeValidator->getFilterChain()
                     ->attachByName('stringtrim');
 
-            $memoryValidator = new Input('memory_limit');
+            $memoryValidator = new Input('memory_constraint');
             $memoryValidator->getValidatorChain()
                     ->addValidator($numberValidator);
             $memoryValidator->getFilterChain()
                     ->attachByName('stringtrim');
 
-            $sourceValidator = new Input('source_limit');
+            $sourceValidator = new Input('source_constraint');
             $sourceValidator->getValidatorChain()
                     ->addValidator($numberValidator);
             $sourceValidator->getFilterChain()
@@ -95,7 +95,7 @@ class Problem implements InputFilterAwareInterface {
             $descriptionValidator->getFilterChain()
                     ->attachByName('stringtrim');
 
-            $fileIn = new FileInput('fileIn');
+            $fileIn = new FileInput('file_in');
             $fileIn->getValidatorChain()
                     ->addValidator(new Validator\File\UploadFile());
             $fileIn->getFilterChain()
@@ -104,7 +104,7 @@ class Problem implements InputFilterAwareInterface {
                         'randomize' => true,
             )));
 
-            $fileOut = new FileInput('fileOut');
+            $fileOut = new FileInput('file_out');
             $fileOut->getValidatorChain()
                     ->addValidator(new Validator\File\UploadFile());
             $fileOut->getFilterChain()

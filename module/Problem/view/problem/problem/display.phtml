@@ -5,13 +5,13 @@ $this->headTitle($title);
 
 <div class="content">
     <center><h1><?php echo $this->escapeHtml($title); ?></h1>
-        <?php echo $this->escapeHtml($this->problemData->author) ?>
+        <?php echo $this->escapeHtml($this->problemData->problem_author) ?>
         <br/><label>Tiempo: </label>
-        <?php echo $this->escapeHtml($this->problemData->time_limit) . " Seconds" ?>
+        <?php echo $this->escapeHtml($this->problemData->time_constraint) . " Seconds" ?>
         <br/><label>Memoria: </label>
-        <?php echo $this->escapeHtml($this->problemData->memory_limit) . " MB" ?>
+        <?php echo $this->escapeHtml($this->problemData->memory_constraint) . " MB" ?>
         <br/><label>Codigo: </label>
-        <?php echo $this->escapeHtml($this->problemData->source_limit) . " Bytes" ?>
+        <?php echo $this->escapeHtml($this->problemData->source_constraint) . " Bytes" ?>
     </center>
     <h2>Descripcion</h2>
     <?php echo $this->problemData->problem_description ?>

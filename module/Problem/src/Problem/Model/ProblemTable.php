@@ -30,16 +30,17 @@ class ProblemTable {
 
     public function saveProblem(Problem $problem) {
         $data = array(
-            'author' => $problem->author,
+            'problem_author' => $problem->problem_author,
             'problem_name' => $problem->problem_name,
             'problem_description' => $problem->problem_description,
-            'time_limit' => $problem->time_limit,
-            'memory_limit' => $problem->memory_limit,
-            'source_limit' => $problem->source_limit,
+            'time_constraint' => $problem->time_constraint,
+            'memory_constraint' => $problem->memory_constraint,
+            'source_constraint' => $problem->source_constraint,
             'is_simple' => $problem->is_simple,
             'compare_type' => $problem->compare_type,
-            'fileIn' => $problem->fileIn,
-            'fileOut' => $problem->fileOut,
+            'file_in' => $problem->file_in,
+            'file_out' => $problem->file_out,
+            'user_user_id' => 1,
         );
 
         $id = (int) $problem->problem_id;

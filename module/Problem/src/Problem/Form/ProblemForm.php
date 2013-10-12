@@ -15,12 +15,12 @@ class ProblemForm extends Form {
         $problemName = new Element\Text('problem_name');
         $problemName->setAttribute('placeholder', 'Nombre del problema');
 
-        $author = new Element\Text('author');
+        $author = new Element\Text('problem_author');
         $author->setAttribute('placeholder', 'Nombre del autor');
         
-        $time = new Element\Text('time_limit');
-        $memory = new Element\Text('memory_limit');
-        $source = new Element\Text('source_limit');
+        $time = new Element\Text('time_constraint');
+        $memory = new Element\Text('memory_constraint');
+        $source = new Element\Text('source_constraint');
         
         $description = new Element\Textarea('problem_description');
         $description->setAttribute('placeholder', 'Descripcion del problema');
@@ -39,8 +39,8 @@ class ProblemForm extends Form {
         ));
         $compareType->setValue('STRICT');
         
-        $fileIn = new Element\File('fileIn');
-        $fileOut = new Element\File('fileOut');
+        $fileIn = new Element\File('file_in');
+        $fileOut = new Element\File('file_out');
 
         $submit = new Element\Submit('submit');
         $submit->setValue('Proponer');

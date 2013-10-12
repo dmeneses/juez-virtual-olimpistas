@@ -25,12 +25,12 @@ $form->prepare();
         </tr>
 
         <tr>
-            <td valign="mid"><label for="author">Autor</label></td>
-            <td><?php echo $this->formInput($form->get('author')); ?></td>
+            <td valign="mid"><label for="problem_author">Autor</label></td>
+            <td><?php echo $this->formInput($form->get('problem_author')); ?></td>
         </tr>
         <tr>
             <td/>
-            <td><?php echo $this->formElementErrors($form->get('author')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('problem_author')); ?></td>
         </tr>
         <tr>
             <td valign="top"><label for="problem_description">Descripcion</label></td>
@@ -50,32 +50,32 @@ $form->prepare();
 
     <table>	
         <tr>
-            <td valign="mid"><label for="time_limit">Tiempo</label></td>
-            <td><?php echo $this->formInput($form->get('time_limit')); ?></td>
+            <td valign="mid"><label for="time_constraint">Tiempo</label></td>
+            <td><?php echo $this->formInput($form->get('time_constraint')); ?></td>
             <td><label>Segundos</label></td>
         </tr>
         <tr>
             <td/>
-            <td><?php echo $this->formElementErrors($form->get('time_limit')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('time_constraint')); ?></td>
         </tr>
 
         <tr>
-            <td valign="mid"><label for="memory_limit">Memoria</label></td>
-            <td><?php echo $this->formInput($form->get('memory_limit')); ?></td>
+            <td valign="mid"><label for="memory_constraint">Memoria</label></td>
+            <td><?php echo $this->formInput($form->get('memory_constraint')); ?></td>
             <td><label>MB</label></td>
         </tr>
         <tr>
             <td/>
-            <td><?php echo $this->formElementErrors($form->get('memory_limit')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('memory_constraint')); ?></td>
         </tr>
         <tr>
-            <td valign="mid"><label for="source_limit">Codigo</label></td>
-            <td><?php echo $this->formInput($form->get('source_limit')); ?></td>
+            <td valign="mid"><label for="source_constraint">Codigo</label></td>
+            <td><?php echo $this->formInput($form->get('source_constraint')); ?></td>
             <td><label>Bytes</label></td>
         </tr>
         <tr>
             <td/>
-            <td><?php echo $this->formElementErrors($form->get('source_limit')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('source_constraint')); ?></td>
         </tr>
     </table>
 
@@ -92,14 +92,14 @@ $form->prepare();
             <td>
                 <table style="border: black dashed thin">
                     <tr>
-                        <td valign="mid"><label for="fileIn">Entrada</label></td>
-                        <td><?php echo $this->formFile($form->get('fileIn')); ?></td>
-                        <td><?php echo $this->formElementErrors($form->get('fileIn')); ?></td>
+                        <td valign="mid"><label for="file_in">Entrada</label></td>
+                        <td><?php echo $this->formFile($form->get('file_in')); ?></td>
+                        <td><?php echo $this->formElementErrors($form->get('file_in')); ?></td>
                     </tr>
                     <tr>
-                        <td valign="mid"><label for="fileOut">Salida</label></td>
-                        <td><?php echo $this->formFile($form->get('fileOut')); ?></td>
-                        <td><?php echo $this->formElementErrors($form->get('fileOut')); ?></td>
+                        <td valign="mid"><label for="file_out">Salida</label></td>
+                        <td><?php echo $this->formFile($form->get('file_out')); ?></td>
+                        <td><?php echo $this->formElementErrors($form->get('file_out')); ?></td>
                     </tr>
                 </table>
             </td>

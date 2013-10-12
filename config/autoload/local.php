@@ -13,7 +13,7 @@
 
 return array(
     'db' => array(
-        'username' => 'root',
-        'password' => '1121990',
+        'username' => 'mbravesoft',
+        'password' => 'SDFdfg51wer',
     ),
 );
