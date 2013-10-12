@@ -57,9 +57,26 @@ class Problem implements InputFilterAwareInterface {
             $nameValidator = new Input('problem_name');
             $nameValidator->getValidatorChain()
                     ->addValidator($lengthValidator);
-            $nameValidator->getFilterChain()
-                    ->attachByName('stringtrim')
-                    ->attachByName('alpha', array('allowwhitespace' => true));
+//            $nameValidator->getFilterChain()
+//                    ->attachByName('stringtrim')
+//                    ->attachByName('alpha', array('allowwhitespace' => true));
+            $validator = new Zend_Validate_Db_RecordExists(
+            array(
+                   'table' => 'problem',
+                   'field' => 'problem_name'
+                   ));
+ 
+             if ($validator->isValid($nameValidator)) {
+                 // ProblemName appears to be valid
+                } else {
+                // ProblemName is invalid; print the reasons
+            foreach ($validator->getMessages() as $message) {
+               echo "$message\n";
+                }
+
+             }
+            
+            
 
             $authorValidator = new Input('problem_author');
             $authorValidator->getValidatorChain()
@@ -94,6 +111,15 @@ class Problem implements InputFilterAwareInterface {
                     ->addValidator(new Validator\StringLength(array('min' => 10)));
             $descriptionValidator->getFilterChain()
                     ->attachByName('stringtrim');
+            
+             $valid = new Zend_Validate_NotEmpty(
+                     Zend_Validate_NotEmpty::INTEGER + Zend_NotEmpty::ZERO
+                     );      
+            $valid->isValid($descriptionValidator);
+            
+            $valueSpace  = '';
+            $valid->isValid($valueSpace);
+            
 
             $fileIn = new FileInput('file_in');
             $fileIn->getValidatorChain()
@@ -103,7 +129,9 @@ class Problem implements InputFilterAwareInterface {
                         'target' => './data/problems/fileIn',
                         'randomize' => true,
             )));
-
+            $fileIn->addValidator('Extension', false, array('cpp', 'c', 
+                'java', 'txt', 'in' => true));
+            
             $fileOut = new FileInput('file_out');
             $fileOut->getValidatorChain()
                     ->addValidator(new Validator\File\UploadFile());
@@ -112,6 +140,8 @@ class Problem implements InputFilterAwareInterface {
                         'target' => './data/problems/fileOut',
                         'randomize' => true,
             )));
+            $fileOut->addValidator('Extension', false, array('cpp', 'c', 'java',
+                'txt', 'out' => true));   
 
 
             $inputFilter->add($nameValidator);
