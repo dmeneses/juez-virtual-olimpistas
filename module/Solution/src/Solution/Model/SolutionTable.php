@@ -29,15 +29,16 @@ class SolutionTable {
 
     public function saveSolution(Solution $solution) {
         $data = array(
-            'problem_id' => $solution->problem_id,
-            'language' => $solution->language,
-            'solution_source' => $solution->solution_source,
+            'solution_language' => $solution->solution_language,
+            'solution_source_file' => $solution->solution_source_file,
+            'problem_problem_id' => $solution->problem_id,
+            'user_user_id' => 1,
         );
 
         $id = (int) $solution->solution_id;
         if ($id == 0) {
-            $id = $this->tableGateway->insert($data);
-            $solution->solution_id = $id;
+            $this->tableGateway->insert($data);
+            $solution->solution_id = $this->tableGateway->getLastInsertValue();
         } else {
             if ($this->getSolution($id)) {
                 $this->tableGateway->update($data, array('id' => $id));

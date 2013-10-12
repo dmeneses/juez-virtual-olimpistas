@@ -15,14 +15,14 @@ class SolutionForm extends Form {
         $problemID = new Element\Text('problem_id');
         $problemID->setAttribute('placeholder', 'Codigo del problema');
 
-        $language = new Element\Select('language');
+        $language = new Element\Select('solution_language');
         $language->setValueOptions(array(
             'C' => 'ANSI C',
             'CPP' => 'C++',
         ));
         $language->setValue('CPP');  
         
-        $codFile = new Element\File('solution_source');
+        $codFile = new Element\File('solution_source_file');
 
         $submit = new Element\Submit('submit');
         $submit->setValue('Subir Solucion');

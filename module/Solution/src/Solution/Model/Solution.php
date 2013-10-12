@@ -13,16 +13,23 @@ use Zend\Validator;
 class Solution implements InputFilterAwareInterface {
 
     public $solution_id;
+    public $solution_date;
+    public $solution_language;
+    public $solution_source_file;
+    public $veredict;
+    public $runtime;
+    public $used_memeory;
+    public $status;
+    public $error_message;
+    public $user_id;
     public $problem_id;
-    public $language;
-    public $solution_source;
     public $inputFilter;
 
     public function exchangeArray($data) {
         $this->solution_id = (!empty($data['solution_id'])) ? $data['solution_id'] : null;
         $this->problem_id = (!empty($data['problem_id'])) ? $data['problem_id'] : null;
-        $this->language = (!empty($data['language'])) ? $data['language'] : null;
-        $this->solution_source = (!empty($data['solution_source'])) ? $data['solution_source']['tmp_name'] : null;
+        $this->solution_language = (!empty($data['solution_language'])) ? $data['solution_language'] : null;
+        $this->solution_source_file = (!empty($data['solution_source_file'])) ? $data['solution_source_file']['tmp_name'] : null;
     }
 
     public function getInputFilter() {
@@ -37,7 +44,7 @@ class Solution implements InputFilterAwareInterface {
                     ->attachByName('stringtrim');
 
 
-            $solFile = new FileInput('solution_source');
+            $solFile = new FileInput('solution_source_file');
             $solFile->getValidatorChain()
                     ->addValidator(new Validator\File\UploadFile());
             $solFile->getFilterChain()

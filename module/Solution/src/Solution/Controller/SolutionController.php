@@ -25,14 +25,6 @@ class SolutionController extends AbstractActionController {
         }
         return $this->solutionTable;
     }
-    
-    public function getProblemTable() {
-        if (!$this->problemTable) {
-            $sm = $this->getServiceLocator();
-            $this->problemTable = $sm->get('Problem\Model\ProblemTable');
-        }
-        return $this->problemTable;
-    }
 
     public function addAction() {
 
@@ -58,15 +50,7 @@ class SolutionController extends AbstractActionController {
             if ($form->isValid()) {
                 $solution->exchangeArray($form->getData());
                 $this->getSolutionTable()->saveSolution($solution);
-                
-                $problem = $this->getProblemTable()->getProblem($solution->problem_id);
-                exec('/home/dann/Desktop/VirtualJudge/grader/interface/vjgraderapp ' .
-                        $solution->solution_id . ' ' . 
-                        $solution->solution_source . ' ' .
-                        $problem->fileIn . ' ' .
-                        $problem->fileOut . ' ' .
-                        $solution->language . ' ' .
-                        ' > /tmp/execoutput.txt 2>&1 &');
+                exec('echo 1 ' . $solution->solution_id . ' ' . '> /tmp/queueserver-input');
                 return $this->redirect()->toRoute('solution');
             }
         }
