@@ -3,6 +3,8 @@
 namespace Problem\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Select;
+use Zend\Db\ResultSet\ResultSet;
 
 class ProblemTable {
 
@@ -53,5 +55,20 @@ class ProblemTable {
                 throw new \Exception('Problem id does not exist');
             }
         }
+    }
+    
+    public function getProblems($trainingID) {
+        $select = new Select;
+        $select->from(array('p' => 'problem',))
+                ->join(array('tp' => 'training_has_problem'), 'tp.problem_problem_id = p.problem_id', array())
+                ->join(array('t' => 'training'), 't.training_id = tp.training_training_id ', array());
+        $select->where(array('t.training_id' => $trainingID,));
+        $statement = $this->tableGateway->getAdapter()->createStatement();
+        $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($statement->execute());
+        
+        return $resultSet;
     }
 }

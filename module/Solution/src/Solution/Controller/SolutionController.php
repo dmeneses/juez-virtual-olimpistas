@@ -10,7 +10,6 @@ use Solution\Form\SolutionForm;
 class SolutionController extends AbstractActionController {
 
     protected $solutionTable;
-    protected $problemTable;
 
     public function indexAction() {
         return new ViewModel(array(

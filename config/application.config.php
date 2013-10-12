@@ -5,6 +5,7 @@ return array(
         'Application',
         'Problem',
         'Solution',
+        'Group'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

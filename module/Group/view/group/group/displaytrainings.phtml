@@ -1,0 +1,26 @@
+<?php
+$title = 'Entrenamientos Disponibles';
+$this->headTitle($title);
+?>
+
+<div class="content">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+
+    <div class="nicetable" style="margin-top: 20px;">
+        <table>
+            <tr>
+                <td>ID Entrenamiento</td>
+                <td>Nombre</td>
+
+            </tr>
+            <?php foreach ($trainings as $training) : ?>
+                <tr>
+                    <td><?php echo $this->escapeHtml($training->training_id); ?></td>
+                    <td>
+                        <a href="<?php echo $this->url('group', array('action' => 'training', 'id' => $training->training_id)); ?>"><?php echo $this->escapeHtml($training->training_name); ?></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+</div>
