@@ -31,6 +31,7 @@ class ProblemController extends AbstractActionController {
         $request = $this->getRequest();
         if ($request->isPost()) {
             $problem = new Problem();
+            $problem->setDatabaseAdapter($this->getProblemTable()->getAdapter());
             $form->setInputFilter($problem->getInputFilter());
 
             $post = array_merge_recursive(

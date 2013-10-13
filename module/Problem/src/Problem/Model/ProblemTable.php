@@ -71,4 +71,8 @@ class ProblemTable {
         
         return $resultSet;
     }
+    
+    public function getAdapter() {
+        return $this->tableGateway->getAdapter();
+    }
 }
