@@ -38,11 +38,11 @@ int main(int argc, char **argv)
 
     attempt.status = COMPILATION_ERROR;
     std::ostringstream appNaming;
-    appNaming << "execution/compilation" << attempt.id;
+    appNaming << "data/executions/compilation" << attempt.id;
     string appName = appNaming.str();
 
     std::ostringstream outputNaming;
-    outputNaming << "execution/output" << attempt.id;
+    outputNaming << "data/executions/output" << attempt.id;
     string output = outputNaming.str();
 
     attempt.compiledApp = appName.c_str();
@@ -50,6 +50,7 @@ int main(int argc, char **argv)
     grade(attempt);
 
     printf("ID: %d\n", attempt.id);
+    printf("STATUS: %d\n", attempt.status);
     if (attempt.status == SUCCESS)
     {
         printf("Grade: %d\n", attempt.grade);

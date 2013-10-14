@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd grader;
+./buildProject
+cd ..
+php ProcessMonitor.php

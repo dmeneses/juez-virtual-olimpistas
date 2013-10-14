@@ -49,7 +49,7 @@ class Solution implements InputFilterAwareInterface {
                     ->addValidator(new Validator\File\UploadFile());
             $solFile->getFilterChain()
                     ->attach(new Filter\File\RenameUpload(array(
-                        'target' => './data/solutions/source',
+                        'target' => './data/solutions/source.cpp',
                         'randomize' => true,
             )));
 
