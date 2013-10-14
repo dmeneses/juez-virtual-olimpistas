@@ -4,7 +4,7 @@ SRC = main.cpp
 
 OBJ = $(patsubst %.cpp,obj/%.o,$(SRC))
 
-OUT = vjgraderapp
+OUT = ../../vjgraderapp
 
 INCLUDES=-I ../src
 
