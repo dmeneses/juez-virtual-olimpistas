@@ -22,7 +22,7 @@ struct Constraint {
         memory = 0;
     }
     
-    int time;
+    double time;
     int memory;
 };
 
@@ -33,6 +33,8 @@ struct SolutionAttempt
         id = 0;
         errorMessage = 0;
         grade = 0;
+        runtime = 0;
+        memory = 0;
     }
     
     ~SolutionAttempt()
@@ -53,6 +55,8 @@ struct SolutionAttempt
     const char* testInputs;
     const char* generatedOutputs;
     const char* expectedOutputs;
+    int runtime;
+    int memory;
     Constraint constraint;
     int grade;
 

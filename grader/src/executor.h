@@ -20,7 +20,7 @@ public:
     Executor(const char* appName, const char* fileIn, const char* fileOut);
     Executor(const Executor& orig);
     virtual ~Executor();
-    void execute(StageOutput& output, const Constraint& constraint);
+    void execute(StageOutput& output, SolutionAttempt& constraint);
 private:
     const char* prepareCommand();
     

@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 {
     if (argc != INPUT_DATA)
     {
-        printf("There is no input data. The count data is : %d\n", argc);
+        printf("ERROR-There is no input data. The count data is : %d.\n", argc);
         return 1;
     }
 
@@ -49,15 +49,17 @@ int main(int argc, char **argv)
     attempt.generatedOutputs = output.c_str();
     grade(attempt);
 
-    printf("ID: %d\n", attempt.id);
-    printf("STATUS: %d\n", attempt.status);
+    printf("ID-%d\n", attempt.id);
+    printf("STATUS-%d\n", attempt.status);
+    printf("RUNTIME-%d\n", attempt.runtime);
+    printf("MEMORY-%d\n", attempt.memory);   
     if (attempt.status == SUCCESS)
     {
-        printf("Grade: %d\n", attempt.grade);
+        printf("GRADE-%d\n", attempt.grade);
     }
     else
     {
-       printf("Error: %s", attempt.errorMessage);
+       printf("ERROR-%s", attempt.errorMessage);
     }
     
     return 0;

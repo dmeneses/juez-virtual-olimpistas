@@ -18,8 +18,8 @@ void grade(SolutionAttempt& attempt)
 
     stageOutput.setStatus(FAIL);
     Executor executor(attempt.compiledApp, attempt.testInputs, attempt.generatedOutputs);
-    executor.execute(stageOutput, attempt.constraint);
-
+    executor.execute(stageOutput, attempt);
+    
     if (stageOutput.getStatus() != SUCCESS)
     {
         attempt.status = stageOutput.getStatus();

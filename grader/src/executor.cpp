@@ -52,7 +52,7 @@ const char* Executor::prepareCommand()
     return res.c_str();
 }
 
-void Executor::execute(StageOutput& output, const Constraint& constraint)
+void Executor::execute(StageOutput& output, SolutionAttempt& attempt)
 {
     const char* command = prepareCommand();
 
@@ -62,7 +62,7 @@ void Executor::execute(StageOutput& output, const Constraint& constraint)
 
     double finalTime = difftime(stop, start);
     
-    if (finalTime > constraint.time)
+    if (finalTime > attempt.constraint.time)
     {
         output.setStatus(TIME_LIMIT_EXCEEDED);
         output.setErrorMessage("Time limit exceeded");
@@ -71,4 +71,6 @@ void Executor::execute(StageOutput& output, const Constraint& constraint)
     {
         output.setStatus(SUCCESS);
     }
+    
+    attempt.runtime = finalTime;
 }
