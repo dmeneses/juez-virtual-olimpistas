@@ -30,12 +30,15 @@ class Solution implements InputFilterAwareInterface {
         $this->problem_id = (!empty($data['problem_id'])) ? $data['problem_id'] : null;
         $this->solution_language = (!empty($data['solution_language'])) ? $data['solution_language'] : null;
         $this->solution_source_file = (!empty($data['solution_source_file'])) ? $data['solution_source_file']['tmp_name'] : null;
+        $newNameWithExtension = $this->solution_source_file . "." . $this->solution_language;
+        rename($this->solution_source_file, $newNameWithExtension);
+        $this->solution_source_file = $newNameWithExtension;
     }
 
     public function getInputFilter() {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
- 
+
             $numberValidator = new Validator\Digits();
             $problemId = new Input('problem_id');
             $problemId->getValidatorChain()
@@ -49,7 +52,7 @@ class Solution implements InputFilterAwareInterface {
                     ->addValidator(new Validator\File\UploadFile());
             $solFile->getFilterChain()
                     ->attach(new Filter\File\RenameUpload(array(
-                        'target' => './data/solutions/source.cpp',
+                        'target' => './data/solutions/source',
                         'randomize' => true,
             )));
 
@@ -66,4 +69,5 @@ class Solution implements InputFilterAwareInterface {
     public function setInputFilter(InputFilterInterface $inputFilter) {
         throw new \Exception("Not used");
     }
+
 }

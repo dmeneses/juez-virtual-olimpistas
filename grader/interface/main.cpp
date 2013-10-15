@@ -24,7 +24,7 @@ int main(int argc, char **argv)
     attempt.testInputs = argv[3];
     attempt.expectedOutputs = argv[4];
     
-    if (strcmp(argv[5], "CPP") == 0)
+    if (strcmp(argv[5], "cpp") == 0)
     {
         attempt.language = CPP;
     }
