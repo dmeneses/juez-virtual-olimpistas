@@ -75,8 +75,6 @@ while (1) {
 
     if (QUEUESERVER_FORK)
         ob_clean();
-
-    $databaseConnection->close();
 }
 
 /**
@@ -128,9 +126,6 @@ function gradeSolution($solutionID, Zebra_Database $database) {
         if (count($problemRecords) == 1) {
             $problem = $problemRecords[0];
             $command = prepareCommand($solution, $problem);
-            echo print_r($solution) . PHP_EOL;
-            echo print_r($problem) . PHP_EOL;
-            echo $command . PHP_EOL;
             exec($command);
         }
     }
