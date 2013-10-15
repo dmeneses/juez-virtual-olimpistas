@@ -119,27 +119,51 @@ function gradeSolution($solutionID, Zebra_Database $database) {
     $solutionRecords = $database->fetch_assoc_all();
     if (count($solutionRecords) == 1) {
         $solution = $solutionRecords[0];
-        $database->select('file_in, file_out, time_constraint, memory_constraint', 'problem', 
-                'problem_id = ?', array($solution['problem_problem_id']));
+        $database->select('file_in, file_out, time_constraint, memory_constraint', 'problem', 'problem_id = ?', array($solution['problem_problem_id']));
         $problemRecords = $database->fetch_assoc_all();
-        
+
         if (count($problemRecords) == 1) {
             $problem = $problemRecords[0];
-            $command = prepareCommand($solution, $problem);
+            $output = 'data/executions/result' . $solution['solution_id'];
+            $command = prepareCommand($solution, $output, $problem);
             exec($command);
+            parseAndSaveData($solutionID, $output, $database);
         }
     }
 }
 
-function prepareCommand(array $solution, array $problem) {
+function prepareCommand(array $solution, $output, array $problem) {
     return './vjgraderapp ' . $solution['solution_id'] . ' ' .
             $solution['solution_source_file'] . ' ' .
             $problem['file_in'] . ' ' .
             $problem['file_out'] . ' ' .
             $solution['solution_language'] . ' ' .
             $problem['time_constraint'] . ' ' .
-            $problem['memory_constraint']. ' > data/executions/result' . 
-            $solution['solution_id'];
+            $problem['memory_constraint'] . ' > ' . $output;
+}
+
+function parseAndSaveData($solutionID, $output, Zebra_Database $database) {
+    $file_handle = fopen($output, "r");
+    $error = false;
+    $errorMessage = '';
+    while (!feof($file_handle)) {
+        $line = fgets($file_handle);
+        
+        if (error) {
+            $errorMessage .= $line;
+        } else {
+            list($dataType, $result) = explode("-", $line);
+            if ($dataType == "ERROR") {
+                $error = true;
+                $errorMessage .= $result;
+            }
+        }
+    }
+    fclose($file_handle);
+}
+
+function startsWith($haystack, $needle) {
+    return $needle === "" || strpos($haystack, $needle) === 0;
 }
 
 ?>
