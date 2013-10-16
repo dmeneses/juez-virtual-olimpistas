@@ -144,26 +144,65 @@ function prepareCommand(array $solution, $output, array $problem) {
 
 function parseAndSaveData($solutionID, $output, Zebra_Database $database) {
     $file_handle = fopen($output, "r");
+    $data = array(
+        'grade' => '0',
+        'runtime' => '0',
+        'used_memory' => '0',
+        'status' => 'Executed',
+        'error_message' => '',
+    );
     $error = false;
     $errorMessage = '';
+    
     while (!feof($file_handle)) {
         $line = fgets($file_handle);
-        
-        if (error) {
+        echo $line . PHP_EOL;
+        if ($error) {           
             $errorMessage .= $line;
-        } else {
-            list($dataType, $result) = explode("-", $line);
-            if ($dataType == "ERROR") {
-                $error = true;
-                $errorMessage .= $result;
+        } else {           
+            if (!empty($line)) {
+                list($dataType, $result) = explode("-", $line);
+                
+                if ($dataType == "ERROR") {
+                    $error = true;
+                    $errorMessage .= $result;
+                } else {
+                    switch ($dataType) {
+                        case "STATUS":$data['status'] = statusToString($result);
+                            break;
+                        case "RUNTIME":$data['runtime'] = $result;
+                            break;
+                        case "MEMORY":$data['used_memory'] = $result;
+                            break;
+                        case "GRADE":$data['grade'] = $result;
+                            break;
+                        default:
+                    }
+                }
             }
         }
     }
+
+    if ($errorMessage != '') {       
+        $data['error_message'] = $errorMessage;
+    }
+
     fclose($file_handle);
+    $database->update(
+            'solution', $data, 'solution_id = ?', array($solutionID)
+    );
 }
 
-function startsWith($haystack, $needle) {
-    return $needle === "" || strpos($haystack, $needle) === 0;
+function statusToString($status) {
+    switch ($status) {
+        case 0: return 'SUCCESS';
+        case 1: return 'COMPILATION_ERROR';
+        case 2: return 'RUNTIME_ERROR';
+        case 3: return 'TIME_LIMIT_EXCEEDED';
+        case 4: return 'MEMORY_LIMIT_EXCEEDED';
+        case 5: return 'FAIL';
+        default: return '';
+    }
 }
 
 ?>
