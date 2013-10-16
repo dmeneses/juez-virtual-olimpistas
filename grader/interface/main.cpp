@@ -62,5 +62,7 @@ int main(int argc, char **argv)
        printf("ERROR-%s", attempt.errorMessage);
     }
     
+    remove(attempt.compiledApp);
+    remove(attempt.generatedOutputs);
     return 0;
 }

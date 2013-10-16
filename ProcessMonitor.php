@@ -188,6 +188,7 @@ function parseAndSaveData($solutionID, $output, Zebra_Database $database) {
     }
 
     fclose($file_handle);
+    unlink ($output);
     $database->update(
             'solution', $data, 'solution_id = ?', array($solutionID)
     );
