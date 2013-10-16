@@ -22,8 +22,7 @@ class ProblemForm extends Form {
         $memory = new Element\Text('memory_constraint');
         $source = new Element\Text('source_constraint');
         
-        $description = new Element\Textarea('problem_description');
-        $description->setAttribute('placeholder', 'Descripcion del problema');
+        $description = new Element\File('problem_description');
 
         $type = new Element\Radio('is_simple');
         $type->setValueOptions(array(
