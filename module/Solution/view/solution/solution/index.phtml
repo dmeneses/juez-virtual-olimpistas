@@ -2,6 +2,29 @@
 $title = 'Soluciones';
 $this->headTitle($title);
 ?>
+
 <div class="content">
-    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    <h1><?php echo $this->escapeHtml($title); ?></h1>        
+    <div class="nicetable" style="margin-top: 20px;">
+        <table>
+            <tr>
+                <td>ID</td>
+                <td>Date</td>
+                <td>Result</td>
+                <td>Time</td>
+                <td>Memory</td>
+                <td>Language</td>
+            </tr>
+            <?php foreach ($solutions as $solution) : ?>
+                <tr>
+                    <td><?php echo $this->escapeHtml($solution->solution_id); ?></td>
+                    <td><?php echo $this->escapeHtml($solution->solution_date); ?></td>
+                    <td><?php echo $this->escapeHtml($solution->status); ?></td>
+                    <td><?php echo $this->escapeHtml($solution->runtime); ?></td>
+                    <td><?php echo $this->escapeHtml($solution->used_memory); ?></td>                   
+                    <td><?php echo $this->escapeHtml($solution->solution_language); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
 </div>

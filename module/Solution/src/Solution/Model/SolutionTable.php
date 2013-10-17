@@ -3,6 +3,8 @@
 namespace Solution\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Select;
+use Zend\Db\ResultSet\ResultSet;
 
 class SolutionTable {
 
@@ -47,4 +49,18 @@ class SolutionTable {
             }
         }
     }
+
+    public function getLast20Solution() {
+        $select = new Select;
+        $select->from('solution');
+        $select->order(array('solution_id DESC')); 
+        $select->limit(20);
+        $statement = $this->tableGateway->getAdapter()->createStatement();
+        $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($statement->execute());
+        return $resultSet;
+    }
+
 }

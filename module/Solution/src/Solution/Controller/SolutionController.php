@@ -13,7 +13,7 @@ class SolutionController extends AbstractActionController {
 
     public function indexAction() {
         return new ViewModel(array(
-            'solutions' => $this->getSolutionTable()->fetchAll(),
+            'solutions' => $this->getSolutionTable()->getLast20Solution(),
         ));
     }
 
