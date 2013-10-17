@@ -47,9 +47,11 @@ class Solution implements InputFilterAwareInterface {
                     ->attachByName('stringtrim');
 
 
+            $fileExtValidator = new Extension(array('cpp', 'c'));
             $solFile = new FileInput('solution_source_file');
             $solFile->getValidatorChain()
-                    ->addValidator(new Validator\File\UploadFile());
+                    ->addValidator(new Validator\File\UploadFile())
+                    ->addValidator($fileExtValidator);
             $solFile->getFilterChain()
                     ->attach(new Filter\File\RenameUpload(array(
                         'target' => './data/solutions/source',
