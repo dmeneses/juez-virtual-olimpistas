@@ -8,6 +8,7 @@ use Zend\InputFilter\FileInput;
 use Zend\Filter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
+use Zend\Validator\File\Extension;
 use Zend\Validator;
 
 class Solution implements InputFilterAwareInterface {

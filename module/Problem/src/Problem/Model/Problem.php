@@ -12,7 +12,6 @@ use Zend\Validator;
 use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\NotEmpty;
 use Zend\Validator\File\Extension;
-use Zend\Validator\File\MimeType;
 
 class Problem implements InputFilterAwareInterface {
 
@@ -38,17 +37,12 @@ class Problem implements InputFilterAwareInterface {
         $this->problem_id = (!empty($data['problem_id'])) ? $data['problem_id'] : null;
         $this->problem_name = (!empty($data['problem_name'])) ? $data['problem_name'] : null;
         $this->problem_author = (!empty($data['problem_author'])) ? $data['problem_author'] : null;
+        $this->problem_description = (!empty($data['problem_description'])) ? $data['problem_description'] : null;
         $this->time_constraint = (!empty($data['time_constraint'])) ? $data['time_constraint'] : null;
         $this->memory_constraint = (!empty($data['memory_constraint'])) ? $data['memory_constraint'] : null;
         $this->source_constraint = (!empty($data['source_constraint'])) ? $data['source_constraint'] : null;
         $this->is_simple = (!empty($data['is_simple'])) ? $data['is_simple'] : null;
         $this->compare_type = (!empty($data['compare_type'])) ? $data['compare_type'] : null;
-
-        if (is_array($data['problem_description'])) {
-            $this->problem_description = (!empty($data['problem_description'])) ? $data['problem_description']['tmp_name'] : null;
-        } else {
-            $this->problem_description = (!empty($data['problem_description'])) ? $data['problem_description'] : null;
-        }
 
         if (is_array($data['file_in'])) {
             $this->file_in = (!empty($data['file_in'])) ? $data['file_in']['tmp_name'] : null;
@@ -90,7 +84,7 @@ class Problem implements InputFilterAwareInterface {
                     ->attachByName('alpha', array('allowwhitespace' => true));
 
             $numberValidator = new Validator\Digits();
-            $notNullValidator = new NotEmpty(NotEmpty::INTEGER + NotEmpty::ZERO);
+            $notNullValidator = new NotEmpty(NotEmpty::INTEGER+NotEmpty::ZERO);
 
             $timeValidator = new Input('time_constraint');
             $timeValidator->getValidatorChain()
@@ -113,17 +107,12 @@ class Problem implements InputFilterAwareInterface {
             $sourceValidator->getFilterChain()
                     ->attachByName('stringtrim');
 
-            $isPdf = new MimeType('application/pdf');
-            $descriptionValidator = new FileInput('problem_description');
+            $descriptionValidator = new Input('problem_description');
             $descriptionValidator->getValidatorChain()
-                    ->addValidator(new Validator\File\UploadFile())
-                    ->addValidator($isPdf);
+                    ->addValidator(new Validator\StringLength(array('min' => 10)));
             $descriptionValidator->getFilterChain()
-                    ->attach(new Filter\File\RenameUpload(array(
-                        'target' => './data/problems/description.pdf',
-                        'randomize' => true,
-            )));
-            
+                    ->attachByName('stringtrim');
+
             $fileInExtValidator = new Extension(array('txt', 'in'));
             $fileIn = new FileInput('file_in');
             $fileIn->getValidatorChain()
