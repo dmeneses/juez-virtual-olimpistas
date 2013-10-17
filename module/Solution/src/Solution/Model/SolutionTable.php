@@ -59,7 +59,7 @@ class SolutionTable {
         $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
 
         $resultSet = new ResultSet();
-        $resultSet->initialize($statement->execute());
+        $resultSet->initialize($statement->execute());       
         return $resultSet;
     }
 

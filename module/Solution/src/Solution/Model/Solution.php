@@ -17,7 +17,7 @@ class Solution implements InputFilterAwareInterface {
     public $solution_date;
     public $solution_language;
     public $solution_source_file;
-    public $veredict;
+    public $grade;
     public $runtime;
     public $used_memory;
     public $status;

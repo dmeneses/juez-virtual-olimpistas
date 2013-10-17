@@ -10,6 +10,8 @@ $this->headTitle($title);
             <tr>
                 <td>ID</td>
                 <td>Date</td>
+                <td>User</td>
+                <td>Grade</td>
                 <td>Result</td>
                 <td>Time</td>
                 <td>Memory</td>
@@ -19,6 +21,8 @@ $this->headTitle($title);
                 <tr>
                     <td><?php echo $this->escapeHtml($solution->solution_id); ?></td>
                     <td><?php echo $this->escapeHtml($solution->solution_date); ?></td>
+                    <td><?php echo $this->escapeHtml($solution->user_user_id); ?></td>
+                    <td><?php echo $this->escapeHtml($solution->grade); ?></td>
                     <td><?php echo $this->escapeHtml($solution->status); ?></td>
                     <td><?php echo $this->escapeHtml($solution->runtime); ?></td>
                     <td><?php echo $this->escapeHtml($solution->used_memory); ?></td>                   

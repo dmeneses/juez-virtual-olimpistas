@@ -49,7 +49,7 @@ class SolutionController extends AbstractActionController {
             if ($form->isValid()) {
                 $solution->exchangeArray($form->getData());
                 $this->getSolutionTable()->saveSolution($solution);
-                exec('echo 1 ' . $solution->solution_id . ' ' . '> /tmp/queueserver-input');
+                exec('echo 1 ' . $solution->solution_id . ' ' . '> /tmp/bravesoft_input');
                 return $this->redirect()->toRoute('solution');
             }
         }

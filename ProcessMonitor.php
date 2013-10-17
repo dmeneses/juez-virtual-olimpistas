@@ -7,7 +7,7 @@ define('QUEUESERVER_FORK', false);
 define('JOB_ID', 'id');
 define('SOLUTION_ID', 'solution_id');
 define('GRADE', 1);
-define('PIPE_PATH', '/tmp/queueserver-input');
+define('PIPE_PATH', '/tmp/bravesoft_input');
 
 // create a new database wrapper object
 $databaseConnection = new Zebra_Database();
