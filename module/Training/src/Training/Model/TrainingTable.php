@@ -1,6 +1,6 @@
 <?php
 
-namespace Group\Model;
+namespace Training\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Sql;
@@ -18,19 +18,24 @@ class TrainingTable {
         return $resultSet;
     }
 
-    public function getTraining($id) {
-        $id = (int) $id;
-        $rowset = $this->tableGateway->select(array('id' => $id));
+    public function get($trainingID) {
+        $trainingID = (int) $trainingID;
+        $rowset = $this->tableGateway->select(array('training_id' => $trainingID));
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id");
+            throw new \Exception("Could not find row $trainingID");
         }
         return $row;
     }
 
-    public function saveTraining(Training $training) {
+    public function save(Training $training) {
         $data = array(
             'training_name' => $training->training_name,
+            'start_date' => $training->start_date,
+            'end_date' => $training->end_date,
+            'start_time' => $training->start_time,
+            'end_time' => $training->end_time,
+            'training_owner' => $training->training_owner,
         );
 
         $id = (int) $training->training_id;
@@ -38,7 +43,7 @@ class TrainingTable {
             $this->tableGateway->insert($data);
         } else {
             if ($this->getTraining($id)) {
-                $this->tableGateway->update($data, array('id' => $id));
+                $this->tableGateway->update($data, array('training_id' => $id));
             } else {
                 throw new \Exception('Training id does not exist');
             }

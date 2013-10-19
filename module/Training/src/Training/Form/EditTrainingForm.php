@@ -1,11 +1,11 @@
 <?php
 
-namespace Group\Form;
+namespace Training\Form;
 
 use Zend\Form\Form;
 use Zend\Form\Element;
 
-class TrainingForm extends Form {
+class EditTrainingForm extends Form {
 
     public function __construct($name = null) {
         parent::__construct('training');
@@ -16,7 +16,7 @@ class TrainingForm extends Form {
         $problemID->setAttribute('placeholder', 'Problema a agregar');
 
         $submit = new Element\Submit('addProblem');
-        $submit->setValue('Proponer');
+        $submit->setValue('Agregar');
         $submit->setAttribute('class', 'button');
         
         $this->add($trainingID);
