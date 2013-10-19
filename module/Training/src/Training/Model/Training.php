@@ -7,6 +7,7 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\Validator\StringLength;
+use Zend\Validator\Db\NoRecordExists;
 
 /**
  * Training that will allow user to resolve and compete as a group.
@@ -31,6 +32,7 @@ class Training implements InputFilterAwareInterface {
     public $end_time;
     public $training_owner;
     public $inputFilter;
+    protected $dbAdapter;
 
     public function exchangeArray($data) {
         $this->training_id = (!empty($data[self::ID])) ? $data[self::ID] : null;
@@ -42,20 +44,30 @@ class Training implements InputFilterAwareInterface {
         $this->training_owner = 1;
     }
 
+    public function setDbAdapter($dbAdapter) {
+        $this->dbAdapter = $dbAdapter;
+    }
+
     public function getInputFilter() {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
             $lengthValidator = new StringLength(array('min' => 3, 'max' => 50));
 
+            $dbValidator = new NoRecordExists(array(
+                'table' => 'training',
+                'field' => 'training_name',
+                'adapter' => $this->dbAdapter,
+            ));
             $nameInput = new Input(self::NAME);
             $nameInput->getValidatorChain()
-                    ->addValidator($lengthValidator);
+                    ->addValidator($lengthValidator)
+                    ->addValidator($dbValidator);
             $nameInput->getFilterChain()
                     ->attachByName('stringtrim');
 
             $todayDate = date("Y-m-d");
             $todayTime = date("h:i");
-            
+
             $dateValidator = new DateValidator();
             $dateValidator->setCompare(true);
             $dateValidator->setToken($todayDate);
@@ -65,8 +77,8 @@ class Training implements InputFilterAwareInterface {
             $startDateInput = new Input(self::START);
             $startDateInput->getValidatorChain()
                     ->addValidator($dateValidator);
-            
-            
+
+
             $timeValidator = new DateValidator();
             $timeValidator->setCompare(true);
             $timeValidator->setToken($todayTime);
@@ -76,8 +88,8 @@ class Training implements InputFilterAwareInterface {
             $startTimeInput = new Input(self::START_T);
             $startTimeInput->getValidatorChain()
                     ->addValidator($timeValidator);
-            
-            
+
+
 
             $inputFilter->add($nameInput);
             $inputFilter->add($startDateInput);
