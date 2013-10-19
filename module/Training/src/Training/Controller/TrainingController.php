@@ -12,11 +12,20 @@ use Training\Form\EditTrainingForm;
 class TrainingController extends AbstractActionController {
 
     protected $trainingTable;
+    protected $problemTable;
 
     public function indexAction() {
         return new ViewModel(array('trainings' => $this->getTrainingTable()->fetchAll()));
     }
 
+    public function getProblemTable() {
+        if (!$this->problemTable) {
+            $sm = $this->getServiceLocator();
+            $this->problemTable = $sm->get('Problem\Model\ProblemTable');
+        }
+        return $this->problemTable;
+    }
+    
     public function getTrainingTable() {
         if (!$this->trainingTable) {
             $sm = $this->getServiceLocator();
@@ -46,25 +55,32 @@ class TrainingController extends AbstractActionController {
 
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
+
+        if (!$id || !$this->getTrainingTable()->exist($id)) {
             return $this->redirect()->toRoute('training');
         }
 
+        $training = $this->getTrainingTable()->get($id);
         $form = new EditTrainingForm();
         $form->get('training_id')->setValue($id);
+        $request = $this->getRequest();
 
-        try {
-            $training = $this->getTrainingTable()->get($id);
-            $problems = array();
-        } catch (Exception $ex) {
-            return $this->redirect()->toRoute('training');
+        if ($request->isPost()) {
+            $filter = $this->getServiceLocator()->get('Training\Form\EditTrainingFilter');
+            $form->setInputFilter($filter->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $newProblem = $form->get('problem_id')->getValue();
+                $this->getTrainingTable()->addProblem($training->training_id, $newProblem);
+            }
         }
 
+        $problems = $this->getProblemTable()->getProblemsByTraining($id);
         return array(
             'form' => $form,
             'trainingData' => $training,
             'trainingProblems' => $problems,
         );
     }
-
 }

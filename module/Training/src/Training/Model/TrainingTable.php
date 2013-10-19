@@ -6,6 +6,7 @@ use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Select;
 use Zend\Db\ResultSet\ResultSet;
+use Zend\Validator\Db\RecordExists;
 
 class TrainingTable {
 
@@ -24,8 +25,7 @@ class TrainingTable {
         $select->columns(array('training_id', 'training_name', 'start_date',
             'start_time', 'end_date', 'end_time'));
         $select->from(array('t' => 'training',))
-                ->join(array('u' => 'user'), 'u.user_id = t.training_owner', 
-                        array('name', 'lastname'));
+                ->join(array('u' => 'user'), 'u.user_id = t.training_owner', array('name', 'lastname'));
         $statement = $this->tableGateway->getAdapter()->createStatement();
         $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
 
@@ -67,18 +67,27 @@ class TrainingTable {
         }
     }
 
-    public function addProblem(Training $training) {
+    public function addProblem($trainingID, $problemID) {
         $dbAdapter = $this->tableGateway->getAdapter();
         $sql = new Sql($dbAdapter);
 
         $insert = $sql->insert('training_has_problem');
         $insert->values(array(
-            'training_training_id' => $training->training_id,
-            'problem_problem_id' => $training->problem_id,
+            'training_training_id' => $trainingID,
+            'problem_problem_id' => $problemID,
         ));
 
         $statement = $sql->prepareStatementForSqlObject($insert);
         $statement->execute();
     }
 
+    public function exist($trainingID) {
+        $dbValidator = new RecordExists(array(
+            'table' => 'training',
+            'field' => 'training_id',
+            'adapter' => $this->getDbAdapter(),
+        ));
+
+        return $dbValidator->isValid($trainingID);
+    }
 }

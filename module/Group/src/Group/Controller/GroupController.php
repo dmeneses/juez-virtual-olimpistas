@@ -85,7 +85,7 @@ class GroupController extends AbstractActionController {
         if(isset($training))
             $id = $training->training_id;
         
-        $problems = $this->getProblemTable()->getProblems($id);
+        $problems = $this->getProblemTable()->getProblemsByTraining($id);
         return array('form' => $form, 'problems' => $problems, 'id' => $id);
     }
 

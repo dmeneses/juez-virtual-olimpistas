@@ -57,7 +57,7 @@ class ProblemTable {
         }
     }
     
-    public function getProblems($trainingID) {
+    public function getProblemsByTraining($trainingID) {
         $select = new Select;
         $select->from(array('p' => 'problem',))
                 ->join(array('tp' => 'training_has_problem'), 'tp.problem_problem_id = p.problem_id', array())

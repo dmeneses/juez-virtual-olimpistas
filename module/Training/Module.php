@@ -43,6 +43,10 @@ class Module
                     $resultSetPrototype->setArrayObjectPrototype(new Training());
                     return new TableGateway('training', $dbAdapter, null, $resultSetPrototype);
                 },
+                'Training\Form\EditTrainingFilter' => function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    return new Form\EditTrainingFilter($dbAdapter);
+                },
             ),
         );
     }
