@@ -29,7 +29,7 @@ function getFormattedTime($time) {
                     <td>
                         <a href="<?php echo $this->url('training', array('action' => 'edit', 'id' => $training->training_id)); ?>"><?php echo $this->escapeHtml($training->training_name); ?></a>
                     </td>
-                    <td><?php echo $this->escapeHtml($training->training_owner); ?></td>
+                    <td><?php echo $this->escapeHtml($training->name . ' ' . $training->lastname); ?></td>
                     <td><?php echo $this->escapeHtml(getFormattedDate($training->start_date) . ' ' . getFormattedTime($training->start_time)); ?></td>
                     <td><?php echo $this->escapeHtml(getFormattedDate($training->end_date) . ' ' . getFormattedTime($training->end_time)); ?></td>
                 </tr>

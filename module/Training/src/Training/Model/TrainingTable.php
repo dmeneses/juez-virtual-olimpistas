@@ -4,7 +4,9 @@ namespace Training\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Sql;
-    
+use Zend\Db\Sql\Select;
+use Zend\Db\ResultSet\ResultSet;
+
 class TrainingTable {
 
     protected $tableGateway;
@@ -16,9 +18,20 @@ class TrainingTable {
     public function getDbAdapter() {
         return $this->tableGateway->getAdapter();
     }
-    
+
     public function fetchAll() {
-        $resultSet = $this->tableGateway->select();
+        $select = new Select;
+        $select->columns(array('training_id', 'training_name', 'start_date',
+            'start_time', 'end_date', 'end_time'));
+        $select->from(array('t' => 'training',))
+                ->join(array('u' => 'user'), 'u.user_id = t.training_owner', 
+                        array('name', 'lastname'));
+        $statement = $this->tableGateway->getAdapter()->createStatement();
+        $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($statement->execute());
+
         return $resultSet;
     }
 
@@ -63,8 +76,9 @@ class TrainingTable {
             'training_training_id' => $training->training_id,
             'problem_problem_id' => $training->problem_id,
         ));
-        
+
         $statement = $sql->prepareStatementForSqlObject($insert);
         $statement->execute();
     }
+
 }
