@@ -62,12 +62,12 @@ class TrainingController extends AbstractActionController {
 
         $training = $this->getTrainingTable()->get($id);
         $form = new EditTrainingForm();
+        $filter = $this->getServiceLocator()->get('Training\Form\EditTrainingFilter');
+        $form->setFilter($filter);
         $form->get('training_id')->setValue($id);
         $request = $this->getRequest();
 
         if ($request->isPost()) {
-            $filter = $this->getServiceLocator()->get('Training\Form\EditTrainingFilter');
-            $form->setInputFilter($filter->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
