@@ -1,9 +1,4 @@
 <?php
-namespace Group\Form;
-
-use Zend\Form\Form;
-use Zend\Form\Element;
-
 $title = 'Grupos';
 $this->headTitle($title);
 ?>
@@ -12,11 +7,19 @@ $this->headTitle($title);
     <div class="nicetable" style="margin-top: 20px;">
         <table>
             <tr>
-                <td>ID Grupo</td>
-                <td>ID Problema</td>
-                
+                <td>ID</td>
+                <td>Grupo</td>
+                <td>Creador</td>
             </tr>
-           
+            <?php foreach ($groups as $group) : ?>
+                <tr>
+                    <td><?php echo $this->escapeHtml($group->group_id); ?></td>
+                    <td>
+                        <a href="<?php echo $this->url('group', array('action' => 'edit', 'id' => $group->group_id)); ?>"><?php echo $this->escapeHtml($group->group_name); ?></a>
+                    </td>
+                    <td><?php echo $this->escapeHtml($group->name . ' ' . $group->lastname); ?></td>
+                </tr>
+            <?php endforeach; ?>
         </table>
     </div>	
 </div>
