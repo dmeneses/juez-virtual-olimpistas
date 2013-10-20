@@ -58,6 +58,7 @@ class Training implements InputFilterAwareInterface {
                 'field' => 'training_name',
                 'adapter' => $this->dbAdapter,
             ));
+            $dbValidator->setMessage("El entrenamiento ya existe.", NoRecordExists::ERROR_RECORD_FOUND);
             $nameInput = new Input(self::NAME);
             $nameInput->getValidatorChain()
                     ->addValidator($lengthValidator)

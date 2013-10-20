@@ -60,6 +60,8 @@ class EditTrainingFilter implements InputFilterAwareInterface {
                 'field' => 'problem_id',
                 'adapter' => $this->dbAdapter,
             ));
+            $dbValidator->setMessage("El problema seleccionado no existe.", 
+                    RecordExists::ERROR_NO_RECORD_FOUND);
             
             $newProblem = new Input('problem_id');
             $newProblem->getValidatorChain()                    
