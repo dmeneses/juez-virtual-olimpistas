@@ -20,6 +20,10 @@ class GroupTable {
     public function __construct(TableGateway $tableGateway) {
         $this->tableGateway = $tableGateway;
     }
+    
+    public function getDbAdapter() {
+        return $this->tableGateway->getAdapter();
+    }
 
     public function fetchAll() {
         $select = new Select;

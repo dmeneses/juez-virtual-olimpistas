@@ -56,22 +56,21 @@ class GroupController extends AbstractActionController {
             return $this->redirect()->toRoute('group');
         }
 
-        $group = $this->getGroupTable()->get($id);
         $form = new EditGroupForm();
-        $filter = $this->getServiceLocator()->get(self::EDIT_GROUP_FILTER);
-        $form->setInputFilter($filter->getInputFilter());
         $form->get('group_id')->setValue($id);
         $request = $this->getRequest();
 
         if ($request->isPost()) {
             $form->setData($request->getPost());
+            $form->setDbAdapter($this->getGroupTable()->getDbAdapter());
 
             if ($form->isValid()) {
                 $newUser = $form->get('user_email')->getValue();
-                $this->getGroupTable()->addUser($group->group_id, $newUser);
+                $this->getGroupTable()->addUser($id, $newUser);
             }
         }
 
+        $group = $this->getGroupTable()->get($id);
         $users = $this->getGroupTable()->getUsers($id);
         return array(
             'form' => $form,

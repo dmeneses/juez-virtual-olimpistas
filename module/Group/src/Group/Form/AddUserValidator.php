@@ -1,10 +1,12 @@
 <?php
 
-namespace Group\Model;
+namespace Group\Form;
 
 use Zend\Validator\AbstractValidator;
 use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\Db\RecordExists;
+use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Sql;
 
 /**
  * Date validator to know when a date is after another.
@@ -23,13 +25,11 @@ class AddUserValidator extends AbstractValidator {
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_EXIST => "El usuario no existe",
-        self::ALREADY_ADDED => "El usuario ya esta en el grupo",
+        self::NOT_EXIST => "Usuario no existe",
+        self::ALREADY_ADDED => "Usuario ya fue añadido",
     );
-
     protected $dbAdapter;
     protected $groupID;
-
 
     public function setDbAdapter($dbAdapter) {
         $this->dbAdapter = $dbAdapter;
@@ -38,7 +38,7 @@ class AddUserValidator extends AbstractValidator {
     public function getDbAdapter() {
         return $this->dbAdapter;
     }
-    
+
     public function setGroupID($groupID) {
         $this->groupID = $groupID;
     }
@@ -50,12 +50,12 @@ class AddUserValidator extends AbstractValidator {
     public function isValid($value) {
         $this->setValue((string) $value);
 
-        if (notExist($value)) {
+        if ($this->notExist($value)) {
             $this->error(self::NOT_EXIST);
             return false;
         }
 
-        if (isAdded($value, $this->groupID)) {
+        if ($this->isAdded($value, $this->groupID)) {
             $this->error(self::ALREADY_ADDED);
             return false;
         }
@@ -69,10 +69,10 @@ class AddUserValidator extends AbstractValidator {
             'field' => 'email',
             'adapter' => $this->dbAdapter,
         ));
-        
+
         return $dbValidator->isValid($email);
     }
-    
+
     function isAdded($email, $groupID) {
         $subSelect = new Select();
         $subSelect->columns(array('user_id'))
@@ -81,12 +81,17 @@ class AddUserValidator extends AbstractValidator {
 
         $select = new Select();
         $select->from('user_has_group')
-        ->where->equalTo('user_user_id', $subSelect);
-        
-        $dbValidator = new RecordExists($select);
-        $dbValidator->setAdapter($this->dbAdapter);
-        $dbValidator->setField('group_group_id');
-        
-        return $dbValidator->isValid($groupID);        
+                ->where->equalTo('user_user_id', $subSelect)
+                ->where->equalTo('group_group_id', $groupID);
+
+        $sql = new Sql($this->getDbAdapter());
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        if ($result->current()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
