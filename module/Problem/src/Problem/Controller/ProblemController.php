@@ -6,14 +6,24 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Problem\Model\Problem;
 use Problem\Form\ProblemForm;
+use Zend\Paginator\Paginator;
+use Zend\Paginator\Adapter\DbTableGateway;
 
 class ProblemController extends AbstractActionController {
 
     protected $problemTable;
 
     public function indexAction() {
+        $paginator = new Paginator(new DbTableGateway($this->getProblemTable()->getTableGateway()));
+        $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
+
+        $paginator->setCurrentPageNumber($page)
+                ->setItemCountPerPage(10)
+                ->setPageRange(7);
+
         return new ViewModel(array(
-            'problems' => $this->getProblemTable()->fetchAll(),
+            'page' => $page,
+            'paginator' => $paginator,
         ));
     }
 
@@ -49,9 +59,9 @@ class ProblemController extends AbstractActionController {
         return array('form' => $form);
     }
 
-    public function displayAction() {      
+    public function displayAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
-        
+
         if (!$id) {
             return $this->redirect()->toRoute('problem', array(
                         'action' => 'add'
@@ -61,11 +71,12 @@ class ProblemController extends AbstractActionController {
         try {
             $problem = $this->getProblemTable()->getProblem($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('problem');           
+            return $this->redirect()->toRoute('problem');
         }
 
         return new ViewModel(array(
             'problemData' => $problem
         ));
     }
+
 }

@@ -75,4 +75,8 @@ class ProblemTable {
     public function getAdapter() {
         return $this->tableGateway->getAdapter();
     }
+    
+    public function getTableGateway() {
+        return $this->tableGateway;
+    }
 }
