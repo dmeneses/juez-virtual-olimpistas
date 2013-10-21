@@ -81,7 +81,7 @@ form {
     margin: 25px;
 }
 
-form input[type="text"], textarea {
+form input[type="text"], [type="email"], textarea {
     margin: 3px 0 0 0;
     padding: 6px; 
     width: 260px; 

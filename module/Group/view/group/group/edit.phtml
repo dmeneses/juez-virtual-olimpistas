@@ -9,9 +9,9 @@ $form->prepare();
     echo $this->form()->openTag($form);
     echo $this->formHidden($form->get('group_id'));
     ?>
-    <table>	      
+    <table style="border: none">	      
         <tr>
-            <td valign="mid"><label for="user_email">Agregar usuario</label></td>
+            <td valign="bot"><label for="user_email">Agregar usuario</label></td>
             <td><?php echo $this->formEmail($form->get('user_email')); ?></td>
             <td><?php echo $this->formSubmit($form->get('add_user')); ?></td>
         </tr>
@@ -20,15 +20,17 @@ $form->prepare();
             <td><?php echo $this->formElementErrors($form->get('user_email')); ?></td>
             <td/>
         </tr>
-    
-    </table>
 
-    <div class="nicetable" style="margin-top: 20px;">
+    </table>
+    <h2>Usuarios Agregados</h2>
+    <div style="margin-top: 20px;">
         <table>
-            <tr>
-                <td>Nombre</td>
-                <td>Email</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
             <?php foreach ($users as $user) : ?>
                 <tr>
                     <td><?php echo $this->escapeHtml($user->name . ' ' . $user->lastname); ?></td>
