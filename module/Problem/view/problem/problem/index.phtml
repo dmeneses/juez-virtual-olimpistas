@@ -5,26 +5,28 @@ $this->headTitle($title);
 <div class="content">
     <h1><?php echo $this->escapeHtml($title); ?></h1>        
     <div style="margin-top: 20px;">
-        <table style="width: 100%">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Author</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($this->paginator as $problem) : ?>
+        <center>
+            <table class="table-bordered" style="width: 70%">
+                <thead>
                     <tr>
-                        <td><?php echo $this->escapeHtml($problem->problem_id); ?></td>
-                        <td>
-                            <a href="<?php echo $this->url('problem', array('action' => 'display', 'id' => $problem->problem_id)); ?>"><?php echo $this->escapeHtml($problem->problem_name); ?></a>
-                        </td>
-                        <td><?php echo $this->escapeHtml($problem->problem_author); ?></td>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Author</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($this->paginator as $problem) : ?>
+                        <tr>
+                            <td><?php echo $this->escapeHtml($problem->problem_id); ?></td>
+                            <td>
+                                <a href="<?php echo $this->url('problem', array('action' => 'display', 'id' => $problem->problem_id)); ?>"><?php echo $this->escapeHtml($problem->problem_name); ?></a>
+                            </td>
+                            <td><?php echo $this->escapeHtml($problem->problem_author); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </center>
     </div>
 
     <?php

@@ -24,7 +24,11 @@ $form->prepare();
         </tr>
         <tr>
             <td valign="mid"><label for="solution_language">Lenguaje</label></td>
-            <td><?php echo $this->formSelect($form->get('solution_language')); ?></td>
+            <td>
+                <div class="styled-select">
+                    <?php echo $this->formSelect($form->get('solution_language')); ?>
+                </div>
+            </td>
         </tr>
         <tr>
             <td/>

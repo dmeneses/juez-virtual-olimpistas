@@ -9,9 +9,9 @@ $form->prepare();
     echo $this->form()->openTag($form);
     echo $this->formHidden($form->get('group_id'));
     ?>
-    <table style="border: none">	      
+    <table>	      
         <tr>
-            <td valign="bot"><label for="user_email">Agregar usuario</label></td>
+            <td><label for="user_email">Agregar usuario</label></td>
             <td><?php echo $this->formEmail($form->get('user_email')); ?></td>
             <td><?php echo $this->formSubmit($form->get('add_user')); ?></td>
         </tr>
@@ -24,7 +24,7 @@ $form->prepare();
     </table>
     <h2>Usuarios Agregados</h2>
     <div style="margin-top: 20px;">
-        <table>
+        <table class="table-bordered" style="width: 50%">
             <thead>
                 <tr>
                     <th>Nombre</th>
