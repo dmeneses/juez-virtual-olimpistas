@@ -1,0 +1,49 @@
+<?php echo $this->doctype(); ?>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle("Juez Virtual")->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php
+        echo $this->headMeta()
+                ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+                ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?php
+        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+                ->prependStylesheet($this->basePath() . '/css/virtual-judge.css')
+        ?>
+
+        <!-- Scripts -->
+        <?php
+        echo $this->headScript()
+                ->prependFile($this->basePath() . '/js/bootstrap.min.js')
+                ->prependFile($this->basePath() . '/js/jquery.min.js')
+                ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+                ->prependFile($this->basePath() . '/js/html5shiv.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+                ->prependFile($this->basePath() . '/js/nicEdit.js', 'text/javascript')
+        ;
+        ?>
+        
+        <script type="text/javascript">bkLib.onDomLoaded(nicEditors.allTextAreas);</script>
+
+    </head>
+    <body>  
+        <div class="wrapper">
+            <header>Juez Virtual - FCYT</header>
+            <div class="page">
+                <?php echo $this->sidebar; ?>
+                <?php echo $this->content; ?>
+            </div>
+            <div class="push"></div>
+        </div>
+        <footer>
+            <section>
+                <p>&copy; 2013 - BraveSoft S.R.L. <?php echo $this->translate('All rights reserved.') ?></p>
+            </section>
+        </footer>
+    </body>
+</html>

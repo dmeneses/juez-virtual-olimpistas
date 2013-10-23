@@ -1,0 +1,47 @@
+<?php
+$title = 'Grupo: ' . $group->group_name;
+$this->headTitle($title);
+$form->prepare();
+?>
+<div class="content">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    <?php
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('group_id'));
+    ?>
+    <table>	      
+        <tr>
+            <td><label for="user_email">Agregar usuario</label></td>
+            <td><?php echo $this->formEmail($form->get('user_email')); ?></td>
+            <td><?php echo $this->formSubmit($form->get('add_user')); ?></td>
+        </tr>
+        <tr>
+            <td/>
+            <td><?php echo $this->formElementErrors($form->get('user_email')); ?></td>
+            <td/>
+        </tr>
+
+    </table>
+    <h2>Usuarios Agregados</h2>
+    <div style="margin-top: 20px;">
+        <table class="table-bordered" style="width: 50%">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <?php foreach ($users as $user) : ?>
+                <tr>
+                    <td><?php echo $this->escapeHtml($user->name . ' ' . $user->lastname); ?></td>
+                    <td><?php echo $this->escapeHtml($user->email); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+    <br/><br/>
+    <a href="<?php echo $this->url('group', array('action' => 'index',)); ?>" class="button">Volver</a>
+    <?php
+    echo $this->form()->closeTag();
+    ?>
+</div>
