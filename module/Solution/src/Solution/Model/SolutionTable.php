@@ -19,9 +19,9 @@ class SolutionTable {
         return $resultSet;
     }
 
-    public function getSolution($id) {
+    public function get($id) {
         $id = (int) $id;
-        $rowset = $this->tableGateway->select(array('id' => $id));
+        $rowset = $this->tableGateway->select(array('solution_id' => $id));
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $id");
@@ -42,7 +42,7 @@ class SolutionTable {
             $this->tableGateway->insert($data);
             $solution->solution_id = $this->tableGateway->getLastInsertValue();
         } else {
-            if ($this->getSolution($id)) {
+            if ($this->get($id)) {
                 $this->tableGateway->update($data, array('id' => $id));
             } else {
                 throw new \Exception('Solution id does not exist');

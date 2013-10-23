@@ -55,5 +55,15 @@ class SolutionController extends AbstractActionController {
         }
         return array('form' => $form);
     }
+    
+    public function displayAction() {
+        $id = (int) $this->params()->fromRoute('id', 0);
 
+        if (!$id) {
+            return $this->redirect()->toRoute('solution');
+        }
+        $solution = $this->getSolutionTable()->get($id);
+        
+        return array('solution' => $solution);
+    }
 }
