@@ -1,5 +1,13 @@
 #!/bin/bash
 
+sudo rm -r data
+mkdir data
+mkdir data/solutions
+mkdir data/problems
+mkdir data/execution
+sudo chown www-data data/execution/
+sudo chown www-data data/problems/
+sudo chown www-data data/solutions/
 cd grader;
 ./buildProject
 cd ..
