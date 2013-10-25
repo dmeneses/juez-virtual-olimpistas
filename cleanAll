@@ -2,3 +2,5 @@
 
 cd grader;
 ./cleanProject
+cd ..
+ant clean
