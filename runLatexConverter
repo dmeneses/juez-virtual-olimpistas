@@ -18,6 +18,12 @@ TEX_FILE="data/execution/texcompilation$7.tex"
 cp latex_processor/maintemplate.tex $TEX_FILE
 #TODO: Delete this file after conversion;
 
+
+perl -pi -e "s#the_title#$8#g" $TEX_FILE 
+perl -pi -e "s#the_author#$9#g" $TEX_FILE 
+perl -pi -e "s#the_memory#$10#g" $TEX_FILE 
+perl -pi -e "s#the_time#$11#g" $TEX_FILE 
+perl -pi -e "s#the_source#$12#g" $TEX_FILE 
 perl -pi -e "s#description#$1#g" $TEX_FILE 
 perl -pi -e "s#input1#$2#g" $TEX_FILE 
 perl -pi -e "s#output1#$3#g" $TEX_FILE 

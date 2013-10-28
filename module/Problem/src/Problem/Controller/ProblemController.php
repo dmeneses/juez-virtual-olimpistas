@@ -51,7 +51,7 @@ class ProblemController extends AbstractActionController {
                 $data = $form->getData();
                 $problem->exchangeArray($data);
                 $this->getProblemTable()->saveProblem($problem);
-                $description = './data/problems/descriptions/problem' . $problem->problem_id . '.html';
+                
                 $this->buildProblemView($problem->problem_id, $data, $description);
                 return $this->redirect()->toRoute('problem');
             }
@@ -59,23 +59,29 @@ class ProblemController extends AbstractActionController {
         return array('form' => $form,);
     }
 
-    private function buildProblemView($id, $data, $descriptionFile) {
+    private function buildProblemView($id, $data) {
 
         $mainDesc = (!empty($data['main_description'])) ? $data['main_description']['tmp_name'] : null;
         $input = (!empty($data['input_description'])) ? $data['input_description']['tmp_name'] : null;
         $output = (!empty($data['output_description'])) ? $data['output_description']['tmp_name'] : null;
         $in_example = (!empty($data['input_example'])) ? $data['input_example']['tmp_name'] : null;
         $out_example = (!empty($data['output_example'])) ? $data['output_example']['tmp_name'] : null;
-
+        $descriptionOutput = './data/problems/descriptions/problem' . $id . '.html';
+        
         $command = './runLatexConverter ';
         $command .= $mainDesc . ' ';
         $command .= $input . ' ';
         $command .= $output . ' ';
         $command .= $in_example . ' ';
         $command .= $out_example . ' ';
-        $command .= $descriptionFile. ' ';
+        $command .= $descriptionOutput. ' ';
         $command .= $id . ' ';
-        exec($command);
+        $command .= $data['problem_name']. ' ';
+        $command .= $data['problem_author']. ' ';
+        $command .= $data['memory_constraint']. ' ';
+        $command .= $data['time_constraint']. ' ';
+        $command .= $data['source_constraint']. ' ';
+        exec($command . ' > /tmp/holas');
     }
 
     public function displayAction() {
