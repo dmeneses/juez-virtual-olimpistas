@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#DESCRIPTION = $1
+#INPUT = $2
+#OUTPUT = $3
+#IN_EXAMPLE = $4
+#OUT_EXAMPLE = $5
+#OUTPUT_FILE = $6
+#PROBLEM_ID = $7
+echo $1 > /home/dann/Desktop/VirtualJudge/data/execution/test
+echo $2 >> /home/dann/Desktop/VirtualJudge/data/execution/test
+echo $3 >> /home/dann/Desktop/VirtualJudge/data/execution/test
+echo $4 >> /home/dann/Desktop/VirtualJudge/data/execution/test
+echo $5 >> /home/dann/Desktop/VirtualJudge/data/execution/test
+echo $6 >> /home/dann/Desktop/VirtualJudge/data/execution/test
+echo $7 >> /home/dann/Desktop/VirtualJudge/data/execution/test
+TEX_FILE="data/execution/texcompilation$7.tex"
+cp latex_processor/maintemplate.tex $TEX_FILE
+#TODO: Delete this file after conversion;
+
+perl -pi -e "s#description#$1#g" $TEX_FILE 
+perl -pi -e "s#input1#$2#g" $TEX_FILE 
+perl -pi -e "s#output1#$3#g" $TEX_FILE 
+perl -pi -e "s#sample1#$4#g" $TEX_FILE 
+perl -pi -e "s#sample2#$5#g" $TEX_FILE 
+
+tth -e2 -r < $TEX_FILE > $6
+

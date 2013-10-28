@@ -18,12 +18,20 @@ class ProblemForm extends Form {
         $author = new Element\Text('problem_author');
         $author->setAttribute('placeholder', 'Nombre del autor');
         
+        $mainDescription = new Element\File('main_description');
+        $mainDescription->setAttribute('accept', '.tex');
+        $inputDesc = new Element\File('input_description');
+        $inputDesc->setAttribute('accept', '.tex');
+        $outputDesc = new Element\File('output_description');
+        $outputDesc->setAttribute('accept', '.tex');
+        $inputExample = new Element\File('input_example');
+        $inputExample->setAttribute('accept', '.tex');
+        $outputExample = new Element\File('output_example');
+        $outputExample->setAttribute('accept', '.tex');
+        
         $time = new Element\Text('time_constraint');
         $memory = new Element\Text('memory_constraint');
         $source = new Element\Text('source_constraint');
-        
-        $description = new Element\Textarea('problem_description');
-        $description->setAttribute('placeholder', 'Descripcion del problema');
 
         $type = new Element\Radio('is_simple');
         $type->setValueOptions(array(
@@ -52,7 +60,11 @@ class ProblemForm extends Form {
         $this->add($time);
         $this->add($memory);
         $this->add($source);
-        $this->add($description);
+        $this->add($mainDescription);
+        $this->add($inputDesc);
+        $this->add($outputDesc);
+        $this->add($inputExample);
+        $this->add($outputExample);
         $this->add($type);
         $this->add($compareType);
         $this->add($fileIn);

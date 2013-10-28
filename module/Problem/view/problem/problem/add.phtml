@@ -32,19 +32,37 @@ $form->prepare();
             <td/>
             <td><?php echo $this->formElementErrors($form->get('problem_author')); ?></td>
         </tr>
+
         <tr>
-            <td valign="top"><label for="problem_description">Descripcion</label></td>
-            <td><?php echo $this->formTextarea($form->get('problem_description')); ?></td>
+            <td valign="mid"><label for="main_description">Descripcion</label></td>
+            <td><?php echo $this->formFile($form->get('main_description')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('main_description')); ?></td>
         </tr>
         <tr>
-            <td/>
-            <td><?php echo $this->formElementErrors($form->get('problem_description')); ?></td>
+            <td valign="mid"><label for="input_description">Descripcion de Entrada</label></td>
+            <td><?php echo $this->formFile($form->get('input_description')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('input_description')); ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="output_description">Descripcion de Salida</label></td>
+            <td><?php echo $this->formFile($form->get('output_description')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('output_description')); ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="input_example">Ejemplo de Entrada</label></td>
+            <td><?php echo $this->formFile($form->get('input_example')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('input_example')); ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="output_example">Ejemplo de Salida</label></td>
+            <td><?php echo $this->formFile($form->get('output_example')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('output_example')); ?></td>
         </tr>
     </table>
-    
+
     <h2>Restricciones</h2>
-    
-    
+
+
     <table>	
         <tr>
             <td valign="mid"><label for="time_constraint">Tiempo</label></td>
@@ -75,8 +93,8 @@ $form->prepare();
             <td><?php echo $this->formElementErrors($form->get('source_constraint')); ?></td>
         </tr>
     </table>
-    
-    
+
+
     <h2>Opciones de Juzgamiento</h2>
     <table>
         <tr>

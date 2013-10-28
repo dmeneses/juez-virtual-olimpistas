@@ -43,20 +43,39 @@ class ProblemController extends AbstractActionController {
             $problem = new Problem();
             $problem->setDatabaseAdapter($this->getProblemTable()->getAdapter());
             $form->setInputFilter($problem->getInputFilter());
-
-            $post = array_merge_recursive(
-                    $request->getPost()->toArray(), $request->getFiles()->toArray()
-            );
+            $post = array_merge_recursive($request->getPost()->toArray(), $request->getFiles()->toArray());
 
             $form->setData($post);
 
             if ($form->isValid()) {
-                $problem->exchangeArray($form->getData());
+                $data = $form->getData();
+                $problem->exchangeArray($data);
                 $this->getProblemTable()->saveProblem($problem);
+                $description = './data/problems/descriptions/problem' . $problem->problem_id . '.html';
+                $this->buildProblemView($problem->problem_id, $data, $description);
                 return $this->redirect()->toRoute('problem');
             }
         }
-        return array('form' => $form);
+        return array('form' => $form,);
+    }
+
+    private function buildProblemView($id, $data, $descriptionFile) {
+
+        $mainDesc = (!empty($data['main_description'])) ? $data['main_description']['tmp_name'] : null;
+        $input = (!empty($data['input_description'])) ? $data['input_description']['tmp_name'] : null;
+        $output = (!empty($data['output_description'])) ? $data['output_description']['tmp_name'] : null;
+        $in_example = (!empty($data['input_example'])) ? $data['input_example']['tmp_name'] : null;
+        $out_example = (!empty($data['output_example'])) ? $data['output_example']['tmp_name'] : null;
+
+        $command = './runLatexConverter ';
+        $command .= $mainDesc . ' ';
+        $command .= $input . ' ';
+        $command .= $output . ' ';
+        $command .= $in_example . ' ';
+        $command .= $out_example . ' ';
+        $command .= $descriptionFile. ' ';
+        $command .= $id . ' ';
+        exec($command);
     }
 
     public function displayAction() {
