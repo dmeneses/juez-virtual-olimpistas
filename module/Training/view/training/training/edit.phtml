@@ -2,9 +2,35 @@
 $title = 'Entrenamiento: ' . $trainingData->training_name;
 $this->headTitle($title);
 $form->prepare();
+
+function getFormattedDate($date) {
+    $phpdate = strtotime($date);
+    return date('Y-m-d', $phpdate);
+}
+
+function getFormattedTime($time) {
+    $phpdate = strtotime($time);
+    return date('H:i', $phpdate);
+}
 ?>
 <div class="content">
     <h1><?php echo $this->escapeHtml($title); ?></h1>
+    <table>	      
+        <tr>
+            <td valign="mid"><label>Inicio:</label></td>
+            <td><?php
+                echo $this->escapeHtml(getFormattedDate($trainingData->start_date) . ' ' .
+                        getFormattedTime($trainingData->start_time));
+                ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label>Fin:</label></td>
+            <td><?php
+                echo $this->escapeHtml(getFormattedDate($trainingData->end_date) . ' ' .
+                        getFormattedTime($trainingData->end_time));
+                ?></td>
+        </tr>
+    </table>
     <?php
     echo $this->form()->openTag($form);
     echo $this->formHidden($form->get('training_id'));
@@ -20,31 +46,36 @@ $form->prepare();
             <td><?php echo $this->formElementErrors($form->get('problem_id')); ?></td>
             <td/>
         </tr>
-
     </table>
-
-    <div style="margin-top: 20px;">
-        <table class="table-bordered"  style="width: 50%">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-
-                </tr>
-            </thead>
-            <?php foreach ($trainingProblems as $problem) : ?>
-                <tr>
-                    <td><?php echo $this->escapeHtml($problem->problem_id); ?></td>
-                    <td>
-                        <a href="<?php echo $this->url('problem', array('action' => 'display', 'id' => $problem->problem_id)); ?>"><?php echo $this->escapeHtml($problem->problem_name); ?></a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
-    </div>
-    <br/><br/>
-    <a href="<?php echo $this->url('training', array('action' => 'index',)); ?>" class="button">Volver</a>
     <?php
     echo $this->form()->closeTag();
     ?>
+    <?php if (isset($trainingProblems)): ?>
+        <div style="margin-top: 20px;">
+            <table class="table-bordered"  style="width: 50%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+
+                    </tr>
+                </thead>
+                <?php foreach ($trainingProblems as $problem) : ?>
+                    <tr>
+                        <td><?php echo $this->escapeHtml($problem->problem_id); ?></td>
+                        <td>
+                            <a href="<?php echo $this->url('problem', array('action' => 'display', 'id' => $problem->problem_id)); ?>"><?php echo $this->escapeHtml($problem->problem_name); ?></a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
+    <?php else: ?>
+        <center>
+            <p>El entrenamiento aun no esta habilitado.</p>
+            <p>Los problemas estaran disponibles cuando el entrenamiento inicie.</p>
+        </center>
+    <?php endif; ?>
+    <br/><br/>
+    <a href="<?php echo $this->url('training', array('action' => 'index',)); ?>" class="button">Volver</a>
 </div>
