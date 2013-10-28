@@ -12,13 +12,13 @@ use Zend\Validator;
 use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\NotEmpty;
 use Zend\Validator\File\Extension;
+use Zend\Validator\File\UploadFile;
 
 class Problem implements InputFilterAwareInterface {
 
     public $problem_id;
     public $problem_name;
     public $problem_author;
-    public $problem_description;
     public $time_constraint;
     public $memory_constraint;
     public $source_constraint;
@@ -36,8 +36,7 @@ class Problem implements InputFilterAwareInterface {
     public function exchangeArray($data) {
         $this->problem_id = (!empty($data['problem_id'])) ? $data['problem_id'] : null;
         $this->problem_name = (!empty($data['problem_name'])) ? $data['problem_name'] : null;
-        $this->problem_author = (!empty($data['problem_author'])) ? $data['problem_author'] : null;
-        $this->problem_description = (!empty($data['problem_description'])) ? $data['problem_description'] : null;
+        $this->problem_author = (!empty($data['problem_author'])) ? $data['problem_author'] : null;      
         $this->time_constraint = (!empty($data['time_constraint'])) ? $data['time_constraint'] : null;
         $this->memory_constraint = (!empty($data['memory_constraint'])) ? $data['memory_constraint'] : null;
         $this->source_constraint = (!empty($data['source_constraint'])) ? $data['source_constraint'] : null;
@@ -84,7 +83,7 @@ class Problem implements InputFilterAwareInterface {
                     ->attachByName('alpha', array('allowwhitespace' => true));
 
             $numberValidator = new Validator\Digits();
-            $notNullValidator = new NotEmpty(NotEmpty::INTEGER+NotEmpty::ZERO);
+            $notNullValidator = new NotEmpty(NotEmpty::INTEGER + NotEmpty::ZERO);
 
             $timeValidator = new Input('time_constraint');
             $timeValidator->getValidatorChain()
@@ -107,11 +106,50 @@ class Problem implements InputFilterAwareInterface {
             $sourceValidator->getFilterChain()
                     ->attachByName('stringtrim');
 
-            $descriptionValidator = new Input('problem_description');
-            $descriptionValidator->getValidatorChain()
-                    ->addValidator(new Validator\StringLength(array('min' => 10)));
-            $descriptionValidator->getFilterChain()
-                    ->attachByName('stringtrim');
+            $texFileValidator = new Extension(array('tex'));
+            $mainDesc = new Input('main_description');
+            $mainDesc->getValidatorChain()
+                    ->addValidator($texFileValidator);
+            $mainDesc->getFilterChain()
+                    ->attach(new Filter\File\RenameUpload(array(
+                        'target' => './data/problems/descriptions/main',
+                        'randomize' => true,
+            )));
+            $inputDesc = new Input('input_description');
+            $inputDesc->getValidatorChain()
+                    ->addValidator($texFileValidator);
+            $inputDesc->getFilterChain()
+                    ->attach(new Filter\File\RenameUpload(array(
+                        'target' => './data/problems/descriptions/input',
+                        'randomize' => true,
+            )));
+
+            $outputDesc = new Input('output_description');
+            $outputDesc->getValidatorChain()
+                    ->addValidator($texFileValidator);
+            $outputDesc->getFilterChain()
+                    ->attach(new Filter\File\RenameUpload(array(
+                        'target' => './data/problems/descriptions/output',
+                        'randomize' => true,
+            )));
+
+            $inputExample = new Input('input_example');
+            $inputExample->getValidatorChain()
+                    ->addValidator($texFileValidator);
+            $inputExample->getFilterChain()
+                    ->attach(new Filter\File\RenameUpload(array(
+                        'target' => './data/problems/descriptions/inexample',
+                        'randomize' => true,
+            )));
+
+            $outputExample = new Input('output_example');
+            $outputExample->getValidatorChain()
+                    ->addValidator($texFileValidator);
+            $outputExample->getFilterChain()
+                    ->attach(new Filter\File\RenameUpload(array(
+                        'target' => './data/problems/descriptions/outexample',
+                        'randomize' => true,
+            )));
 
             $fileInExtValidator = new Extension(array('txt', 'in'));
             $fileIn = new FileInput('file_in');
@@ -135,16 +173,18 @@ class Problem implements InputFilterAwareInterface {
                         'randomize' => true,
             )));
 
-
             $inputFilter->add($nameValidator);
             $inputFilter->add($authorValidator);
             $inputFilter->add($timeValidator);
             $inputFilter->add($memoryValidator);
             $inputFilter->add($sourceValidator);
-            $inputFilter->add($descriptionValidator);
+            $inputFilter->add($mainDesc);
+            $inputFilter->add($inputDesc);
+            $inputFilter->add($outputDesc);
+            $inputFilter->add($inputExample);
+            $inputFilter->add($outputExample);
             $inputFilter->add($fileIn);
             $inputFilter->add($fileOut);
-
 
             $this->inputFilter = $inputFilter;
         }

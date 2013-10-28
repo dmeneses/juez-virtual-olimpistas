@@ -23,7 +23,7 @@ class ProblemTable {
         $id = (int) $id;
         $rowset = $this->tableGateway->select(array('problem_id' => $id));
         $row = $rowset->current();
-        
+
         if (!$row) {
             throw new \Exception("Could not find row $id");
         }
@@ -34,7 +34,6 @@ class ProblemTable {
         $data = array(
             'problem_author' => $problem->problem_author,
             'problem_name' => $problem->problem_name,
-            'problem_description' => $problem->problem_description,
             'time_constraint' => $problem->time_constraint,
             'memory_constraint' => $problem->memory_constraint,
             'source_constraint' => $problem->source_constraint,
@@ -48,6 +47,7 @@ class ProblemTable {
         $id = (int) $problem->problem_id;
         if ($id == 0) {
             $this->tableGateway->insert($data);
+            $problem->problem_id = $this->tableGateway->getLastInsertValue();
         } else {
             if ($this->getProblem($id)) {
                 $this->tableGateway->update($data, array('problem_id' => $id));
@@ -68,14 +68,14 @@ class ProblemTable {
 
         $resultSet = new ResultSet();
         $resultSet->initialize($statement->execute());
-        
+
         return $resultSet;
     }
-    
+
     public function getAdapter() {
         return $this->tableGateway->getAdapter();
     }
-    
+
     public function getTableGateway() {
         return $this->tableGateway;
     }
