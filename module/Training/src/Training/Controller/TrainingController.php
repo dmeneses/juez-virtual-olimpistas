@@ -8,6 +8,7 @@ use Training\Model\Training;
 use Training\Model\TrainingTable;
 use Training\Form\CreateTrainingForm;
 use Training\Form\EditTrainingForm;
+use Training\Model\DateValidator;
 
 class TrainingController extends AbstractActionController {
 
@@ -25,7 +26,7 @@ class TrainingController extends AbstractActionController {
         }
         return $this->problemTable;
     }
-    
+
     public function getTrainingTable() {
         if (!$this->trainingTable) {
             $sm = $this->getServiceLocator();
@@ -76,11 +77,30 @@ class TrainingController extends AbstractActionController {
             }
         }
 
-        $problems = $this->getProblemTable()->getProblemsByTraining($id);
-        return array(
-            'form' => $form,
-            'trainingData' => $training,
-            'trainingProblems' => $problems,
-        );
+        $data = array('form' => $form, 'trainingData' => $training,);
+        if ($this->isEnabled($training->start_date, $training->start_time)) {
+            $problems = $this->getProblemTable()->getProblemsByTraining($id);
+            $data['trainingProblems'] = $problems;
+        }
+
+        return $data;
     }
+
+    public function isEnabled($startDate, $startTime) {
+        $todayDate = date("Y-m-d");
+        $todayTime = date("h:i");
+        $dateValidator = new DateValidator();
+        $dateValidator->setCompare(false);
+        $dateValidator->setToken($todayDate);
+        if ($dateValidator->isValid($startDate)) {
+            $dateValidator->setCompare(false);
+            $dateValidator->setToken($todayTime);
+            if ($dateValidator->isValid($startTime)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
