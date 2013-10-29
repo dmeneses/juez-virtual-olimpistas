@@ -5,7 +5,6 @@ namespace Training\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Training\Model\Training;
-use Training\Model\TrainingTable;
 use Training\Form\CreateTrainingForm;
 use Training\Form\EditTrainingForm;
 use Training\Model\DateValidator;
@@ -63,14 +62,13 @@ class TrainingController extends AbstractActionController {
 
         $training = $this->getTrainingTable()->get($id);
         $form = new EditTrainingForm();
-        $filter = $this->getServiceLocator()->get('Training\Form\EditTrainingFilter');
-        $form->setFilter($filter);
         $form->get('training_id')->setValue($id);
         $request = $this->getRequest();
 
         if ($request->isPost()) {
             $form->setData($request->getPost());
-
+            $form->setDbAdapter($this->getTrainingTable()->getDbAdapter());
+             
             if ($form->isValid()) {
                 $newProblem = $form->get('problem_id')->getValue();
                 $this->getTrainingTable()->addProblem($training->training_id, $newProblem);
