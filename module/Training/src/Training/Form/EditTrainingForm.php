@@ -4,13 +4,13 @@ namespace Training\Form;
 
 use Zend\Form\Form;
 use Zend\Form\Element;
-use Training\Form\EditTrainingFilter;
-use Zend\Validator\Db\NoRecordExists;
-use Zend\Db\Sql\Select;
+use Training\Form\AddProblemValidator;
+use Zend\InputFilter\Input;
+use Zend\InputFilter\InputFilter;
 
 class EditTrainingForm extends Form {
 
-    protected $myFilter;
+    protected $dbAdapter;
 
     public function __construct($name = null) {
         parent::__construct('training');
@@ -29,27 +29,28 @@ class EditTrainingForm extends Form {
         $this->add($submit);
     }
 
-    public function setFilter(EditTrainingFilter $filter) {
-        $this->myFilter = $filter;
-        $this->setInputFilter($filter->getInputFilter());
+    public function setDbAdapter($dbAdapter) {
+        $this->dbAdapter = $dbAdapter;
     }
 
     public function isValid() {
-        $problemID = $this->get('problem_id')->getValue();
+
+        $inputFilter = new InputFilter();
         $trainingID = $this->get('training_id')->getValue();
 
-        $select = new Select();
-        $select->from('training_has_problem')
-        ->where->equalTo('training_training_id', $trainingID)
-        ->where->equalTo('problem_problem_id', $problemID);
-        $dbValidator = new NoRecordExists($select);
-        $dbValidator->setAdapter($this->myFilter->getDbAdapter());
-        $dbValidator->setMessage("Problema ya añadido.", NoRecordExists::ERROR_RECORD_FOUND);
-        
-        $input = $this->getInputFilter()->get('problem_id');
-        $input->getValidatorChain()
-                ->addValidator($dbValidator);
-        
+        $problemValidator = new AddProblemValidator();
+        $problemValidator->setDbAdapter($this->dbAdapter);
+        $problemValidator->setTrainingID($trainingID);
+
+        $newProblem = new Input('problem_id');
+        $newProblem->getValidatorChain()
+                ->addValidator($problemValidator);
+        $newProblem->getFilterChain()
+                ->attachByName('stringtrim');
+
+        $inputFilter->add($newProblem);
+        $this->setInputFilter($inputFilter);
+
         return parent::isValid();
     }
 

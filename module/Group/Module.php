@@ -46,10 +46,6 @@ class Module
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     return new Form\CreateGroupFilter($dbAdapter);
                 },
-                'Group\Form\EditGroupFilter' => function($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    return new Form\EditGroupFilter($dbAdapter);
-                },
             ),
         );
     }
