@@ -67,7 +67,7 @@ class Training implements InputFilterAwareInterface {
                     ->attachByName('stringtrim');
 
             $todayDate = date("Y-m-d");
-            $todayTime = date("h:i");
+            $todayTime = date("G:i");
 
             $dateValidator = new DateValidator();
             $dateValidator->setCompare(true);

@@ -21,17 +21,7 @@ class CreateTrainingForm extends Form {
         $endDate = new Element\DateTime('end_date');
 
         $startTime = new Element\Time('start_time');
-        $startTime->setAttributes(array(
-            'min' => '00:00:00',
-            'max' => '23:59:59',
-            'step' => '60', // seconds; default step interval is 60 seconds
-        ));
         $endTime = new Element\Time('end_time');
-        $endTime->setAttributes(array(
-            'min' => '00:00:00',
-            'max' => '23:59:59',
-            'step' => '60', // seconds; default step interval is 60 seconds
-        ));
 
         $submit = new Element\Submit('submit');
         $submit->setValue('Crear');

@@ -88,7 +88,7 @@ class TrainingController extends AbstractActionController {
 
     public function isEnabled($startDate, $startTime) {
         $todayDate = date("Y-m-d");
-        $todayTime = date("h:i");
+        $todayTime = date("G:i");
         $dateValidator = new DateValidator();
         $dateValidator->setCompare(false);
         $dateValidator->setToken($todayDate);
@@ -102,5 +102,4 @@ class TrainingController extends AbstractActionController {
 
         return false;
     }
-
 }
