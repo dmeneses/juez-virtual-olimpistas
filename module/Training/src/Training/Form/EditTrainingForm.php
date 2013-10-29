@@ -19,13 +19,17 @@ class EditTrainingForm extends Form {
 
         $problemID = new Element\Text('problem_id');
         $problemID->setAttribute('placeholder', 'Problema a agregar');
+        
+        $groupID = new Element\Text('group_id');
+        $groupID->setAttribute('placeholder', 'Grupo a agregar');
 
-        $submit = new Element\Submit('addProblem');
+        $submit = new Element\Submit('add');
         $submit->setValue('Agregar');
         $submit->setAttribute('class', 'button');
 
         $this->add($trainingID);
         $this->add($problemID);
+        $this->add($groupID);
         $this->add($submit);
     }
 
