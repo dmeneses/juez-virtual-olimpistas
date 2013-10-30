@@ -35,7 +35,7 @@ class TrainingController extends AbstractActionController {
         }
         return $this->trainingTable;
     }
-    
+
     public function getGroupTable() {
         if (!$this->groupTable) {
             $sm = $this->getServiceLocator();
@@ -99,7 +99,7 @@ class TrainingController extends AbstractActionController {
         }
 
         $groups = $this->getGroupTable()->getGroupsByTraining($id);
-        $data = array('problemForm' => $problemForm, 'groupForm' => $groupForm, 
+        $data = array('problemForm' => $problemForm, 'groupForm' => $groupForm,
             'trainingData' => $training, 'trainingGroups' => $groups);
         if ($this->isEnabled($training->start_date, $training->start_time)) {
             $problems = $this->getProblemTable()->getProblemsByTraining($id);
@@ -112,18 +112,16 @@ class TrainingController extends AbstractActionController {
     public function isEnabled($startDate, $startTime) {
         $todayDate = date("Y-m-d");
         $todayTime = date("G:i");
-        $dateValidator = new DateValidator();
-        $dateValidator->setCompare(false);
-        $dateValidator->setToken($todayDate);
-        if ($dateValidator->isValid($startDate)) {
-            $dateValidator->setCompare(false);
-            $dateValidator->setToken($todayTime);
-            if ($dateValidator->isValid($startTime)) {
-                return true;
-            }
+        $date1 = strtotime($todayDate . ' ' . $todayTime);
+        $date2 = strtotime(substr($startDate, 0, 10) . ' ' . $startTime);
+        exec('echo ' . $date1 . ' > /tmp/hola');
+        exec('echo ' . $date2 . ' >> /tmp/hola');
+        
+        if($date1 < $date2) {
+            return false;
         }
-
-        return false;
+        
+        return true;
     }
 
 }
