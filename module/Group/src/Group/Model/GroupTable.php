@@ -26,10 +26,7 @@ class GroupTable {
     }
 
     public function fetchAll() {
-        $select = new Select;
-        $select->columns(array('group_id', 'group_name'));
-        $select->from(array('t' => 'group',))
-                ->join(array('u' => 'user'), 'u.user_id = t.group_owner', array('name', 'lastname'));
+        $select = $this->fetchAllQuery();
         $statement = $this->tableGateway->getAdapter()->createStatement();
         $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
 
@@ -37,6 +34,14 @@ class GroupTable {
         $resultSet->initialize($statement->execute());
 
         return $resultSet;
+    }
+    
+    public function fetchAllQuery() {
+        $select = new Select;
+        $select->columns(array('group_id', 'group_name'));
+        $select->from(array('t' => 'group',))
+                ->join(array('u' => 'user'), 'u.user_id = t.group_owner', array('name', 'lastname'));
+        return $select;
     }
 
     public function get($id) {

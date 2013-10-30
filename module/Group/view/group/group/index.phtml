@@ -14,7 +14,7 @@ $this->headTitle($title);
                         <th>Creador</th>
                     </tr>
                 </thead>
-                <?php foreach ($groups as $group) : ?>
+                <?php foreach ($this->paginator as $group) : ?>
                     <tr>
                         <td><?php echo $this->escapeHtml($group->group_id); ?></td>
                         <td>
@@ -26,5 +26,8 @@ $this->headTitle($title);
             </table>
         </center>
     </div>	
+    <?php
+    echo $this->paginationControl($paginator, 'Sliding', 'paginator-slide');
+    ?>
 </div>
 
