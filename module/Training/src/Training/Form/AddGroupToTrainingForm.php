@@ -4,11 +4,11 @@ namespace Training\Form;
 
 use Zend\Form\Form;
 use Zend\Form\Element;
-use Training\Form\AddProblemValidator;
+use Training\Form\AddGroupValidator;
 use Zend\InputFilter\Input;
 use Zend\InputFilter\InputFilter;
 
-class EditTrainingForm extends Form {
+class AddGroupToTrainingForm extends Form {
 
     protected $dbAdapter;
 
@@ -16,19 +16,15 @@ class EditTrainingForm extends Form {
         parent::__construct('training');
 
         $trainingID = new Element\Hidden('training_id');
-
-        $problemID = new Element\Text('problem_id');
-        $problemID->setAttribute('placeholder', 'Problema a agregar');
-        
+    
         $groupID = new Element\Text('group_id');
         $groupID->setAttribute('placeholder', 'Grupo a agregar');
 
-        $submit = new Element\Submit('add');
-        $submit->setValue('Agregar');
+        $submit = new Element\Submit('addGroup');
+        $submit->setValue('Agregar Grupo');
         $submit->setAttribute('class', 'button');
 
         $this->add($trainingID);
-        $this->add($problemID);
         $this->add($groupID);
         $this->add($submit);
     }
@@ -42,17 +38,17 @@ class EditTrainingForm extends Form {
         $inputFilter = new InputFilter();
         $trainingID = $this->get('training_id')->getValue();
 
-        $problemValidator = new AddProblemValidator();
-        $problemValidator->setDbAdapter($this->dbAdapter);
-        $problemValidator->setTrainingID($trainingID);
+        $groupValidator = new AddGroupValidator();
+        $groupValidator->setDbAdapter($this->dbAdapter);
+        $groupValidator->setTrainingID($trainingID);
 
-        $newProblem = new Input('problem_id');
-        $newProblem->getValidatorChain()
-                ->addValidator($problemValidator);
-        $newProblem->getFilterChain()
+        $newGroup = new Input('group_id');
+        $newGroup->getValidatorChain()
+                ->addValidator($groupValidator);
+        $newGroup->getFilterChain()
                 ->attachByName('stringtrim');
 
-        $inputFilter->add($newProblem);
+        $inputFilter->add($newGroup);
         $this->setInputFilter($inputFilter);
 
         return parent::isValid();

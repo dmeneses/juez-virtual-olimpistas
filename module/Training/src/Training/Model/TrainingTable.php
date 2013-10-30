@@ -80,6 +80,20 @@ class TrainingTable {
         $statement = $sql->prepareStatementForSqlObject($insert);
         $statement->execute();
     }
+    
+    public function addGroup($trainingID, $groupID) {
+        $dbAdapter = $this->tableGateway->getAdapter();
+        $sql = new Sql($dbAdapter);
+
+        $insert = $sql->insert('training_has_group');
+        $insert->values(array(
+            'training_training_id' => $trainingID,
+            'group_group_id' => $groupID,
+        ));
+
+        $statement = $sql->prepareStatementForSqlObject($insert);
+        $statement->execute();
+    }
 
     public function exist($trainingID) {
         $dbValidator = new RecordExists(array(
