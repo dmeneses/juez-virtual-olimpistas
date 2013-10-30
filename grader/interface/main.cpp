@@ -38,11 +38,11 @@ int main(int argc, char **argv)
 
     attempt.status = COMPILATION_ERROR;
     std::ostringstream appNaming;
-    appNaming << "data/executions/compilation" << attempt.id;
+    appNaming << "data/execution/compilation" << attempt.id;
     string appName = appNaming.str();
 
     std::ostringstream outputNaming;
-    outputNaming << "data/executions/output" << attempt.id;
+    outputNaming << "data/execution/output" << attempt.id;
     string output = outputNaming.str();
 
     attempt.compiledApp = appName.c_str();

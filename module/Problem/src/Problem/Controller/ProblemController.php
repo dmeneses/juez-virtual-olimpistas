@@ -52,7 +52,7 @@ class ProblemController extends AbstractActionController {
                 $problem->exchangeArray($data);
                 $this->getProblemTable()->saveProblem($problem);
                 
-                $this->buildProblemView($problem->problem_id, $data, $description);
+                $this->buildProblemView($problem->problem_id, $data);
                 return $this->redirect()->toRoute('problem');
             }
         }
