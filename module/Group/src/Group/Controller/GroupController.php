@@ -7,6 +7,8 @@ use Zend\View\Model\ViewModel;
 use Group\Form\CreateGroupForm;
 use Group\Model\Group;
 use Group\Form\EditGroupForm;
+use Zend\Paginator\Paginator;
+use Zend\Paginator\Adapter\DbSelect;
 
 class GroupController extends AbstractActionController {
 
@@ -18,7 +20,18 @@ class GroupController extends AbstractActionController {
     protected $problemTable;
 
     public function indexAction() {
-        return new ViewModel(array('groups' => $this->getGroupTable()->fetchAll()));
+        $paginator = new Paginator(new DbSelect($this->getGroupTable()->fetchAllQuery(), 
+                                                $this->getGroupTable()->getDbAdapter()));
+        $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
+
+        $paginator->setCurrentPageNumber($page)
+                ->setItemCountPerPage(10)
+                ->setPageRange(7);
+
+        return new ViewModel(array(
+            'page' => $page,
+            'paginator' => $paginator,
+        ));
     }
 
     public function getGroupTable() {

@@ -11,10 +11,11 @@ return array(
             'group' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/group[/:action][/:id]',
+                    'route' => '/group[/:action][/:id][/page/:page]',
                     'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action' => '(?!\bpage\b)[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
+                        'page' => '[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Group\Controller\Group',
@@ -27,6 +28,9 @@ return array(
     'view_manager' => array(
         'template_path_stack' => array(
             'group' => __DIR__ . '/../view',
+        ),
+        'template_map' => array(
+            'paginator-slide' => __DIR__ . '/../view/group/group/slidePaginator.phtml',
         ),
     ),
 );
