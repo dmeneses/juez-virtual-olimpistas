@@ -11,23 +11,12 @@
 #include <string.h>
 #include "languagetype.h"
 #include "errorcode.h"
-
-struct Constraint {
-    
-    Constraint(int time, int memory): time(time), memory(memory) {}
-    
-    Constraint()
-    {
-        time = 0;
-        memory = 0;
-    }
-    
-    double time;
-    int memory;
-};
+#include <ostream>
+#include "constraint.h"
 
 struct SolutionAttempt
 {
+
     SolutionAttempt()
     {
         id = 0;
@@ -36,7 +25,7 @@ struct SolutionAttempt
         runtime = 0;
         memory = 0;
     }
-    
+
     ~SolutionAttempt()
     {
         if (errorMessage)
@@ -65,7 +54,28 @@ struct SolutionAttempt
         errorMessage = new char[strlen(message) + 1];
         strcpy(errorMessage, message);
     }
+
+    friend std::ostream& operator<<(std::ostream& os, const SolutionAttempt& dt);
 };
+
+inline std::ostream& operator<<(std::ostream& os, const SolutionAttempt& obj)
+{
+    os << "ID:" << obj.id << "\n" <<
+            "SOURCE_FILE:" << obj.appToCompile << "\n" <<
+            "COMPILED_OUTPUT:" << obj.compiledApp << "\n" <<
+            "LANGUAGE:" << obj.language << "\n" <<
+            "STATUS:" << obj.status << "\n" <<
+            "INPUT_FILE:" << obj.testInputs << "\n" <<
+            "OUTPUT_FILE:" << obj.generatedOutputs << "\n" <<
+            "EXPECTED_OUTPUT_FILE:" << obj.expectedOutputs << "\n" <<
+            "RUNTIME:" << obj.runtime << "\n" <<
+            "MEMORY:" << obj.memory << "\n" <<
+            "CONSTRAINT:" << obj.constraint << "\n" <<
+            "GRADE:" << obj.grade << "\n" <<
+            "ERROR:" << obj.errorMessage << "\n";
+    return os;
+}
+
 
 #endif	/* SOLUTIONATTEMPT_H */
 

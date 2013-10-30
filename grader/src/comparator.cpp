@@ -1,4 +1,5 @@
 #include "comparator.h"
+#include "glog/logging.h"
 
 Comparator::Comparator()
 {
@@ -27,6 +28,7 @@ bool Comparator::rangeEqual(InputIterator1 first1, InputIterator1 last1,
 
 bool Comparator::compareFiles(const std::string& filename1, const std::string& filename2)
 {
+    LOG(INFO) << "Compare files : " << filename1 << " AND "<< filename2;
     std::ifstream file1(filename1.c_str());
     std::ifstream file2(filename2.c_str());
 

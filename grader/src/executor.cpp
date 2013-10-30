@@ -12,6 +12,7 @@
 #include <time.h>
 #include <iostream>
 #include <stdio.h>
+#include <glog/logging.h>
 
 using namespace std;
 
@@ -19,6 +20,7 @@ time_t start, stop;
 
 Executor::Executor(const char* appName, const char* fileIn, const char* fileOut)
 {
+    LOG(INFO) << "Creating executor";
     appName_ = new char[strlen(appName) + 1];
     strcpy(appName_, appName);
     fileIn_ = new char[strlen(appName) + 1];
@@ -29,6 +31,7 @@ Executor::Executor(const char* appName, const char* fileIn, const char* fileOut)
 
 Executor::~Executor()
 {
+    LOG(INFO) << "Deleting executor";
     if (appName_)
         delete[] appName_;
     if (fileIn_)
@@ -49,11 +52,13 @@ const char* Executor::prepareCommand()
     res.append(fileIn_);
     res.append(" > ");
     res.append(fileOut_);
+    LOG(INFO) << "Command to execute: " << res;
     return res.c_str();
 }
 
 void Executor::execute(StageOutput& output, SolutionAttempt& attempt)
 {
+    LOG(INFO) << "Executing app...";
     const char* command = prepareCommand();
 
     time(&start);
@@ -64,11 +69,13 @@ void Executor::execute(StageOutput& output, SolutionAttempt& attempt)
     
     if (finalTime > attempt.constraint.time)
     {
+        LOG(INFO) << "Time limit exceeded";
         output.setStatus(TIME_LIMIT_EXCEEDED);
         output.setErrorMessage("Time limit exceeded");
     }
     else
     {
+        LOG(INFO) << "Execution success";
         output.setStatus(SUCCESS);
     }
     
