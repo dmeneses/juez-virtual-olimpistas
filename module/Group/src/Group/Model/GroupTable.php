@@ -20,7 +20,7 @@ class GroupTable {
     public function __construct(TableGateway $tableGateway) {
         $this->tableGateway = $tableGateway;
     }
-    
+
     public function getDbAdapter() {
         return $this->tableGateway->getAdapter();
     }
@@ -79,14 +79,14 @@ class GroupTable {
         $resultSet->initialize($statement->execute());
 
         $row = $resultSet->current();
-       
+
         if (!$row) {
             throw new \Exception("Could not find user with email $email");
         }
-        
+
         return $row;
     }
-    
+
     public function addUser($groupID, $userEmail) {
         $user = $this->getUserByEmail($userEmail);
         $dbAdapter = $this->tableGateway->getAdapter();
@@ -112,8 +112,7 @@ class GroupTable {
         return $dbValidator->isValid($groupID);
     }
 
-    public function getUsers($groupID)
-    {
+    public function getUsers($groupID) {
         $select = new Select;
         $select->from(array('u' => 'user',))
                 ->join(array('ug' => 'user_has_group'), 'ug.user_user_id = u.user_id', array())
@@ -124,8 +123,23 @@ class GroupTable {
 
         $resultSet = new ResultSet();
         $resultSet->initialize($statement->execute());
-        
+
         return $resultSet;
     }
-    
+
+    public function getGroupsByTraining($trainingID) {
+        $select = new Select;
+        $select->from(array('g' => 'group',))
+                ->join(array('tp' => 'training_has_group'), 'tp.group_group_id = g.group_id', array())
+                ->join(array('t' => 'training'), 't.training_id = tp.training_training_id ', array());
+        $select->where(array('t.training_id' => $trainingID,));
+        $statement = $this->tableGateway->getAdapter()->createStatement();
+        $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($statement->execute());
+
+        return $resultSet;
+    }
+
 }

@@ -6,13 +6,15 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Training\Model\Training;
 use Training\Form\CreateTrainingForm;
-use Training\Form\EditTrainingForm;
+use Training\Form\AddProblemToTrainingForm;
+use Training\Form\AddGroupToTrainingForm;
 use Training\Model\DateValidator;
 
 class TrainingController extends AbstractActionController {
 
     protected $trainingTable;
     protected $problemTable;
+    protected $groupTable;
 
     public function indexAction() {
         return new ViewModel(array('trainings' => $this->getTrainingTable()->fetchAll()));
@@ -32,6 +34,14 @@ class TrainingController extends AbstractActionController {
             $this->trainingTable = $sm->get('Training\Model\TrainingTable');
         }
         return $this->trainingTable;
+    }
+    
+    public function getGroupTable() {
+        if (!$this->groupTable) {
+            $sm = $this->getServiceLocator();
+            $this->groupTable = $sm->get('Group\Model\GroupTable');
+        }
+        return $this->groupTable;
     }
 
     public function createAction() {
@@ -61,21 +71,36 @@ class TrainingController extends AbstractActionController {
         }
 
         $training = $this->getTrainingTable()->get($id);
-        $form = new EditTrainingForm();
-        $form->get('training_id')->setValue($id);
+        $problemForm = new AddProblemToTrainingForm();
+        $problemForm->get('training_id')->setValue($id);
+        $groupForm = new AddGroupToTrainingForm();
+        $groupForm->get('training_id')->setValue($id);
         $request = $this->getRequest();
 
         if ($request->isPost()) {
-            $form->setData($request->getPost());
-            $form->setDbAdapter($this->getTrainingTable()->getDbAdapter());
-             
-            if ($form->isValid()) {
-                $newProblem = $form->get('problem_id')->getValue();
-                $this->getTrainingTable()->addProblem($training->training_id, $newProblem);
+            $postData = $request->getPost();
+            if (isset($postData['addGroup'])) {
+                $groupForm->setData($postData);
+                $groupForm->setDbAdapter($this->getTrainingTable()->getDbAdapter());
+
+                if ($groupForm->isValid()) {
+                    $newGroup = $groupForm->get('group_id')->getValue();
+                    $this->getTrainingTable()->addGroup($training->training_id, $newGroup);
+                }
+            } else {
+                $problemForm->setData($postData);
+                $problemForm->setDbAdapter($this->getTrainingTable()->getDbAdapter());
+
+                if ($problemForm->isValid()) {
+                    $newProblem = $problemForm->get('problem_id')->getValue();
+                    $this->getTrainingTable()->addProblem($training->training_id, $newProblem);
+                }
             }
         }
 
-        $data = array('form' => $form, 'trainingData' => $training,);
+        $groups = $this->getGroupTable()->getGroupsByTraining($id);
+        $data = array('problemForm' => $problemForm, 'groupForm' => $groupForm, 
+            'trainingData' => $training, 'trainingGroups' => $groups);
         if ($this->isEnabled($training->start_date, $training->start_time)) {
             $problems = $this->getProblemTable()->getProblemsByTraining($id);
             $data['trainingProblems'] = $problems;
@@ -100,4 +125,5 @@ class TrainingController extends AbstractActionController {
 
         return false;
     }
+
 }
