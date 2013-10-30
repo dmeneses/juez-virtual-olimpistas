@@ -11,6 +11,7 @@
 #include <string>
 #include <stdio.h>
 #include <iostream>
+#include <glog/logging.h>
 
 using namespace std;
 
@@ -48,6 +49,7 @@ const char* Compiler::prepareCommand()
 
 void Compiler::compile(StageOutput& output)
 {
+    LOG(INFO) << "Compiling...";
     const char* command = prepareCommand();
     FILE* pipe = popen(command, "r");
     if (!pipe)

@@ -2,9 +2,11 @@
 #include "comparator.h"
 #include "executor.h"
 #include "solutionattempt.h"
+#include <glog/logging.h>
 
 void grade(SolutionAttempt& attempt)
 {
+    LOG(INFO) << "Starting grade process...";
     StageOutput stageOutput;
     Compiler compiler(attempt.appToCompile, attempt.compiledApp, attempt.language);
     compiler.compile(stageOutput);

@@ -6,12 +6,12 @@ OBJ = $(patsubst %.cpp,obj/%.o,$(SRC))
 
 OUT = ../../vjgraderapp
 
-INCLUDES=-I ../src
+INCLUDES=-I../src
 
-LIBS = -L/user/local/lib -L../src -lm -lvjgrader
+LIBS = -L/user/local/lib -L../src -lm -lglog -lvjgrader
 
 #Compiler flags
-CCFLAGS = -fPIC -g -Wall
+CCFLAGS = -fPIC -g -Wall 
 LDFLAGS = rcs
 
 #compiler

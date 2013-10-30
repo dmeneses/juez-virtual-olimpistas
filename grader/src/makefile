@@ -11,7 +11,7 @@ OBJ = $(patsubst %.cpp,obj/%.o,$(SRC))
 OUT = libvjgrader.a
 
 #library paths
-LIBS = -L/user/local/lib -lm
+LIBS = -L/user/local/lib -lm -Lglog
 
 #Compiler flags
 CCFLAGS = -fPIC -g -Wall
