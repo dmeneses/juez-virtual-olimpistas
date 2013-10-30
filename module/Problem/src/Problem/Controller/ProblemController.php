@@ -76,8 +76,8 @@ class ProblemController extends AbstractActionController {
         $command .= $out_example . ' ';
         $command .= $descriptionOutput. ' ';
         $command .= $id . ' ';
-        $command .= $data['problem_name']. ' ';
-        $command .= $data['problem_author']. ' ';
+        $command .= '"' . $data['problem_name']. '" ';
+        $command .= '"' . $data['problem_author']. '" ';
         $command .= $data['memory_constraint']. ' ';
         $command .= $data['time_constraint']. ' ';
         $command .= $data['source_constraint']. ' ';
