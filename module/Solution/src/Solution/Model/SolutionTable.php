@@ -14,6 +14,10 @@ class SolutionTable {
         $this->tableGateway = $tableGateway;
     }
 
+    public function getDbAdapter() {
+        return $this->tableGateway->getAdapter();
+    }
+    
     public function fetchAll() {
         $resultSet = $this->tableGateway->select();
         return $resultSet;

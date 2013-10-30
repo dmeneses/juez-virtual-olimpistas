@@ -81,7 +81,7 @@ form {
     margin: 25px;
 }
 
-form input[type="text"], [type="email"], [type="select"], [type="file"],
+input[type="text"], [type="email"], [type="select"], [type="file"],
     [type="date"],[type="time"],textarea {
     margin: 3px 0 0 0;
     padding: 6px; 
@@ -97,12 +97,12 @@ input[type="radio"] {
     margin-right: 3px;
 }
 
-form textarea {
+textarea {
     width: 500px; 
     height: 200px;
 }
 
-form label {
+label {
     padding-right: 50px;
     font-size: 13px;
     color: #666;
@@ -111,7 +111,7 @@ form label {
     text-align: center;
 }
 
-form .placeholder {
+.placeholder {
     color: #aaa;
 }
 
@@ -149,7 +149,7 @@ a:hover {
     text-decoration: underline;
 }
 
-form .button:hover {
+.button:hover {
     background-color: #2284a1;
 }
 

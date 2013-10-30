@@ -38,6 +38,7 @@ class SolutionController extends AbstractActionController {
 
         if ($request->isPost()) {
             $solution = new Solution();
+            $solution->setDbAdapter($this->getSolutionTable()->getDbAdapter());
             $form->setInputFilter($solution->getInputFilter());
 
             $post = array_merge_recursive(
