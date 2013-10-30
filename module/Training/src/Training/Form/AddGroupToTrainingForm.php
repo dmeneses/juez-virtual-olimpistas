@@ -21,7 +21,7 @@ class AddGroupToTrainingForm extends Form {
         $groupID->setAttribute('placeholder', 'Grupo a agregar');
 
         $submit = new Element\Submit('addGroup');
-        $submit->setValue('Agregar Grupo');
+        $submit->setValue('Agregar');
         $submit->setAttribute('class', 'button');
 
         $this->add($trainingID);

@@ -21,7 +21,7 @@ class AddProblemToTrainingForm extends Form {
         $problemID->setAttribute('placeholder', 'Problema a agregar');
 
         $submit = new Element\Submit('addProblem');
-        $submit->setValue('Agregar Problema');
+        $submit->setValue('Agregar');
         $submit->setAttribute('class', 'button');
         $this->add($trainingID);
         $this->add($problemID);
