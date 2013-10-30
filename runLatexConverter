@@ -7,14 +7,14 @@
 #OUT_EXAMPLE = $5
 #OUTPUT_FILE = $6
 #PROBLEM_ID = $7
-echo $1 > /home/dann/Desktop/VirtualJudge/data/execution/test
-echo $2 >> /home/dann/Desktop/VirtualJudge/data/execution/test
-echo $3 >> /home/dann/Desktop/VirtualJudge/data/execution/test
-echo $4 >> /home/dann/Desktop/VirtualJudge/data/execution/test
-echo $5 >> /home/dann/Desktop/VirtualJudge/data/execution/test
-echo $6 >> /home/dann/Desktop/VirtualJudge/data/execution/test
-echo $7 >> /home/dann/Desktop/VirtualJudge/data/execution/test
-TEX_FILE="data/execution/texcompilation$7.tex"
+echo $1 > /home/dann/Desktop/VirtualJudge/data/problems/executions/test
+echo $2 >> /home/dann/Desktop/VirtualJudge/data/problems/executions/test
+echo $3 >> /home/dann/Desktop/VirtualJudge/data/problems/executions/test
+echo $4 >> /home/dann/Desktop/VirtualJudge/data/problems/executions/test
+echo $5 >> /home/dann/Desktop/VirtualJudge/data/problems/executions/test
+echo $6 >> /home/dann/Desktop/VirtualJudge/data/problems/executions/test
+echo $7 >> /home/dann/Desktop/VirtualJudge/data/problems/executions/test
+TEX_FILE="data/problems/executions/texcompilation$7.tex"
 cp latex_processor/maintemplate.tex $TEX_FILE
 #TODO: Delete this file after conversion;
 

@@ -124,7 +124,7 @@ function gradeSolution($solutionID, Zebra_Database $database) {
 
         if (count($problemRecords) == 1) {
             $problem = $problemRecords[0];
-            $output = 'data/executions/result' . $solution['solution_id'];
+            $output = 'data/execution/result' . $solution['solution_id'];
             $command = prepareCommand($solution, $output, $problem);
             exec($command);
             parseAndSaveData($solutionID, $output, $database);
