@@ -14,42 +14,27 @@ $form->prepare();
         <tr>
             <td valign="mid"><label for="training_name">Nombre</label></td>
             <td><?php echo $this->formInput($form->get('training_name')); ?></td>
-        </tr>
-        <tr>
-            <td/>
             <td><?php echo $this->formElementErrors($form->get('training_name')); ?></td>
         </tr>
         <tr>
             <td valign="mid"><label for="start_date">Fecha de inicio</label></td>
             <td><?php echo $this->formDate($form->get('start_date')); ?></td>
-        </tr>
-        <tr>
-            <td/>
             <td><?php echo $this->formElementErrors($form->get('start_date')); ?></td>
         </tr>
         <tr>
         <tr>
             <td valign="mid"><label for="start_time">Hora de inicio</label></td>
             <td><?php echo $this->formTime($form->get('start_time')); ?></td>
-        </tr>
-        <tr>
-            <td/>
             <td><?php echo $this->formElementErrors($form->get('start_time')); ?></td>
         </tr>
         <tr>
             <td valign="mid"><label for="end_date">Fecha de fin</label></td>
             <td><?php echo $this->formDate($form->get('end_date')); ?></td>
-        </tr>
-        <tr>
-            <td/>
             <td><?php echo $this->formElementErrors($form->get('end_date')); ?></td>
         </tr>
         <tr>
             <td valign="mid"><label for="end_time">Hora de fin</label></td>
             <td><?php echo $this->formTime($form->get('end_time')); ?></td>
-        </tr>
-        <tr>
-            <td/>
             <td><?php echo $this->formElementErrors($form->get('end_time')); ?></td>
         </tr>
     </table>

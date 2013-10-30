@@ -17,9 +17,6 @@ $form->prepare();
         <tr>
             <td valign="mid"><label for="problem_id">ID Problema</label></td>
             <td><?php echo $this->formInput($form->get('problem_id')); ?></td>
-        </tr>
-        <tr>
-            <td/>
             <td><?php echo $this->formElementErrors($form->get('problem_id')); ?></td>
         </tr>
         <tr>
@@ -29,18 +26,11 @@ $form->prepare();
                     <?php echo $this->formSelect($form->get('solution_language')); ?>
                 </div>
             </td>
-        </tr>
-        <tr>
-            <td/>
             <td><?php echo $this->formElementErrors($form->get('solution_language')); ?></td>
         </tr>
-
         <tr>
             <td valign="top"><label for="solution_source_file">Archivo de solucion</label></td>
             <td><?php echo $this->formFile($form->get('solution_source_file')); ?></td>
-        </tr>
-        <tr>
-            <td/>
             <td><?php echo $this->formElementErrors($form->get('solution_source_file')); ?></td>
         </tr>
     </table>

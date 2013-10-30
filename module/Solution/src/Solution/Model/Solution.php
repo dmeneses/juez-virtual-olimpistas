@@ -10,6 +10,7 @@ use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\Validator\File\Extension;
 use Zend\Validator;
+use Zend\Validator\Db\RecordExists;
 
 class Solution implements InputFilterAwareInterface {
 
@@ -25,6 +26,7 @@ class Solution implements InputFilterAwareInterface {
     public $user_id;
     public $problem_id;
     public $inputFilter;
+    public $dbAdapter;
 
     public function exchangeArray($data) {
         $this->solution_id = (!empty($data['solution_id'])) ? $data['solution_id'] : null;
@@ -49,17 +51,25 @@ class Solution implements InputFilterAwareInterface {
         $this->user_id = (!empty($data['user_id'])) ? $data['user_id'] : NULL;
     }
 
+    public function setDbAdapter($dbAdapter) {
+        $this->dbAdapter = $dbAdapter;
+    }
+
     public function getInputFilter() {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
             $numberValidator = new Validator\Digits();
+            $dbValidator = new RecordExists(array(
+                'table' => 'problem',
+                'field' => 'problem_id',
+                'adapter' => $this->dbAdapter));
             $problemId = new Input('problem_id');
             $problemId->getValidatorChain()
-                    ->addValidator($numberValidator);
+                    ->addValidator($numberValidator)
+                    ->addValidator($dbValidator);
             $problemId->getFilterChain()
                     ->attachByName('stringtrim');
-
 
             $fileExtValidator = new Extension(array('cpp', 'c'));
             $solFile = new FileInput('solution_source_file');
