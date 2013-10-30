@@ -30,15 +30,15 @@ class ProblemTableTest extends PHPUnit_Framework_TestCase {
     public function testCanRetrieveAnProblemByItsId() {
         $data = array('problem_id' => 1,
             'problem_name' => 'Some problem',
-            'author' => 'Some author',
+            'problem_author' => 'Some author',
             'problem_description' => 'Some nice description',
             'compare_type' => 'STRICT',
             'is_simple' => 'TRUE',
-            'time_limit' => 6,
-            'memory_limit' => 6,
-            'source_limit' => 6,
-            'fileIn' => array('tmp_name' => 'in'),
-            'fileOut' => array('tmp_name' => 'out'),
+            'time_constraint' => 6,
+            'memory_constraint' => 6,
+            'source_constraint' => 6,
+            'file_in' => array('tmp_name' => 'in'),
+            'file_out' => array('tmp_name' => 'out'),
         );
 
         $problem = new Problem();
@@ -51,7 +51,7 @@ class ProblemTableTest extends PHPUnit_Framework_TestCase {
         $mockTableGateway = $this->getMock('Zend\Db\TableGateway\TableGateway', array('select'), array(), '', false);
         $mockTableGateway->expects($this->once())
                 ->method('select')
-                ->with(array('id' => 1))
+                ->with(array('problem_id' => 1))
                 ->will($this->returnValue($resultSet));
 
         $albumTable = new ProblemTable($mockTableGateway);
@@ -62,28 +62,26 @@ class ProblemTableTest extends PHPUnit_Framework_TestCase {
     public function testSaveProblemWillInsertNewProblemsIfTheyDontAlreadyHaveAnId() {
         $simpleData = array(
             'problem_name' => 'Some problem',
-            'author' => 'Some author',
-            'problem_description' => 'Some nice description',
+            'problem_author' => 'Some author',
             'compare_type' => 'STRICT',
             'is_simple' => 'TRUE',
-            'time_limit' => 6,
-            'memory_limit' => 6,
-            'source_limit' => 6,
-            'fileIn' => 'in',
-            'fileOut' => 'out',
+            'time_constraint' => 6,
+            'memory_constraint' => 6,
+            'source_constraint' => 6,
+            'file_in' => 'in',
+            'file_out' => 'out', 'user_user_id' => 1,
         );
-        
+
         $dataWithoutID = array(
             'problem_name' => 'Some problem',
-            'author' => 'Some author',
-            'problem_description' => 'Some nice description',
+            'problem_author' => 'Some author',
             'compare_type' => 'STRICT',
             'is_simple' => 'TRUE',
-            'time_limit' => 6,
-            'memory_limit' => 6,
-            'source_limit' => 6,
-            'fileIn' => array('tmp_name' => 'in'),
-            'fileOut' => array('tmp_name' => 'out'),
+            'time_constraint' => 6,
+            'memory_constraint' => 6,
+            'source_constraint' => 6,
+            'file_in' => array('tmp_name' => 'in'),
+            'file_out' => array('tmp_name' => 'out'),
         );
 
 
@@ -102,15 +100,15 @@ class ProblemTableTest extends PHPUnit_Framework_TestCase {
     public function testSaveProblemWillUpdateExistingProblemsIfTheyAlreadyHaveAnId() {
         $data = array('problem_id' => 1,
             'problem_name' => 'Some problem',
-            'author' => 'Some author',
-            'problem_description' => 'Some nice description',
+            'problem_author' => 'Some author',
             'compare_type' => 'STRICT',
             'is_simple' => 'TRUE',
-            'time_limit' => 6,
-            'memory_limit' => 6,
-            'source_limit' => 6,
-            'fileIn' => array('tmp_name' => 'in'),
-            'fileOut' => array('tmp_name' => 'out'),
+            'time_constraint' => 6,
+            'memory_constraint' => 6,
+            'source_constraint' => 6,
+            'file_in' => array('tmp_name' => 'in'),
+            'file_out' => array('tmp_name' => 'out'),
+            'user_user_id' => 1,
         );
 
         $problem = new Problem();
@@ -123,30 +121,33 @@ class ProblemTableTest extends PHPUnit_Framework_TestCase {
         $mockTableGateway = $this->getMock('Zend\Db\TableGateway\TableGateway', array('select', 'update'), array(), '', false);
         $mockTableGateway->expects($this->once())
                 ->method('select')
-                ->with(array('id' => 1))
+                ->with(array('problem_id' => 1))
                 ->will($this->returnValue($resultSet));
 
         $dataWithoutID = array(
             'problem_name' => 'Some problem',
-            'author' => 'Some author',
-            'problem_description' => 'Some nice description',
+            'problem_author' => 'Some author',
             'compare_type' => 'STRICT',
             'is_simple' => 'TRUE',
-            'time_limit' => 6,
-            'memory_limit' => 6,
-            'source_limit' => 6,
-            'fileIn' => 'in',
-            'fileOut' => 'out',
+            'time_constraint' => 6,
+            'memory_constraint' => 6,
+            'source_constraint' => 6,
+            'file_in' => 'in',
+            'file_out' => 'out', 
+            'user_user_id' => 1,
         );
 
         $mockTableGateway->expects($this->once())
                 ->method('update')
-                ->with($dataWithoutID, array('id' => 1));
+                ->with($dataWithoutID, array('problem_id' => 1));
 
         $problemTable = new ProblemTable($mockTableGateway);
         $problemTable->saveProblem($problem);
     }
 
+    /**
+     * @expectedException \Exception
+     */
     public function testExceptionIsThrownWhenGettingNonExistentProblem() {
         $resultSet = new ResultSet();
         $resultSet->setArrayObjectPrototype(new Problem());
@@ -155,19 +156,10 @@ class ProblemTableTest extends PHPUnit_Framework_TestCase {
         $mockTableGateway = $this->getMock('Zend\Db\TableGateway\TableGateway', array('select'), array(), '', false);
         $mockTableGateway->expects($this->once())
                 ->method('select')
-                ->with(array('id' => 1))
+                ->with(array('problem_id' => 1))
                 ->will($this->returnValue($resultSet));
 
         $problemTable = new ProblemTable($mockTableGateway);
-
-        try {
-            $problemTable->getProblem(1);
-        } catch (\Exception $e) {
-            $this->assertSame('Could not find row 1', $e->getMessage());
-            return;
-        }
-
-        $this->fail('Expected exception was not thrown');
+        $problemTable->getProblem(1);
     }
-
 }
