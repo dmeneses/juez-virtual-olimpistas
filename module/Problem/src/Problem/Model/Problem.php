@@ -43,13 +43,13 @@ class Problem implements InputFilterAwareInterface {
         $this->is_simple = (!empty($data['is_simple'])) ? $data['is_simple'] : null;
         $this->compare_type = (!empty($data['compare_type'])) ? $data['compare_type'] : null;
 
-        if (is_array($data['file_in'])) {
+        if (isset($data['file_in']) && is_array($data['file_in'])) {
             $this->file_in = (!empty($data['file_in'])) ? $data['file_in']['tmp_name'] : null;
         } else {
             $this->file_in = (!empty($data['file_in'])) ? $data['file_in'] : null;
         }
 
-        if (is_array($data['file_out'])) {
+        if (isset($data['file_out']) && is_array($data['file_out'])) {
             $this->file_out = (!empty($data['file_out'])) ? $data['file_out']['tmp_name'] : null;
         } else {
             $this->file_out = (!empty($data['file_out'])) ? $data['file_out'] : null;
