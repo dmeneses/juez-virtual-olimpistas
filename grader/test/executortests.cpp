@@ -22,9 +22,12 @@ TEST(Executor, ExecuteCPPApp)
     ASSERT_TRUE(isExecutable(OUTPUT_PATH_CPP));
     ASSERT_EQ(SUCCESS, compileOutput.getStatus());
     
+    SolutionAttempt solution;
+    solution.constraint.memory = 200;
+    solution.constraint.time = 2;
     StageOutput executeOutput;
     Executor executor(OUTPUT_PATH_CPP, INPUT_FILE, OUTPUT_FILE);
-    executor.execute(executeOutput, Constraint(0,5));
+    executor.execute(executeOutput, solution);
     
     ASSERT_TRUE(exist(OUTPUT_FILE));
     ASSERT_EQ(SUCCESS, executeOutput.getStatus());
