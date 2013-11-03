@@ -15,7 +15,7 @@ INCLUDES = -I../src \
            -I../third-party/GTest-1.7.0/Include
 
 #library paths
-LIBS = -L/user/local/lib -L../src -L../third-party/GTest-1.7.0/Lib/ -lvjgrader -lgtest
+LIBS = -L/user/local/lib -L../src -L../third-party/GTest-1.7.0/Lib/ -lvjgrader -lgtest -lglog
 
 #Compiler flags
 CCFLAGS = -fPIC -g -Wall -pthread

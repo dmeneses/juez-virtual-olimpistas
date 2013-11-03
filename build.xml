@@ -4,19 +4,13 @@
     <target name="build" depends="prepare,lint,phpunit,phpcs-ci,phpmd-ci,phpcpd,phploc,pdepend,phpdox"/>
  
     <target name="clean" description="Cleanup build artifacts">
-        <delete dir="${basedir}/build/coverage/report"/>
-        <delete dir="${basedir}/build/coverage"/>
-        <delete dir="${basedir}/build/docs"/>
-        <delete dir="${basedir}/build/logs"/>
-        <delete dir="${basedir}/build/pdepend"/>
+        <delete dir="${basedir}/build/app_coverage"/>
+        <delete dir="${basedir}/build/pro_coverage"/>
     </target>
 
     <target name="prepare" depends="clean" description="Prepare for build">
-        <mkdir dir="${basedir}/build/coverage"/>
-        <mkdir dir="${basedir}/build/coverage/report"/>
-        <mkdir dir="${basedir}/build/docs"/>
-        <mkdir dir="${basedir}/build/logs"/>
-        <mkdir dir="${basedir}/build/pdepend"/>
+        <mkdir dir="${basedir}/build/app_coverage"/>
+        <mkdir dir="${basedir}/build/pro_coverage"/>
     </target>
 
     <target name="lint" description="Perform syntax check of sourcecode files">
