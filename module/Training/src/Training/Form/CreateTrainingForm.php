@@ -6,6 +6,11 @@ use Zend\InputFilter\Input;
 use Zend\Form\Form;
 use Zend\Form\Element;
 use Training\Model\DateValidator;
+use Training\Model\DateValidationType;
+use Training\Model\Training;
+use Zend\InputFilter\InputFilter;
+use Zend\Validator\StringLength;
+use Zend\Validator\Db\NoRecordExists;
 
 class CreateTrainingForm extends Form {
 
@@ -36,37 +41,85 @@ class CreateTrainingForm extends Form {
         $this->add($submit);
     }
 
+    public function setDbAdapter($dbAdapter) {
+        $this->dbAdapter = $dbAdapter;
+    }
+
     public function isValid() {
-        $startDate = $this->get('start_date')->getValue();
+        $startDate = $this->get(Training::START)->getValue();
         $startTime = $this->get('start_time')->getValue();
-
-        if (isset($startDate)) {
-            $validator = new DateValidator();
-            $validator->setToken($startDate);
-            $validator->setCompare(true);
-            $validator->setMessage(
-                    'Must be equal or later than start date.', DateValidator::NOT_LATER
-            );
-            $input = new Input('end_date');
-            $input->getValidatorChain()
-                    ->addValidator($validator);
-            $this->getInputFilter()->add($input);
-        }
-
-        if (isset($startTime)) {
-            $validator = new DateValidator();
-            $validator->setToken($startTime);
-            $validator->setCompare(true);
-            $validator->setMessage(
-                    'Must be equal or later than start time.', DateValidator::NOT_LATER
-            );
-            $input = new Input('end_time');
-            $input->getValidatorChain()
-                    ->addValidator($validator);
-            $this->getInputFilter()->add($input);
-        }
-
+        $endDate = $this->get('end_date')->getValue();
+        $inputFilter = new InputFilter();
+        $inputFilter->add($this->getNameInput());
+        $inputFilter->add($this->getStartDateInput());
+        $inputFilter->add($this->getEndDateInput($startDate));
+        $inputFilter->add($this->getStartTimeInput($startDate));
+        $inputFilter->add($this->getEndTimeInput($startDate, $startTime, $endDate));
+        $this->setInputFilter($inputFilter);
         return parent::isValid();
     }
 
+    private function getNameInput() {
+        $lengthValidator = new StringLength(array('min' => 3, 'max' => 50));
+        $dbValidator = new NoRecordExists(array('table' => 'training', 'field' => 'training_name', 'adapter' => $this->dbAdapter,));
+        $dbValidator->setMessage("El entrenamiento ya existe.", NoRecordExists::ERROR_RECORD_FOUND);
+        $nameInput = new Input(Training::NAME);
+        $nameInput->getValidatorChain()
+                ->addValidator($lengthValidator)
+                ->addValidator($dbValidator);
+        $nameInput->getFilterChain()
+                ->attachByName('stringtrim');
+        return $nameInput;
+    }
+
+    private function getStartDateInput() {
+        $validator = new DateValidator();
+        $todayDate = date("Y-m-d");
+        $validator->setComparedDate($todayDate);
+        $validator->setCompareType(DateValidationType::LATER);
+        $validator->setMessage('Must be equal or later than current date.', DateValidator::NOT_LATER);
+        $input = new Input(Training::START);
+        $input->getValidatorChain()->addValidator($validator);
+        return $input;
+    }
+    
+    private function getEndDateInput($startDate) {
+        $validator = new DateValidator();
+        $validator->setComparedDate($startDate);
+        $validator->setCompareType(DateValidationType::LATER);
+        $validator->setMessage('Must be equal or later than start date.', DateValidator::NOT_LATER);
+        $input = new Input(Training::END);
+        $input->getValidatorChain()->addValidator($validator);
+        return $input;
+    }
+    
+    private function getEndTimeInput($startDate, $startTime, $endDate) {
+        $validator = new DateValidator();
+        $validator->setComparedDate($startDate);
+        $validator->setComparedTime($startTime);
+        $validator->setDate($endDate);
+        $validator->setCompareType(DateValidationType::LATER);
+        $validator->setIsTime(true);
+        $validator->setMessage('Must be equal or later than start time.', DateValidator::NOT_LATER);
+        $input = new Input(Training::END_T);
+        $input->getValidatorChain()
+                ->addValidator($validator);
+        return $input;
+    }
+    
+    private function getStartTimeInput($startDate) {
+        $todayDate = date("Y-m-d");
+        $todayTime = date("G:i");
+        $validator = new DateValidator();
+        $validator->setComparedDate($todayDate);
+        $validator->setComparedTime($todayTime);
+        $validator->setDate($startDate);
+        $validator->setCompareType(DateValidationType::LATER);
+        $validator->setIsTime(true);
+        $validator->setMessage('Must be equal or later than current time.', DateValidator::NOT_LATER);
+        $input = new Input(Training::START_T);
+        $input->getValidatorChain()
+                ->addValidator($validator);
+        return $input;
+    }
 }
