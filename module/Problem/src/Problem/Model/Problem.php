@@ -12,8 +12,10 @@ use Zend\Validator;
 use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\NotEmpty;
 use Zend\Validator\File\Extension;
-use Zend\Validator\File\UploadFile;
 
+/**
+ * Defines a problem for the virtual judge.
+ */
 class Problem implements InputFilterAwareInterface {
 
     public $problem_id;
@@ -195,5 +197,4 @@ class Problem implements InputFilterAwareInterface {
     public function setInputFilter(InputFilterInterface $inputFilter) {
         throw new \Exception("Not used");
     }
-
 }
