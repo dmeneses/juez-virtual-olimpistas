@@ -50,9 +50,8 @@ class TrainingController extends AbstractActionController {
 
         if ($request->isPost()) {
             $training = new Training();
-            $training->setDbAdapter($this->getTrainingTable()->getDbAdapter());
-            $form->setInputFilter($training->getInputFilter());
             $form->setData($request->getPost());
+            $form->setDbAdapter($this->getTrainingTable()->getDbAdapter());
 
             if ($form->isValid()) {
                 $training->exchangeArray($form->getData());
