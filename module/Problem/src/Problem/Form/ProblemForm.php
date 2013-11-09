@@ -4,6 +4,7 @@ namespace Problem\Form;
 
 use Zend\Form\Form;
 use Zend\Form\Element;
+use Problem\Form\TestCaseFieldset;
 
 class ProblemForm extends Form {
 
@@ -17,7 +18,7 @@ class ProblemForm extends Form {
 
         $author = new Element\Text('problem_author');
         $author->setAttribute('placeholder', 'Nombre del autor');
-        
+
         $mainDescription = new Element\File('main_description');
         $mainDescription->setAttribute('accept', '.tex');
         $inputDesc = new Element\File('input_description');
@@ -28,17 +29,30 @@ class ProblemForm extends Form {
         $inputExample->setAttribute('accept', '.tex');
         $outputExample = new Element\File('output_example');
         $outputExample->setAttribute('accept', '.tex');
-        
+
         $time = new Element\Text('time_constraint');
         $memory = new Element\Text('memory_constraint');
         $source = new Element\Text('source_constraint');
 
         $type = new Element\Radio('is_simple');
         $type->setValueOptions(array(
-            'TRUE' => 'Simple',
-            'FALSE' => 'Solucion Multiple',
-        ));       
+            'TRUE' => array(
+                'label' => 'Simple',
+                'value' => 'TRUE',
+                'attributes' => array(
+                    'id' => 'simple',
+                ),
+            ),
+            'FALSE' => array(
+                'label' => 'Solucion Multiple',
+                'value' => 'FALSE',
+                'attributes' => array(
+                    'id' => 'mult',
+                ),
+            ),
+        ));
         $type->setValue('TRUE');
+        $type->setAttribute('onclick', 'checkType()');
 
         $compareType = new Element\Radio('compare_type');
         $compareType->setValueOptions(array(
@@ -46,9 +60,13 @@ class ProblemForm extends Form {
             'TOKEN' => 'Omitir token',
         ));
         $compareType->setValue('STRICT');
-        
-        $fileIn = new Element\File('file_in');
-        $fileOut = new Element\File('file_out');
+
+        $tests = new Element\Collection('tests');
+        $tests->setLabel("Pruebas");
+        $tests->setCount(1);
+        $tests->allowAdd(true);
+        $tests->setShouldCreateTemplate(true);
+        $tests->setTargetElement(new TestCaseFieldset());
 
         $submit = new Element\Submit('submit');
         $submit->setValue('Proponer');
@@ -56,7 +74,7 @@ class ProblemForm extends Form {
 
         $this->add($problemID);
         $this->add($problemName);
-        $this->add($author);     
+        $this->add($author);
         $this->add($time);
         $this->add($memory);
         $this->add($source);
@@ -66,9 +84,9 @@ class ProblemForm extends Form {
         $this->add($inputExample);
         $this->add($outputExample);
         $this->add($type);
+        $this->add($tests);
         $this->add($compareType);
-        $this->add($fileIn);
-        $this->add($fileOut);
         $this->add($submit);
     }
+
 }

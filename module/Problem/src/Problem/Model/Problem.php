@@ -26,8 +26,6 @@ class Problem implements InputFilterAwareInterface {
     public $source_constraint;
     public $is_simple;
     public $compare_type;
-    public $file_in;
-    public $file_out;
     protected $inputFilter;
     protected $adapter;
 
@@ -44,18 +42,6 @@ class Problem implements InputFilterAwareInterface {
         $this->source_constraint = (!empty($data['source_constraint'])) ? $data['source_constraint'] : null;
         $this->is_simple = (!empty($data['is_simple'])) ? $data['is_simple'] : null;
         $this->compare_type = (!empty($data['compare_type'])) ? $data['compare_type'] : null;
-
-        if (isset($data['file_in']) && is_array($data['file_in'])) {
-            $this->file_in = (!empty($data['file_in'])) ? $data['file_in']['tmp_name'] : null;
-        } else {
-            $this->file_in = (!empty($data['file_in'])) ? $data['file_in'] : null;
-        }
-
-        if (isset($data['file_out']) && is_array($data['file_out'])) {
-            $this->file_out = (!empty($data['file_out'])) ? $data['file_out']['tmp_name'] : null;
-        } else {
-            $this->file_out = (!empty($data['file_out'])) ? $data['file_out'] : null;
-        }
     }
 
     public function getInputFilter() {
@@ -153,28 +139,6 @@ class Problem implements InputFilterAwareInterface {
                         'randomize' => true,
             )));
 
-            $fileInExtValidator = new Extension(array('txt', 'in'));
-            $fileIn = new FileInput('file_in');
-            $fileIn->getValidatorChain()
-                    ->addValidator(new Validator\File\UploadFile())
-                    ->addValidator($fileInExtValidator);
-            $fileIn->getFilterChain()
-                    ->attach(new Filter\File\RenameUpload(array(
-                        'target' => './data/problems/fileIn',
-                        'randomize' => true,
-            )));
-
-            $fileOutExtValidator = new Extension(array('txt', 'out'));
-            $fileOut = new FileInput('file_out');
-            $fileOut->getValidatorChain()
-                    ->addValidator(new Validator\File\UploadFile())
-                    ->addValidator($fileOutExtValidator);
-            $fileOut->getFilterChain()
-                    ->attach(new Filter\File\RenameUpload(array(
-                        'target' => './data/problems/fileOut',
-                        'randomize' => true,
-            )));
-
             $inputFilter->add($nameValidator);
             $inputFilter->add($authorValidator);
             $inputFilter->add($timeValidator);
@@ -185,9 +149,7 @@ class Problem implements InputFilterAwareInterface {
             $inputFilter->add($outputDesc);
             $inputFilter->add($inputExample);
             $inputFilter->add($outputExample);
-            $inputFilter->add($fileIn);
-            $inputFilter->add($fileOut);
-
+            
             $this->inputFilter = $inputFilter;
         }
 

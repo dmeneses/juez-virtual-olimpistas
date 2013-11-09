@@ -39,8 +39,6 @@ class ProblemTable {
             'source_constraint' => $problem->source_constraint,
             'is_simple' => $problem->is_simple,
             'compare_type' => $problem->compare_type,
-            'file_in' => $problem->file_in,
-            'file_out' => $problem->file_out,
             'user_user_id' => 1,
         );
 

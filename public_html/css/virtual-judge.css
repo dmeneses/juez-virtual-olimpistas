@@ -247,3 +247,20 @@ table tbody tr td{
 .p {
     padding: 5px;
 }
+form fieldset {
+    margin-left: 100px;
+    width: 400px;
+    border-style: dotted;
+}
+form fieldset fieldset {
+    margin-left: 0px;
+    border-style: double;
+}
+form fieldset fieldset label{
+    display: block;
+    text-align: left;
+}
+form fieldset fieldset span{
+    float: left;
+    width: 70px;
+}
