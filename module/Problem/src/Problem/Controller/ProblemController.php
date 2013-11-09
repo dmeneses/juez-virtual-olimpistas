@@ -8,6 +8,7 @@ use Problem\Model\Problem;
 use Problem\Form\ProblemForm;
 use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\DbTableGateway;
+use Zend\Debug\Debug;
 
 class ProblemController extends AbstractActionController {
 
