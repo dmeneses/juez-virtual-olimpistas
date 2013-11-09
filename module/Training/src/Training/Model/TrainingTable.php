@@ -59,7 +59,7 @@ class TrainingTable {
         if ($id == 0) {
             $this->tableGateway->insert($data);
         } else {
-            if ($this->getTraining($id)) {
+            if ($this->get($id)) {
                 $this->tableGateway->update($data, array('training_id' => $id));
             } else {
                 throw new \Exception('Training id does not exist');
