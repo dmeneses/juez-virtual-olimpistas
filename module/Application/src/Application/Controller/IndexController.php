@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -16,11 +17,6 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        $layout = $this->layout();
-        $sidebarView = new ViewModel();
-        $sidebarView->setTemplate('content/sidebar');
-        $layout->addChild($sidebarView, 'sidebar');
-
         return new ViewModel();
     }
 }
