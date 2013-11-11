@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -11,6 +12,7 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Application\View\Helper\SidebarWidget;
 
 class Module
 {
@@ -34,6 +36,16 @@ class Module
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
             ),
+        );
+    }
+
+    public function getViewHelperConfig() {
+        return array(
+            'factories' => array(
+                'sidebar' => function ($serviceManager) {
+                    return new SidebarWidget();
+                }   
+            )
         );
     }
 }
