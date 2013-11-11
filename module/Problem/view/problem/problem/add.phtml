@@ -7,11 +7,11 @@ $form->prepare();
 ?>
 <script type="text/javascript">
     function addTest() {
-        var currentCount = $('form > div > fieldset > fieldset').length;
-        var template = $('form > div > fieldset > span').data('template');
+        var currentCount = $('form > fieldset > fieldset').length;
+        var template = $('form > fieldset > span').data('template');
         template = template.replace(/__index__/g, currentCount);
 
-        $('form > div > fieldset').append(template);
+        $('form > fieldset').append(template);
 
         return false;
     }
@@ -21,6 +21,10 @@ $form->prepare();
             document.getElementById('addTestCase').hidden = false;
         } else {
             document.getElementById('addTestCase').hidden = true;
+            $('form > fieldset > fieldset').remove();
+            var template = $('form > fieldset > span').data('template');
+            template = template.replace(/__index__/g, 0);
+            $('form > fieldset').append(template);
         }
     }
 </script>
@@ -113,9 +117,7 @@ $form->prepare();
             </td>
         </tr>
     </table>
-    <div id="allTests">
-        <?php echo $this->formCollection($form->get('tests')); ?>
-    </div>
+    <?php echo $this->formCollection($form->get('tests')); ?>
     <table>
         <tr><td style="padding-top: 10px"/></tr>
         <tr>

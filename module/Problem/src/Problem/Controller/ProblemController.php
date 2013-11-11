@@ -50,6 +50,7 @@ class ProblemController extends AbstractActionController {
 
             if ($form->isValid()) {
                 $data = $form->getData();
+                Debug::dump($data);
                 $problem->exchangeArray($data);
                 $this->getProblemTable()->saveProblem($problem);
                 
