@@ -2,7 +2,9 @@
 namespace Problem;
 
 use Problem\Model\Problem;
+use Problem\Model\TestCase;
 use Problem\Model\ProblemTable;
+use Problem\Model\TestCaseTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
@@ -37,11 +39,22 @@ class Module
                     $table = new ProblemTable($tableGateway);
                     return $table;
                 },
+                'Problem\Model\TestCaseTable' =>  function($sm) {
+                    $tableGateway = $sm->get('TestCaseTableGateway');
+                    $table = new TestCaseTable($tableGateway);
+                    return $table;
+                },
                 'ProblemTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Problem());
                     return new TableGateway('problem', $dbAdapter, null, $resultSetPrototype);
+                },
+                'TestCaseTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new TestCase());
+                    return new TableGateway('test_case', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

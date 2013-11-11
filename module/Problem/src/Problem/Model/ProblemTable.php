@@ -9,11 +9,20 @@ use Zend\Db\ResultSet\ResultSet;
 class ProblemTable {
 
     protected $tableGateway;
+    private $testCaseTable;
 
     public function __construct(TableGateway $tableGateway) {
         $this->tableGateway = $tableGateway;
     }
+    
+    public function getTestCaseTable() {
+        return $this->testCaseTable;
+    }
 
+    public function setTestCaseTable($testCaseTable) {
+        $this->testCaseTable = $testCaseTable;
+    }
+    
     public function fetchAll() {
         $resultSet = $this->tableGateway->select();
         return $resultSet;
@@ -46,6 +55,10 @@ class ProblemTable {
         if ($id == 0) {
             $this->tableGateway->insert($data);
             $problem->problem_id = $this->tableGateway->getLastInsertValue();
+            for ($index = 0; $index < count($problem->tests); $index++) {
+                $problem->tests[$index]->problem_id = $problem->problem_id;
+                $this->testCaseTable->save($problem->tests[$index]);
+            }
         } else {
             if ($this->getProblem($id)) {
                 $this->tableGateway->update($data, array('problem_id' => $id));
