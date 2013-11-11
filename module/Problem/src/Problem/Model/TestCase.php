@@ -8,68 +8,58 @@ namespace Problem\Model;
  * @author dann
  */
 class TestCase {
+
+    const ID = 'test_id';
+    const IN = 'test_in';
+    const OUT = 'test_out';
+    const POINTS = 'test_points';
+    const PROBLEM = 'problem_problem_id';
+
     /**
      * Test case id.
      * @var int
      */
-    private $test_id;
+    public $test_id;
+
     /**
      * Input test file.
      * @var string
      */
-    private $test_in;
+    public $test_in;
+
     /**
      * Output test file.
      * @var string
      */
-    private $test_out;
+    public $test_out;
+
     /**
      * Point that will be given if the test pass.
      * @var int
      */
-    private $test_points;
-    
-    public function getTest_id() {
-        return $this->test_id;
+    public $test_points;
+
+    /**
+     * Problem that owns this test case.
+     * 
+     * @var int
+     */
+    public $problem_id;
+
+    public function exchangeArray(array $data) {
+        $this->test_id = (!empty($data[self::ID])) ? $data[self::ID] : null;
+        $this->test_points = (!empty($data[self::POINTS])) ? $data[self::POINTS] : null;
+        $this->test_in = $this->getFileName($data[self::IN]);
+        $this->test_out = $this->getFileName($data[self::OUT]);
     }
 
-    public function getTest_in() {
-        return $this->test_in;
+    public function getFileName($fileInfo) {
+        $filename = '';
+        if ($fileInfo != null && is_array($fileInfo)) {
+            $filename = (!empty($fileInfo)) ? $fileInfo['tmp_name'] : null;
+        } else {
+            $filename = (!empty($fileInfo)) ? $fileInfo : null;
+        }
+        return $filename;
     }
-
-    public function getTest_out() {
-        return $this->test_out;
-    }
-
-    public function getTest_points() {
-        return $this->test_points;
-    }
-
-    public function setTest_id($test_id) {
-        $this->test_id = $test_id;
-    }
-
-    public function setTest_in($test_in) {
-        $this->test_in = $test_in;
-    }
-
-    public function setTest_out($test_out) {
-        $this->test_out = $test_out;
-    }
-
-    public function setTest_points($test_points) {
-        $this->test_points = $test_points;
-    }
-
-// if (isset($data['file_in']) && is_array($data['file_in'])) {
-//            $this->file_in = (!empty($data['file_in'])) ? $data['file_in']['tmp_name'] : null;
-//        } else {
-//            $this->file_in = (!empty($data['file_in'])) ? $data['file_in'] : null;
-//        }
-//
-//        if (isset($data['file_out']) && is_array($data['file_out'])) {
-//            $this->file_out = (!empty($data['file_out'])) ? $data['file_out']['tmp_name'] : null;
-//        } else {
-//            $this->file_out = (!empty($data['file_out'])) ? $data['file_out'] : null;
-//        }
 }

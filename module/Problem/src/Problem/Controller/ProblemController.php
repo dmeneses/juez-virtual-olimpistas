@@ -8,7 +8,6 @@ use Problem\Model\Problem;
 use Problem\Form\ProblemForm;
 use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\DbTableGateway;
-use Zend\Debug\Debug;
 
 class ProblemController extends AbstractActionController {
 
@@ -32,6 +31,7 @@ class ProblemController extends AbstractActionController {
         if (!$this->problemTable) {
             $sm = $this->getServiceLocator();
             $this->problemTable = $sm->get('Problem\Model\ProblemTable');
+            $this->problemTable->setTestCaseTable($sm->get('Problem\Model\TestCaseTable'));
         }
         return $this->problemTable;
     }
@@ -45,9 +45,7 @@ class ProblemController extends AbstractActionController {
             $problem->setDatabaseAdapter($this->getProblemTable()->getAdapter());
             $form->setInputFilter($problem->getInputFilter());
             $post = array_merge_recursive($request->getPost()->toArray(), $request->getFiles()->toArray());
-            $result = $this->mergeFiles($post['tests']);
-            unset($post['tests']);
-            $post['tests'] = $result;
+            $post['tests'] = $this->mergeFiles($post['tests']);
             $form->setData($post);
 
             if ($form->isValid()) {
@@ -65,14 +63,13 @@ class ProblemController extends AbstractActionController {
     private function mergeFiles(array $files) {
         $middle = count($files) / 2;
         $result = array();
-
+        
         for ($index = 0; $index < $middle; $index++) {
             $filesToMerge = $files[$index + $middle];
             $dataToMerge = $files[$index];
             $merged = array_merge($dataToMerge, $filesToMerge);
             array_push($result, $merged);
         }
-
         return $result;
     }
 

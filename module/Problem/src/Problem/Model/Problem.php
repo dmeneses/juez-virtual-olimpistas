@@ -12,6 +12,7 @@ use Zend\Validator;
 use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\NotEmpty;
 use Zend\Validator\File\Extension;
+use Problem\Model\TestCase;
 
 /**
  * Defines a problem for the virtual judge.
@@ -26,6 +27,7 @@ class Problem implements InputFilterAwareInterface {
     public $source_constraint;
     public $is_simple;
     public $compare_type;
+    public $tests;
     protected $inputFilter;
     protected $adapter;
 
@@ -36,12 +38,28 @@ class Problem implements InputFilterAwareInterface {
     public function exchangeArray($data) {
         $this->problem_id = (!empty($data['problem_id'])) ? $data['problem_id'] : null;
         $this->problem_name = (!empty($data['problem_name'])) ? $data['problem_name'] : null;
-        $this->problem_author = (!empty($data['problem_author'])) ? $data['problem_author'] : null;      
+        $this->problem_author = (!empty($data['problem_author'])) ? $data['problem_author'] : null;
         $this->time_constraint = (!empty($data['time_constraint'])) ? $data['time_constraint'] : null;
         $this->memory_constraint = (!empty($data['memory_constraint'])) ? $data['memory_constraint'] : null;
         $this->source_constraint = (!empty($data['source_constraint'])) ? $data['source_constraint'] : null;
         $this->is_simple = (!empty($data['is_simple'])) ? $data['is_simple'] : null;
         $this->compare_type = (!empty($data['compare_type'])) ? $data['compare_type'] : null;
+        if (isset($data['tests'])) {
+            $this->exchangeTests($data['tests']);
+        }
+    }
+
+    public function exchangeTests(array $testsToAdd) {
+        if (!is_array($testsToAdd)) {
+            throw \Exception("Tests for problem are missing.");
+        }
+
+        $this->tests = array();
+        foreach ($testsToAdd as &$test) {
+            $testCase = new TestCase();
+            $testCase->exchangeArray($test);
+            array_push($this->tests, $testCase);
+        }
     }
 
     public function getInputFilter() {
@@ -149,7 +167,7 @@ class Problem implements InputFilterAwareInterface {
             $inputFilter->add($outputDesc);
             $inputFilter->add($inputExample);
             $inputFilter->add($outputExample);
-            
+
             $this->inputFilter = $inputFilter;
         }
 
@@ -159,4 +177,5 @@ class Problem implements InputFilterAwareInterface {
     public function setInputFilter(InputFilterInterface $inputFilter) {
         throw new \Exception("Not used");
     }
+
 }
