@@ -45,20 +45,35 @@ class ProblemController extends AbstractActionController {
             $problem->setDatabaseAdapter($this->getProblemTable()->getAdapter());
             $form->setInputFilter($problem->getInputFilter());
             $post = array_merge_recursive($request->getPost()->toArray(), $request->getFiles()->toArray());
-
+            $result = $this->mergeFiles($post['tests']);
+            unset($post['tests']);
+            $post['tests'] = $result;
             $form->setData($post);
 
             if ($form->isValid()) {
                 $data = $form->getData();
-                Debug::dump($data);
                 $problem->exchangeArray($data);
                 $this->getProblemTable()->saveProblem($problem);
-                
+
                 $this->buildProblemView($problem->problem_id, $data);
                 return $this->redirect()->toRoute('problem');
             }
         }
         return array('form' => $form,);
+    }
+
+    private function mergeFiles(array $files) {
+        $middle = count($files) / 2;
+        $result = array();
+
+        for ($index = 0; $index < $middle; $index++) {
+            $filesToMerge = $files[$index + $middle];
+            $dataToMerge = $files[$index];
+            $merged = array_merge($dataToMerge, $filesToMerge);
+            array_push($result, $merged);
+        }
+
+        return $result;
     }
 
     private function buildProblemView($id, $data) {
@@ -69,20 +84,20 @@ class ProblemController extends AbstractActionController {
         $in_example = (!empty($data['input_example'])) ? $data['input_example']['tmp_name'] : null;
         $out_example = (!empty($data['output_example'])) ? $data['output_example']['tmp_name'] : null;
         $descriptionOutput = './data/problems/descriptions/problem' . $id . '.html';
-        
+
         $command = './runLatexConverter ';
         $command .= $mainDesc . ' ';
         $command .= $input . ' ';
         $command .= $output . ' ';
         $command .= $in_example . ' ';
         $command .= $out_example . ' ';
-        $command .= $descriptionOutput. ' ';
+        $command .= $descriptionOutput . ' ';
         $command .= $id . ' ';
-        $command .= '"' . $data['problem_name']. '" ';
-        $command .= '"' . $data['problem_author']. '" ';
-        $command .= $data['memory_constraint']. ' ';
-        $command .= $data['time_constraint']. ' ';
-        $command .= $data['source_constraint']. ' ';
+        $command .= '"' . $data['problem_name'] . '" ';
+        $command .= '"' . $data['problem_author'] . '" ';
+        $command .= $data['memory_constraint'] . ' ';
+        $command .= $data['time_constraint'] . ' ';
+        $command .= $data['source_constraint'] . ' ';
         exec($command . ' > /tmp/holas');
     }
 

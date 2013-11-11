@@ -7,6 +7,9 @@ use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 use Zend\Form\Element;
+use Zend\Validator\File\Extension;
+use Zend\Validator\File\UploadFile;
+use Zend\Filter\File\RenameUpload;
 
 /**
  * Defines fieldset for each test case.
@@ -25,7 +28,7 @@ class TestCaseFieldset extends Fieldset implements InputFilterProviderInterface 
         $this->setLabel('Caso de Prueba');
 
         $testID = new Element\Hidden('test_id');
-        $fileIn = new Element\File('test_in');  
+        $fileIn = new Element\File('test_in');
         $fileIn->setLabel('Entrada');
         $fileOut = new Element\File('test_out');
         $fileOut->setLabel('Salida');
@@ -42,7 +45,34 @@ class TestCaseFieldset extends Fieldset implements InputFilterProviderInterface 
      * @return array
      */
     public function getInputFilterSpecification() {
-        return array();
+        return array(
+            'test_points' => array(
+                'required' => true,
+            ),
+            'test_in' => array(
+                'type'=> 'Zend\InputFilter\FileInput',
+                'validators' => array(
+                    new UploadFile(),
+                    new Extension(array('txt', 'in')),
+                ),
+                'filters' => array(
+                    new RenameUpload(array(
+                        'target' => 'data/problems/fileIn',
+                        'randomize' => true,))
+                ),
+            ),
+            'test_out' => array(
+                'type' => 'Zend\InputFilter\FileInput',
+                'validators' => array(
+                    new UploadFile(),
+                    new Extension(array('txt', 'out')),
+                ),
+                'filters' => array(
+                    new RenameUpload(array(
+                        'target' => 'data/problems/fileOut',
+                        'randomize' => true,))
+                ),                
+            ),
+        );
     }
-
 }

@@ -65,6 +65,7 @@ class ProblemForm extends Form {
         $tests->setLabel("Pruebas");
         $tests->setCount(1);
         $tests->allowAdd(true);
+        $tests->allowRemove(true);
         $tests->setShouldCreateTemplate(true);
         $tests->setTargetElement(new TestCaseFieldset());
 
