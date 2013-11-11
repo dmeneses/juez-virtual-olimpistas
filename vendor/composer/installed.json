@@ -1,17 +1,61 @@
 [
     {
-        "name": "zendframework/zendframework",
-        "version": "2.2.4",
-        "version_normalized": "2.2.4.0",
+        "name": "zendframework/zendpdf",
+        "version": "2.0.2",
+        "version_normalized": "2.0.2.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/zendframework/zf2.git",
-            "reference": "5b03d868755c181fc9b5dc56c1f8c26e73ca0bed"
+            "url": "https://github.com/zendframework/ZendPdf.git",
+            "reference": "041f90c339cff63a3c4d03a28ef1ea5188059793"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zendframework/zf2/zipball/5b03d868755c181fc9b5dc56c1f8c26e73ca0bed",
-            "reference": "5b03d868755c181fc9b5dc56c1f8c26e73ca0bed",
+            "url": "https://api.github.com/repos/zendframework/ZendPdf/zipball/041f90c339cff63a3c4d03a28ef1ea5188059793",
+            "reference": "041f90c339cff63a3c4d03a28ef1ea5188059793",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3",
+            "zendframework/zend-memory": ">=2.0.0",
+            "zendframework/zend-stdlib": ">=2.0.0"
+        },
+        "time": "2012-11-16 11:16:01",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "ZendPdf\\": "library/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "Zend Pdf Component",
+        "homepage": "http://packages.zendframework.com/",
+        "keywords": [
+            "pdf",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zendframework",
+        "version": "2.2.5",
+        "version_normalized": "2.2.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zf2.git",
+            "reference": "4a7cf6a4cf791244e14aa0ca49d1f06916b63202"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/zf2/zipball/4a7cf6a4cf791244e14aa0ca49d1f06916b63202",
+            "reference": "4a7cf6a4cf791244e14aa0ca49d1f06916b63202",
             "shasum": ""
         },
         "require": {
@@ -72,6 +116,7 @@
         },
         "require-dev": {
             "doctrine/annotations": ">=1.0",
+            "fabpot/php-cs-fixer": "*@dev",
             "ircmaxell/random-lib": "dev-master",
             "ircmaxell/security-lib": "dev-master",
             "ocramius/proxy-manager": "0.4.*",
@@ -85,7 +130,7 @@
             "zendframework/zendpdf": "ZendPdf for creating PDF representations of barcodes",
             "zendframework/zendservice-recaptcha": "ZendService\\ReCaptcha for rendering ReCaptchas in Zend\\Captcha and/or Zend\\Form"
         },
-        "time": "2013-08-26 15:09:04",
+        "time": "2013-10-31 15:48:16",
         "bin": [
             "bin/classmap_generator.php",
             "bin/pluginmap_generator.php",
@@ -112,50 +157,6 @@
         "homepage": "http://framework.zend.com/",
         "keywords": [
             "framework",
-            "zf2"
-        ]
-    },
-    {
-        "name": "zendframework/zendpdf",
-        "version": "2.0.2",
-        "version_normalized": "2.0.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zendframework/ZendPdf.git",
-            "reference": "041f90c339cff63a3c4d03a28ef1ea5188059793"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/zendframework/ZendPdf/zipball/041f90c339cff63a3c4d03a28ef1ea5188059793",
-            "reference": "041f90c339cff63a3c4d03a28ef1ea5188059793",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3",
-            "zendframework/zend-memory": ">=2.0.0",
-            "zendframework/zend-stdlib": ">=2.0.0"
-        },
-        "time": "2012-11-16 11:16:01",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "ZendPdf\\": "library/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "description": "Zend Pdf Component",
-        "homepage": "http://packages.zendframework.com/",
-        "keywords": [
-            "pdf",
             "zf2"
         ]
     }
