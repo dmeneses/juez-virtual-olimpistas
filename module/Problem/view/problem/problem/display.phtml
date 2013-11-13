@@ -10,4 +10,6 @@ $this->headTitle($title);
     <br/>
     <a href="<?php echo $this->url('solution', array('action' => 'add', 'id' => $problemData->problem_id)); ?>"
        class="button">Subir Solucion</a>
+    <a href="<?php echo $this->url('problem', array('action' => 'solutions', 'id' => $problemData->problem_id)); ?>"
+       class="button">Soluciones Subidas</a>
 </div>

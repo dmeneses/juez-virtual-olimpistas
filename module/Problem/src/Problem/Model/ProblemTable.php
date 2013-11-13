@@ -4,6 +4,7 @@ namespace Problem\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Predicate\In;
 use Zend\Db\ResultSet\ResultSet;
 
 class ProblemTable {
@@ -14,7 +15,7 @@ class ProblemTable {
     public function __construct(TableGateway $tableGateway) {
         $this->tableGateway = $tableGateway;
     }
-    
+
     public function getTestCaseTable() {
         return $this->testCaseTable;
     }
@@ -22,7 +23,7 @@ class ProblemTable {
     public function setTestCaseTable($testCaseTable) {
         $this->testCaseTable = $testCaseTable;
     }
-    
+
     public function fetchAll() {
         $resultSet = $this->tableGateway->select();
         return $resultSet;
@@ -67,7 +68,7 @@ class ProblemTable {
             }
         }
     }
-    
+
     public function getProblemsByTraining($trainingID) {
         $select = new Select;
         $select->from(array('p' => 'problem',))
@@ -83,6 +84,15 @@ class ProblemTable {
         return $resultSet;
     }
 
+    public function getProblemSolutions($id) {
+        $sql = "SELECT s.*, u.name, u.lastname FROM solution s, user u WHERE problem_problem_id = 1 
+                AND user_user_id = user_id AND (user_user_id, grade) IN
+                ( SELECT user_user_id, MAX(grade)  FROM solution  GROUP BY user_user_id)";
+        $resultSet = $this->getAdapter()->query($sql, \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+
+        return $resultSet;
+    }
+
     public function getAdapter() {
         return $this->tableGateway->getAdapter();
     }
@@ -90,4 +100,5 @@ class ProblemTable {
     public function getTableGateway() {
         return $this->tableGateway;
     }
+
 }
