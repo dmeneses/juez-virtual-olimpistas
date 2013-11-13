@@ -63,7 +63,7 @@ class ProblemController extends AbstractActionController {
     private function mergeFiles(array $files) {
         $middle = count($files) / 2;
         $result = array();
-        
+
         for ($index = 0; $index < $middle; $index++) {
             $filesToMerge = $files[$index + $middle];
             $dataToMerge = $files[$index];
@@ -118,4 +118,23 @@ class ProblemController extends AbstractActionController {
         ));
     }
 
+    public function solutionsAction() {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('problem', array(
+                        'action' => 'add'
+            ));
+        }
+        try {
+            $solutions = $this->getProblemTable()->getProblemSolutions($id);
+        } catch (\Exception $ex) {
+            var_dump($ex);
+            var_dump($solutions);
+            //return $this->redirect()->toRoute('problem');
+        }
+
+        return new ViewModel(array(
+            'solutions' => $solutions,
+        ));
+    }
 }
