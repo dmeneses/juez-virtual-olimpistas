@@ -33,32 +33,34 @@ function getFormattedTime($time) {
         </tr>
     </table>
     <?php
-    echo $this->form()->openTag($problemForm);
-    echo $this->formHidden($problemForm->get('training_id'));
-    ?>
-    <h2>Agregar problema</h2>
-    <table>	      
-        <tr>
-            <td><?php echo $this->formInput($problemForm->get('problem_id')); ?></td>
-            <td><?php echo $this->formSubmit($problemForm->get('addProblem')); ?></td>
-            <td><?php echo $this->formElementErrors($problemForm->get('problem_id')); ?></td>
-        </tr>
-    </table>
-    <?php
-    echo $this->form()->closeTag();
-    echo $this->form()->openTag($groupForm);
-    echo $this->formHidden($groupForm->get('training_id'));
-    ?>
-    <h2>Agregar grupo</h2>
-    <table>
-        <tr>
-            <td><?php echo $this->formInput($groupForm->get('group_id')); ?></td>
-            <td><?php echo $this->formSubmit($groupForm->get('addGroup')); ?></td>
-            <td><?php echo $this->formElementErrors($groupForm->get('group_id')); ?></td>
-        </tr>
-    </table>
-    <?php
-    echo $this->form()->closeTag();
+    if ($isOwner) {
+        echo $this->form()->openTag($problemForm);
+        echo $this->formHidden($problemForm->get('training_id'));
+        ?>
+        <h2>Agregar problema</h2>
+        <table>	      
+            <tr>
+                <td><?php echo $this->formInput($problemForm->get('problem_id')); ?></td>
+                <td><?php echo $this->formSubmit($problemForm->get('addProblem')); ?></td>
+                <td><?php echo $this->formElementErrors($problemForm->get('problem_id')); ?></td>
+            </tr>
+        </table>
+        <?php
+        echo $this->form()->closeTag();
+        echo $this->form()->openTag($groupForm);
+        echo $this->formHidden($groupForm->get('training_id'));
+        ?>
+        <h2>Agregar grupo</h2>
+        <table>
+            <tr>
+                <td><?php echo $this->formInput($groupForm->get('group_id')); ?></td>
+                <td><?php echo $this->formSubmit($groupForm->get('addGroup')); ?></td>
+                <td><?php echo $this->formElementErrors($groupForm->get('group_id')); ?></td>
+            </tr>
+        </table>
+        <?php
+        echo $this->form()->closeTag();
+    }
     ?>
     <center>
         <h2>Problemas Disponibles</h2>

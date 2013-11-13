@@ -80,7 +80,7 @@ class TrainingTable {
         $statement = $sql->prepareStatementForSqlObject($insert);
         $statement->execute();
     }
-    
+
     public function addGroup($trainingID, $groupID) {
         $dbAdapter = $this->tableGateway->getAdapter();
         $sql = new Sql($dbAdapter);
@@ -103,5 +103,17 @@ class TrainingTable {
         ));
 
         return $dbValidator->isValid($trainingID);
+    }
+
+    public function getUserID($email) {
+        $select = new Select;
+        $select->columns(array('user_id'));
+        $select->from(array('u' => 'user',));
+        $select->where(array('u.email' => $email,));
+        $statement = $this->tableGateway->getAdapter()->createStatement();
+        $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
+        $resultSet = new ResultSet();
+        $resultSet->initialize($statement->execute());
+        return $resultSet->current()['user_id'];
     }
 }
