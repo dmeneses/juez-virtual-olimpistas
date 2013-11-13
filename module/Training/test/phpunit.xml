@@ -4,6 +4,7 @@
     <testsuites>
         <testsuite name="Training">
             <directory>./TrainingTest</directory>
+            <file>./TrainingTest/Functionals/TrainingFunctionalityTest.php</file>
         </testsuite>
     </testsuites>
     

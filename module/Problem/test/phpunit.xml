@@ -4,7 +4,7 @@
     <testsuites>
         <testsuite name="Problem">
             <directory>./ProblemTest</directory>
-            <file>./ProblemTest/Functionals/ProblemFunctionalityTest</file>
+            <file>./ProblemTest/Functionals/ProblemFunctionalityTest.php</file>
         </testsuite>
     </testsuites>
     

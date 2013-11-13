@@ -50,18 +50,6 @@ class TrainingTableTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function testFetchAllReturnsAllTrainings() {
-        $resultSet = new ResultSet();
-        $mockTableGateway = $this->getMock('Zend\Db\TableGateway\TableGateway', array('select'), array(), '', false);
-        $mockTableGateway->expects($this->once())
-                ->method('select')
-                ->with()
-                ->will($this->returnValue($resultSet));
-
-        $TrainingTable = new TrainingTable($mockTableGateway);
-        $this->assertSame($resultSet, $TrainingTable->fetchAll());
-    }
-
     public function testCanRetrieveAnTrainingByItsId() {
         $training = $this->getTraining(self::BEFORE_SAVE);
         $resultSet = new ResultSet($this->getTraining(self::SIMPLE));
