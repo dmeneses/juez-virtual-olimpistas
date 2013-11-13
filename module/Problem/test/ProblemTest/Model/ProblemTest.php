@@ -23,8 +23,6 @@ class ProblemTest extends PHPUnit_Framework_TestCase {
         $this->assertNull($problem->memory_constraint, '"memory limit" should initially be null');
         $this->assertNull($problem->source_constraint, '"source limit" should initially be null');
         $this->assertNull($problem->is_simple, '"is simple" should initially be null');
-        $this->assertNull($problem->file_in, '"file in" should initially be null');
-        $this->assertNull($problem->file_out, '"file out" should initially be null');
     }
 
     public function testExchangeArraySetsPropertiesCorrectly() {
@@ -37,8 +35,6 @@ class ProblemTest extends PHPUnit_Framework_TestCase {
             'time_constraint' => 6,
             'memory_constraint' => 6,
             'source_constraint' => 6,
-            'file_in' => array('tmp_name' => 'in'),
-            'file_out' => array('tmp_name' => 'out'),
         );
 
         $problem->exchangeArray($data);
@@ -51,8 +47,6 @@ class ProblemTest extends PHPUnit_Framework_TestCase {
         $this->assertSame($data['time_constraint'], $problem->time_constraint, '"time_constraint" was not set correctly');
         $this->assertSame($data['memory_constraint'], $problem->memory_constraint, '"memory_constraint" was not set correctly');
         $this->assertSame($data['source_constraint'], $problem->source_constraint, '"source_constraint" was not set correctly');
-        $this->assertSame($data['file_in']['tmp_name'], $problem->file_in, '"file_in" was not set correctly');
-        $this->assertSame($data['file_out']['tmp_name'], $problem->file_out, '"file_out" was not set correctly');
     }
 
     public function testExchangeArraySetsPropertiesToNullIfKeysAreNotPresent() {
@@ -65,8 +59,6 @@ class ProblemTest extends PHPUnit_Framework_TestCase {
             'time_constraint' => 6,
             'memory_constraint' => 6,
             'source_constraint' => 6,
-            'file_in' => array('tmp_name' => 'in'),
-            'file_out' => array('tmp_name' => 'out'),
         );
 
         $problem->exchangeArray($data);
@@ -80,8 +72,6 @@ class ProblemTest extends PHPUnit_Framework_TestCase {
         $this->assertNull($problem->time_constraint, '"time_constraint" should have defaulted to null');
         $this->assertNull($problem->memory_constraint, '"memory_constraint" should have defaulted to null');
         $this->assertNull($problem->source_constraint, '"source_constraint" should have defaulted to null');
-        $this->assertNull($problem->file_in, '"file_in" should have defaulted to null');
-        $this->assertNull($problem->file_out, '"file_out" should have defaulted to null');
     }
 }
 

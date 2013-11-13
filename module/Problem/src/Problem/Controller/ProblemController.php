@@ -45,7 +45,9 @@ class ProblemController extends AbstractActionController {
             $problem->setDatabaseAdapter($this->getProblemTable()->getAdapter());
             $form->setInputFilter($problem->getInputFilter());
             $post = array_merge_recursive($request->getPost()->toArray(), $request->getFiles()->toArray());
-            $post['tests'] = $this->mergeFiles($post['tests']);
+            if (isset($post['tests'])) {
+                $post['tests'] = $this->mergeFiles($post['tests']);
+            }
             $form->setData($post);
 
             if ($form->isValid()) {
@@ -128,13 +130,12 @@ class ProblemController extends AbstractActionController {
         try {
             $solutions = $this->getProblemTable()->getProblemSolutions($id);
         } catch (\Exception $ex) {
-            var_dump($ex);
-            var_dump($solutions);
-            //return $this->redirect()->toRoute('problem');
+            return $this->redirect()->toRoute('problem');
         }
 
         return new ViewModel(array(
             'solutions' => $solutions,
         ));
     }
+
 }

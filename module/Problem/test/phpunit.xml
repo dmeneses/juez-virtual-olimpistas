@@ -4,6 +4,7 @@
     <testsuites>
         <testsuite name="Problem">
             <directory>./ProblemTest</directory>
+            <file>./ProblemTest/Functionals/ProblemFunctionalityTest</file>
         </testsuite>
     </testsuites>
     
