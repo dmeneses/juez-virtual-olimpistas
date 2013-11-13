@@ -27,8 +27,6 @@ class ProblemTableTest extends PHPUnit_Framework_TestCase {
         'time_constraint' => 6,
         'memory_constraint' => 6,
         'source_constraint' => 6,
-        'file_in' => array('tmp_name' => 'in'),
-        'file_out' => array('tmp_name' => 'out'),
     );
     
     private $dataAfterSave = array(
@@ -39,8 +37,6 @@ class ProblemTableTest extends PHPUnit_Framework_TestCase {
         'time_constraint' => 6,
         'memory_constraint' => 6,
         'source_constraint' => 6,
-        'file_in' => 'in',
-        'file_out' => 'out',
         'user_user_id' => 1,
     );
 
