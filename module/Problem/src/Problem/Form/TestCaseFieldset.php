@@ -32,9 +32,12 @@ class TestCaseFieldset extends Fieldset implements InputFilterProviderInterface 
         $fileIn->setLabel('Entrada');
         $fileOut = new Element\File('test_out');
         $fileOut->setLabel('Salida');
-        $points = new Element\Text('test_points');
+        $points = new Element\Number('test_points');
         $points->setLabel('Puntaje');
-
+        $points->setAttributes(array(
+            'min' => '1',
+            'max' => '100',
+            'step' => '1',));
         $this->add($testID);
         $this->add($points);
         $this->add($fileIn);
@@ -50,7 +53,7 @@ class TestCaseFieldset extends Fieldset implements InputFilterProviderInterface 
                 'required' => true,
             ),
             'test_in' => array(
-                'type'=> 'Zend\InputFilter\FileInput',
+                'type' => 'Zend\InputFilter\FileInput',
                 'validators' => array(
                     new UploadFile(),
                     new Extension(array('txt', 'in')),
@@ -71,8 +74,9 @@ class TestCaseFieldset extends Fieldset implements InputFilterProviderInterface 
                     new RenameUpload(array(
                         'target' => 'data/problems/fileOut',
                         'randomize' => true,))
-                ),                
+                ),
             ),
         );
     }
+
 }
