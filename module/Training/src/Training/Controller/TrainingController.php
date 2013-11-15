@@ -53,6 +53,10 @@ class TrainingController extends AbstractActionController {
     }
 
     public function createAction() {
+        if (!$this->getAuthService()->hasIdentity()) {
+            return $this->redirect()->toRoute('login');
+        }
+        
         $form = new CreateTrainingForm();
         $request = $this->getRequest();
 
@@ -63,10 +67,13 @@ class TrainingController extends AbstractActionController {
 
             if ($form->isValid()) {
                 $training->exchangeArray($form->getData());
+                $training->training_owner = $this->trainingTable->getUserID(
+                                            $this->getAuthService()->getIdentity());
                 $this->getTrainingTable()->save($training);
                 return $this->redirect()->toRoute('training');
             }
         }
+        
         return array('form' => $form);
     }
 
@@ -120,7 +127,7 @@ class TrainingController extends AbstractActionController {
         if ($userID == $training->training_owner) {
             return true;
         }
-        
+
         return false;
     }
 
