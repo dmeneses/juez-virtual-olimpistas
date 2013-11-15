@@ -10,9 +10,7 @@ $form->prepare();
         var currentCount = $('form > fieldset > fieldset').length;
         var template = $('form > fieldset > span').data('template');
         template = template.replace(/__index__/g, currentCount);
-
         $('form > fieldset').append(template);
-
         return false;
     }
 
@@ -26,6 +24,22 @@ $form->prepare();
             template = template.replace(/__index__/g, 0);
             $('form > fieldset').append(template);
         }
+    }
+
+    function gradeCheck(form) {
+        var sum = 0;
+        
+        $('form > fieldset > fieldset').each(function(index) {
+            var hola = $(this)[0];
+            sum += parseInt(hola.elements[1].value);
+        });
+
+        alert(sum);
+        if (sum === 100) {
+            return true;
+        }
+
+        return false;
     }
 </script>
 <div class="content">
@@ -117,6 +131,7 @@ $form->prepare();
             </td>
         </tr>
     </table>
+
     <?php echo $this->formCollection($form->get('tests')); ?>
     <table>
         <tr><td style="padding-top: 10px"/></tr>
