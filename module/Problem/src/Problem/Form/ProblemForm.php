@@ -72,6 +72,7 @@ class ProblemForm extends Form {
         $submit = new Element\Submit('submit');
         $submit->setValue('Proponer');
         $submit->setAttribute('class', 'button');
+        $this->setAttribute('onsubmit', 'return gradeCheck();');
 
         $this->add($problemID);
         $this->add($problemName);
@@ -88,6 +89,11 @@ class ProblemForm extends Form {
         $this->add($tests);
         $this->add($compareType);
         $this->add($submit);
+    }
+
+    public function isValid() {
+        var_dump($this->get('tests[0][test_points]')->getValue());
+        return parent::isValid();
     }
 
 }
