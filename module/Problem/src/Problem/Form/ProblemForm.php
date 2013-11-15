@@ -89,11 +89,5 @@ class ProblemForm extends Form {
         $this->add($tests);
         $this->add($compareType);
         $this->add($submit);
-    }
-
-    public function isValid() {
-        var_dump($this->get('tests[0][test_points]')->getValue());
-        return parent::isValid();
-    }
-
+    }    
 }

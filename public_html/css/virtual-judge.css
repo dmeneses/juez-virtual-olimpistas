@@ -82,7 +82,7 @@ form {
 }
 
 input[type="text"], [type="email"], [type="select"], [type="file"],
-    [type="date"],[type="time"],[type="password"],textarea {
+    [type="date"],[type="time"],[type="password"],[type="number"],textarea {
     margin: 3px 0 0 0;
     padding: 6px; 
     width: 200px; 
