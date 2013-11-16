@@ -43,16 +43,16 @@ class TrainingControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testCreateActionCanBeAccessed() {
+    public function testCreateActionCannotBeAccessedWithoutLogin() {
         $this->routeMatch->setParam('action', 'create');
 
         $result = $this->controller->dispatch($this->request);
         $response = $this->controller->getResponse();
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(302, $response->getStatusCode());
     }
 
-    public function testEditRedirectActionCanBeAccessed() {
+    public function testEditRedirectWithoutID() {
         $this->routeMatch->setParam('action', 'edit');
 
         $result = $this->controller->dispatch($this->request);
@@ -60,7 +60,8 @@ class TrainingControllerTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals(302, $response->getStatusCode());
     }
-    public function testEditRedirect2ActionCanBeAccessed() {
+    
+    public function testEditRedirect2WithWrongID() {
         $this->routeMatch->setParam('action', 'edit');
         $this->routeMatch->setParam('id', 5000);
 

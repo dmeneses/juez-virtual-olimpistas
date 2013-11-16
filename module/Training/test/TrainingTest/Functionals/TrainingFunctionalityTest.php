@@ -20,6 +20,12 @@ class TrainingFunctionalityTest extends PHPUnit_Extensions_SeleniumTestCase {
         $this->open("/");
         $this->click("link=Crear Entrenamiento");
         $this->waitForPageToLoad("30000");
+        $this->type("name=email", "daniela11290@gmail.com");
+        $this->type("name=password", "1121990");
+        $this->click("name=submit");
+        $this->waitForPageToLoad("30000");
+        $this->click("link=Crear Entrenamiento");
+        $this->waitForPageToLoad("30000");
         $this->type("name=training_name", "Training1");
         $this->type("name=start_date", date('Y-m-d'));
         $this->type("name=start_time", date('G:i'));
