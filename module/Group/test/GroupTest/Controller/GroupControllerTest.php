@@ -43,25 +43,15 @@ class GroupControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testAddActionCanBeAccessed() {
+    public function testAddActionRedirectWithoutLogin() {
         $this->routeMatch->setParam('action', 'create');
 
         $result = $this->controller->dispatch($this->request);
         $response = $this->controller->getResponse();
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(302, $response->getStatusCode());
     }
 
-    public function testAddActionWithEmptyParameters() {
-        $this->routeMatch->setParam('action', 'create');
-        $this->request
-                ->setMethod('POST')
-                ->setPost(new Parameters());
-        $this->controller->dispatch($this->request);
-        $response = $this->controller->getResponse();
-        $this->assertEquals(200, $response->getStatusCode());
-    }
-       
     public function testDisplayActionWithoutIdIsRedirected() {
         $this->routeMatch->setParam('action', 'edit');
 
