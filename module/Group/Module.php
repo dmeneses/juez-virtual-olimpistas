@@ -33,7 +33,8 @@ class Module
             'factories' => array(
                 'Group\Model\GroupTable' =>  function($sm) {
                     $tableGateway = $sm->get('GroupTableGateway');
-                    $table = new GroupTable($tableGateway);
+                    $userTable = $sm->get('User\Model\UserTable');
+                    $table = new GroupTable($tableGateway, $userTable);
                     return $table;
                 },
                 'GroupTableGateway' => function ($sm) {

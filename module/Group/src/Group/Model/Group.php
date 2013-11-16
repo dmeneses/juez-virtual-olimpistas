@@ -15,9 +15,8 @@ class Group {
 
     public function exchangeArray($data) {
         $this->group_id = (!empty($data['group_id'])) ? $data['group_id'] : null;
-        $this->group_name = (!empty($data['group_name'])) ? $data['group_name'] : null;
-        //TODO: When the user session are implemented change this.
-        $this->group_owner = 1;
+        $this->group_name = (!empty($data['group_name'])) ? $data['group_name'] : null;        
+        $this->group_owner = (!empty($data['group_owner'])) ? $data['group_owner'] : null;
     }
 
 }

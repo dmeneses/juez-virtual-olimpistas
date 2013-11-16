@@ -8,6 +8,8 @@ use Zend\Db\Sql\Select;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Validator\Db\RecordExists;
 
+use User\Model\UserTable;
+
 /**
  * Database manager for groups.
  *
@@ -16,9 +18,12 @@ use Zend\Validator\Db\RecordExists;
 class GroupTable {
 
     protected $tableGateway;
+    protected $userTable;
+    
 
-    public function __construct(TableGateway $tableGateway) {
+    public function __construct(TableGateway $tableGateway, UserTable $userTable) {
         $this->tableGateway = $tableGateway;
+        $this->userTable = $userTable;
     }
 
     public function getDbAdapter() {
@@ -72,28 +77,8 @@ class GroupTable {
         }
     }
 
-    //TODO: When the user module is created move it there.
-    function getUserByEmail($email) {
-        $select = new Select;
-        $select->from(array('u' => 'user',));
-        $select->where(array('u.email' => $email,));
-        $statement = $this->tableGateway->getAdapter()->createStatement();
-        $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
-
-        $resultSet = new ResultSet();
-        $resultSet->initialize($statement->execute());
-
-        $row = $resultSet->current();
-
-        if (!$row) {
-            throw new \Exception("Could not find user with email $email");
-        }
-
-        return $row;
-    }
-
     public function addUser($groupID, $userEmail) {
-        $user = $this->getUserByEmail($userEmail);
+        $user = $this->userTable->getUserByEmail($userEmail);
         $dbAdapter = $this->tableGateway->getAdapter();
         $sql = new Sql($dbAdapter);
 
