@@ -1,8 +1,8 @@
-<?php
+<?php 
 
 namespace GroupTest\Controller;
 
-use GroupTest\Bootstrap;
+use ApplicationTest\Bootstrap;
 use Group\Controller\GroupController;
 use Zend\Http\Request; 
 use Zend\Stdlib\Parameters;

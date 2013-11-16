@@ -3,14 +3,32 @@
 <phpunit bootstrap="Bootstrap.php" colors="true">
     <testsuites>
         <testsuite name="Application">
-            <directory>./ApplicationTest</directory>           
+            <directory>./ApplicationTest</directory>                                
+        </testsuite>
+        <testsuite name="Group">
+            <directory>../../Group/test/GroupTest</directory>           
+        </testsuite>
+        <testsuite name="Problem">
+            <directory>../../Problem/test/ProblemTest</directory>           
+        </testsuite>
+        <testsuite name="Training">
+            <directory>../../Training/test/TrainingTest</directory>           
         </testsuite>
     </testsuites>
     
     <filter>
         <blacklist>
             <file>../Module.php</file>
+            <file>../../Group/Module.php</file>
+            <file>../../Problem/Module.php</file>
+            <file>../../Training/Module.php</file>
+            <file>../../Solution/Module.php</file>
+            <file>../../SanAuth/Module.php</file>
+            <file>../../User/Module.php</file>
             <directory suffix=".php">../test</directory>
+            <directory suffix=".php">../../Group/test</directory>
+            <directory suffix=".php">../../Problem/test</directory>
+            <directory suffix=".php">../../Training/test</directory>
             <directory suffix=".php">../../../vendor</directory>
         </blacklist>
     </filter>
