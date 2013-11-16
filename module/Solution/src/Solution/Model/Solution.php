@@ -23,7 +23,7 @@ class Solution implements InputFilterAwareInterface {
     public $used_memory;
     public $status;
     public $error_message;
-    public $user_id;
+    public $solution_submitter;
     public $problem_id;
     public $inputFilter;
     public $dbAdapter;
@@ -48,7 +48,7 @@ class Solution implements InputFilterAwareInterface {
         $this->used_memory = (!empty($data['used_memory'])) ? $data['used_memory'] : 0;
         $this->status = (!empty($data['status'])) ? $data['status'] : 'FAILED';
         $this->error_message = (!empty($data['error_message'])) ? $data['error_message'] : '';
-        $this->user_id = (!empty($data['user_id'])) ? $data['user_id'] : NULL;
+        $this->solution_submitter = (!empty($data['solution_submitter'])) ? $data['solution_submitter'] : NULL;
     }
 
     public function setDbAdapter($dbAdapter) {

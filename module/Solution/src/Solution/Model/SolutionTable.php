@@ -38,7 +38,7 @@ class SolutionTable {
             'solution_language' => $solution->solution_language,
             'solution_source_file' => $solution->solution_source_file,
             'problem_problem_id' => $solution->problem_id,
-            'user_user_id' => 1,
+            'solution_submitter' => $solution->solution_submitter,
         );
 
         $id = (int) $solution->solution_id;

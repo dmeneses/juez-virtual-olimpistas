@@ -24,7 +24,7 @@ $this->headTitle($title);
                     <tr>
                         <td><?php echo $this->escapeHtml($solution->solution_id); ?></td>
                         <td><?php echo $this->escapeHtml($solution->solution_date); ?></td>
-                        <td><?php echo $this->escapeHtml($solution->user_user_id); ?></td>
+                        <td><?php echo $this->escapeHtml($solution->solution_submitter); ?></td>
                         <td><?php echo $this->escapeHtml($solution->grade); ?></td>
                         <td>
                             <a href="<?php echo $this->url('solution', array('action' => 'display', 'id' => $solution->solution_id)); ?>"><?php echo $this->escapeHtml($solution->status); ?></a>

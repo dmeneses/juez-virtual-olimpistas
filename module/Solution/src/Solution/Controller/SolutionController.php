@@ -25,7 +25,15 @@ class SolutionController extends AbstractActionController {
         return $this->solutionTable;
     }
 
+    public function getLoggedUserID() {
+        return $this->getServiceLocator()->get('LoggedUserID');
+    }
+
     public function addAction() {
+        $userID = $this->getLoggedUserID();
+        if (!$userID) {
+            return $this->redirect()->toRoute('login');
+        }
 
         $id = (int) $this->params()->fromRoute('id', 0);
         $form = new SolutionForm();
@@ -49,6 +57,7 @@ class SolutionController extends AbstractActionController {
 
             if ($form->isValid()) {
                 $solution->exchangeArray($form->getData());
+                $solution->solution_submitter = $userID;
                 $this->getSolutionTable()->saveSolution($solution);
                 exec('echo 1 ' . $solution->solution_id . ' ' . '> /tmp/bravesoft_input');
                 return $this->redirect()->toRoute('solution');
@@ -56,7 +65,7 @@ class SolutionController extends AbstractActionController {
         }
         return array('form' => $form);
     }
-    
+
     public function displayAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
 
@@ -64,7 +73,8 @@ class SolutionController extends AbstractActionController {
             return $this->redirect()->toRoute('solution');
         }
         $solution = $this->getSolutionTable()->get($id);
-        
+
         return array('solution' => $solution);
     }
+
 }
