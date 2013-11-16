@@ -48,15 +48,21 @@ class TrainingController extends AbstractActionController {
         return $this->groupTable;
     }
 
+    public function getLoggedUserID() {
+        return $this->getServiceLocator()->get('LoggedUserID');
+    }
+
     public function indexAction() {
         return new ViewModel(array('trainings' => $this->getTrainingTable()->fetchAll()));
     }
 
     public function createAction() {
-        if (!$this->getAuthService()->hasIdentity()) {
+        $userID = $this->getLoggedUserID();
+
+        if (!$userID) {
             return $this->redirect()->toRoute('login');
         }
-        
+
         $form = new CreateTrainingForm();
         $request = $this->getRequest();
 
@@ -67,13 +73,12 @@ class TrainingController extends AbstractActionController {
 
             if ($form->isValid()) {
                 $training->exchangeArray($form->getData());
-                $training->training_owner = $this->trainingTable->getUserID(
-                                            $this->getAuthService()->getIdentity());
+                $training->training_owner = $userID;
                 $this->getTrainingTable()->save($training);
                 return $this->redirect()->toRoute('training');
             }
         }
-        
+
         return array('form' => $form);
     }
 
@@ -104,7 +109,7 @@ class TrainingController extends AbstractActionController {
     }
 
     private function getDataToView($problemForm, $groupForm, $training) {
-        $isOwner = $this->isTheOwner($training, $this->getAuthService()->getIdentity());
+        $isOwner = $this->getLoggedUserID() == $training->training_owner;
         $groups = $this->getGroupTable()->getGroupsByTraining($training->training_id);
         $data = array(
             'problemForm' => $problemForm,
@@ -119,16 +124,6 @@ class TrainingController extends AbstractActionController {
         }
 
         return $data;
-    }
-
-    private function isTheOwner($training, $email) {
-        $userID = $this->trainingTable->getUserID($email);
-
-        if ($userID == $training->training_owner) {
-            return true;
-        }
-
-        return false;
     }
 
     private function addProblem($problemForm, $postData, $training) {

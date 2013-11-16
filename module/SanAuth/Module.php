@@ -4,7 +4,6 @@ namespace SanAuth;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
-
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
 
@@ -48,6 +47,17 @@ class Module implements AutoloaderProviderInterface
 		     
 		    return $authService;
 		},
+                        
+                'LoggedUserID' => function($sm) {
+                    $authService = $sm->get('AuthService');
+                    if($authService->hasIdentity()) {
+                        $userEmail= $authService->getIdentity();
+                        $user = $sm->get('User\Model\UserTable')->getUserByEmail($userEmail);
+                        return $user['user_id'];
+                    }
+                    
+                    return 0;
+                },
             ),
         );
     }
