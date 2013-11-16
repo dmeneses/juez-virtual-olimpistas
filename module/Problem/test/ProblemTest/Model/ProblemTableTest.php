@@ -27,6 +27,7 @@ class ProblemTableTest extends PHPUnit_Framework_TestCase {
         'time_constraint' => 6,
         'memory_constraint' => 6,
         'source_constraint' => 6,
+        'problem_creator' => 1,
     );
     
     private $dataAfterSave = array(
@@ -37,7 +38,7 @@ class ProblemTableTest extends PHPUnit_Framework_TestCase {
         'time_constraint' => 6,
         'memory_constraint' => 6,
         'source_constraint' => 6,
-        'user_user_id' => 1,
+        'problem_creator' => 1,
     );
 
     private function getProblem($problemType) {

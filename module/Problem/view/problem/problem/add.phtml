@@ -6,10 +6,14 @@ $form->setAttribute('action', $this->url('problem', array('action' => 'add')));
 $form->prepare();
 ?>
 <script type="text/javascript">
-    window.onload=function(){
-        checkType();
+    window.onload = function() {
+        if (document.getElementById("mult").checked) {
+            document.getElementById('addTestCase').hidden = false;
+        } else {
+            document.getElementById('addTestCase').hidden = true;
+        }
     };
-    
+
     function addTest() {
         var currentCount = $('form > fieldset > fieldset').length;
         var template = $('form > fieldset > span').data('template');
@@ -32,7 +36,7 @@ $form->prepare();
 
     function gradeCheck(form) {
         var sum = 0;
-        
+
         $('form > fieldset > fieldset').each(function(index) {
             var element = $(this)[0];
             sum += parseInt(element.elements[1].value);
@@ -41,7 +45,7 @@ $form->prepare();
         if (sum === 100) {
             return true;
         }
-        document.getElementById("pointsMsg").style.color="red";
+        document.getElementById("pointsMsg").style.color = "red";
         document.getElementById("addTestCase").focus();
 
         return false;
@@ -132,7 +136,7 @@ $form->prepare();
         <tr>
             <td valign="mid"><label for="is_simple">Tipo</label></td>
             <td><?php echo $this->formRadio($form->get('is_simple')); ?>
-                <button id="addTestCase" class="button" hidden="true" onclick="return addTest()">Añadir test</button>
+                <button id="addTestCase" hidden="true" onclick="return addTest()">Añadir test</button>
             </td>
         </tr>
         <tr>
@@ -141,7 +145,7 @@ $form->prepare();
             </td>
         </tr>
     </table>
-    
+
     <?php echo $this->formCollection($form->get('tests')); ?>
     <table>
         <tr><td style="padding-top: 10px"/></tr>

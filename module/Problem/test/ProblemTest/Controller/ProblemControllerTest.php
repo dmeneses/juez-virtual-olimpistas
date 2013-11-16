@@ -4,7 +4,7 @@ namespace ProblemTest\Controller;
 
 use ProblemTest\Bootstrap;
 use Problem\Controller\ProblemController;
-use Zend\Http\Request; 
+use Zend\Http\Request;
 use Zend\Stdlib\Parameters;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
@@ -43,25 +43,15 @@ class ProblemControllerTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testAddActionCanBeAccessed() {
+    public function testAddActionIsRedirectedWhenNoUserLogged() {
         $this->routeMatch->setParam('action', 'add');
 
         $result = $this->controller->dispatch($this->request);
         $response = $this->controller->getResponse();
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(302, $response->getStatusCode());
     }
 
-    public function testAddActionWithEmptyParameters() {
-        $this->routeMatch->setParam('action', 'add');
-        $this->request
-                ->setMethod('POST')
-                ->setPost(new Parameters());
-        $this->controller->dispatch($this->request);
-        $response = $this->controller->getResponse();
-        $this->assertEquals(200, $response->getStatusCode());
-    }
-    
     public function testDisplayActionWithoutIdIsRedirected() {
         $this->routeMatch->setParam('action', 'display');
 
