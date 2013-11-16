@@ -1,14 +1,15 @@
 #!/bin/bash
 
+#Start selenium server manually: java -jar /usr/local/bin/selenium-server-standalone-2.37.0.jar
+#Execute database to have a default state for the tests.
 cd module/Application/test
-phpunit --coverage-text
+phpunit
 cd ../../Problem/test
-phpunit --coverage-text
-cd ../../../build/coverage
-phpcov --merge --clover clover.xml .
-
-
-
-
-
+phpunit
+cd ../../Training/test
+phpunit
+cd ../../Group/test
+phpunit
+cd ../../Solution/test
+phpunit
 
