@@ -4,7 +4,6 @@ namespace Problem\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
-use Zend\Db\Sql\Predicate\In;
 use Zend\Db\ResultSet\ResultSet;
 
 class ProblemTable {
@@ -49,7 +48,7 @@ class ProblemTable {
             'source_constraint' => $problem->source_constraint,
             'is_simple' => $problem->is_simple,
             'compare_type' => $problem->compare_type,
-            'user_user_id' => 1,
+            'problem_creator' => $problem->problem_creator,
         );
 
         $id = (int) $problem->problem_id;
@@ -85,10 +84,10 @@ class ProblemTable {
     }
 
     public function getProblemSolutions($id) {
-        $sql = "SELECT s.*, u.name, u.lastname FROM solution s, user u WHERE problem_problem_id = 1 
+        $sql = "SELECT s.*, u.name, u.lastname FROM solution s, user u WHERE problem_problem_id = $id 
                 AND status='SUCCESS'
-                AND user_user_id = user_id AND (user_user_id, grade) IN
-                ( SELECT user_user_id, MAX(grade) FROM solution GROUP BY user_user_id)
+                AND solution_submitter = user_id AND (solution_submitter, grade) IN
+                ( SELECT solution_submitter, MAX(grade) FROM solution GROUP BY solution_submitter)
                 ORDER BY grade desc, solution_date desc";
         $resultSet = $this->getAdapter()->query($sql, \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
 

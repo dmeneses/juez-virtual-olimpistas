@@ -21,10 +21,7 @@ class ProblemController extends AbstractActionController {
                 ->setItemCountPerPage(10)
                 ->setPageRange(7);
 
-        return new ViewModel(array(
-            'page' => $page,
-            'paginator' => $paginator,
-        ));
+        return new ViewModel(array('page' => $page, 'paginator' => $paginator,));
     }
 
     public function getProblemTable() {
@@ -36,8 +33,17 @@ class ProblemController extends AbstractActionController {
         return $this->problemTable;
     }
 
+    public function getLoggedUserID() {
+        return $this->getServiceLocator()->get('LoggedUserID');
+    }
+
     public function addAction() {
         $form = new ProblemForm();
+        $userID = $this->getLoggedUserID();
+
+        if (!$userID) {
+            return $this->redirect()->toRoute('login');
+        }
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -53,6 +59,7 @@ class ProblemController extends AbstractActionController {
             if ($form->isValid()) {
                 $data = $form->getData();
                 $problem->exchangeArray($data);
+                $problem->problem_creator = $userID;
                 $this->getProblemTable()->saveProblem($problem);
 
                 $this->buildProblemView($problem->problem_id, $data);
@@ -104,9 +111,7 @@ class ProblemController extends AbstractActionController {
         $id = (int) $this->params()->fromRoute('id', 0);
 
         if (!$id) {
-            return $this->redirect()->toRoute('problem', array(
-                        'action' => 'add'
-            ));
+            return $this->redirect()->toRoute('problem', array('action' => 'add'));
         }
 
         try {
@@ -115,27 +120,22 @@ class ProblemController extends AbstractActionController {
             return $this->redirect()->toRoute('problem');
         }
 
-        return new ViewModel(array(
-            'problemData' => $problem
-        ));
+        return new ViewModel(array('problemData' => $problem));
     }
 
     public function solutionsAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
+        
         if (!$id) {
-            return $this->redirect()->toRoute('problem', array(
-                        'action' => 'add'
-            ));
+            return $this->redirect()->toRoute('problem', array('action' => 'add'));
         }
+        
         try {
             $solutions = $this->getProblemTable()->getProblemSolutions($id);
         } catch (\Exception $ex) {
             return $this->redirect()->toRoute('problem');
         }
 
-        return new ViewModel(array(
-            'solutions' => $solutions,
-        ));
+        return new ViewModel(array('solutions' => $solutions,));
     }
-
 }
