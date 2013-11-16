@@ -2,7 +2,7 @@
 
 namespace ProblemTest\Controller;
 
-use ProblemTest\Bootstrap;
+use ApplicationTest\Bootstrap;
 use Problem\Controller\ProblemController;
 use Zend\Http\Request;
 use Zend\Stdlib\Parameters;

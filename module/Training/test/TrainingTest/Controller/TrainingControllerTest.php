@@ -2,7 +2,7 @@
 
 namespace TrainingTest\Controller;
 
-use TrainingTest\Bootstrap;
+use ApplicationTest\Bootstrap;
 use Training\Controller\TrainingController;
 use Zend\Http\Request;
 use Zend\Stdlib\Parameters;
