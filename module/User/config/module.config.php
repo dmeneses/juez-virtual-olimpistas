@@ -29,8 +29,5 @@ return array(
         'template_path_stack' => array(
             'user' => __DIR__ . '/../view',
         ),
-        'template_map' => array(
-            'paginator-slide' => __DIR__ . '/../view/user/user/slidePaginator.phtml',
-        ),
     ),
 );
