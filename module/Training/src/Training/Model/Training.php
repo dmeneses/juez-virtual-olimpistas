@@ -33,7 +33,7 @@ class Training {
         $this->start_date = (!empty($data[self::START])) ? $data[self::START] : null;
         $this->end_date = (!empty($data[self::END])) ? $data[self::END] : null;
         $this->start_time = (!empty($data[self::START_T])) ? $data[self::START_T] : null;
-        $this->end_time = (!empty($data[self::END_T])) ? $data[self::END_T] : null;
-        $this->training_owner = 1;
+        $this->end_time = (!empty($data[self::END_T])) ? $data[self::END_T] : null;        
+        $this->training_owner = (!empty($data[self::OWNER])) ? $data[self::OWNER] : null;        
     }
 }
