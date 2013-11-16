@@ -7,7 +7,8 @@ return array(
         'Solution',
         'Group', 
         'Training',
-        'SanAuth'
+        'SanAuth',
+        'User'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
