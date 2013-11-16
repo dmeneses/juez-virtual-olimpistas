@@ -4,7 +4,7 @@ namespace GroupTest\Model;
 
 use Group\Model\Group;
 use Group\Model\GroupTable;
-use Zend\Db\Adapter\Adapter;
+use User\Model\UserTable;
 use Zend\Db\ResultSet\ResultSet;
 use PHPUnit_Framework_TestCase;
 
@@ -27,13 +27,14 @@ class GroupTableTest extends PHPUnit_Framework_TestCase {
     public function testSaveGroupWillInsertNewGroupsIfTheyDontAlreadyHaveAnId() {
         $group = new Group();
         $group->exchangeArray($this->data);
+        $userMockTableGateway = $this->getMock('Zend\Db\TableGateway\TableGateway', array(), array(), '', false);
         $mockTableGateway = $this->getMock('Zend\Db\TableGateway\TableGateway', array('insert'), array(), '', false);
         $mockTableGateway->expects($this->once())
                 ->method('insert')
                 ->with($this->data);
-
-        $albumTable = new GroupTable($mockTableGateway);
-        $albumTable->save($group);
+        $userTable = new UserTable($userMockTableGateway);
+        $groupTable = new GroupTable($mockTableGateway, $userTable);
+        $groupTable->save($group);
     }
 
     public function testSaveGroupWillUpdateExistinGroupsIfTheyAlreadyHaveAnId() {
@@ -46,6 +47,7 @@ class GroupTableTest extends PHPUnit_Framework_TestCase {
         $resultSet->setArrayObjectPrototype(new Group());
         $resultSet->initialize(array($group));
 
+        $userMockTableGateway = $this->getMock('Zend\Db\TableGateway\TableGateway', array(), array(), '', false);
         $mockTableGateway = $this->getMock('Zend\Db\TableGateway\TableGateway', array('select', 'update'), array(), '', false);
         $mockTableGateway->expects($this->once())
                 ->method('select')
@@ -55,9 +57,9 @@ class GroupTableTest extends PHPUnit_Framework_TestCase {
         $mockTableGateway->expects($this->once())
                 ->method('update')
                 ->with($this->data, array('group_id' => 1));
-
-        $problemTable = new GroupTable($mockTableGateway);
-        $problemTable->save($group);
+        $userTable = new UserTable($userMockTableGateway);
+        $groupTable = new GroupTable($mockTableGateway, $userTable);
+        $groupTable->save($group);
     }
 
 }
