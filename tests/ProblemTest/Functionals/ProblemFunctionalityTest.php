@@ -26,7 +26,6 @@ class ProblemFunctionalityTest extends PHPUnit_Extensions_SeleniumTestCase {
         $this->type("name=problem_name", self::PROBLEM_NAME);
         $this->type("name=problem_author", "JDG");
         $this->type("name=main_description", getcwd() . "/../../../test_data/problem1/description.tex");
-        echo getcwd();
         $this->type("name=input_description", getcwd() . "/../../../test_data/problem1/input.tex");
         $this->type("name=output_description", getcwd() . "/../../../test_data/problem1/output.tex");
         $this->type("name=input_example", getcwd() . "/../../../test_data/problem1/sample_in.tex");
