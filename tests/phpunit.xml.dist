@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="Bootstrap.php" colors="true">
+    <testsuites>
+        <testsuite name="Application">
+            <directory>./ApplicationTest</directory>                                            
+        </testsuite>
+        <testsuite name="Group">
+            <directory>./GroupTest</directory>           
+        </testsuite>
+        <testsuite name="Problem">
+            <directory>./ProblemTest</directory>           
+        </testsuite>
+        <testsuite name="Training">
+            <directory>./TrainingTest</directory>           
+        </testsuite>
+    </testsuites>
+    
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../module</directory>    
+            <exclude>
+                <file>../module/Application/Module.php</file>
+                <file>../module/Group/Module.php</file>
+                <file>../module/Problem/Module.php</file>
+                <file>../module/Training/Module.php</file>
+                <file>../module/Solution/Module.php</file>
+                <file>../module/SanAuth/Module.php</file>
+                <file>../module/User/Module.php</file>
+                <file>../module/Group/autoload_classmap.php</file>
+                <file>../module/Problem/autoload_classmap.php</file>
+                <file>../module/Training/autoload_classmap.php</file>
+                <file>../module/Solution/autoload_classmap.php</file>
+                <file>../module/SanAuth/autoload_classmap.php</file>
+                <file>../module/User/autoload_classmap.php</file>
+                <directory>../module/Group/config</directory>
+                <directory>../module/Problem/config</directory>
+                <directory>../module/Training/config</directory>
+                <directory>../module/SanAuth/config</directory>
+                <directory>../module/User/config</directory>
+                <directory>../module/Solution/config</directory>
+                <directory>../module/Application/config</directory>
+            </exclude>
+        </whitelist>
+        <blacklist>
+            <directory>../vendor</directory>
+        </blacklist>
+    </filter>
+    
+    <logging>
+        <log type="coverage-html" target="../build/app_coverage" charset="UTF-8"
+             highlight="false" lowUpperBound="35" highLowerBound="70"/>
+    </logging>
+</phpunit>
