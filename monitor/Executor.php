@@ -17,10 +17,11 @@ class Executor {
     private $errorType;
     private $output = '';
     private $timeoutInfo = '';
+    private $log;
 
     function __construct($app, $script, $timeConstraint, $memoryConstraint) {
         $this->timeConstraint = $timeConstraint;
-        $this->memoryConstraint = $memoryConstraint;
+        $this->memoryConstraint = $memoryConstraint * 1024;
         $this->app = $app;
         $this->script = $script;
     }
@@ -65,19 +66,34 @@ class Executor {
         $this->output = $output;
     }
 
-    public function execute($input, $id) {
-        $this->output = "./data/execution/gen_output$id";
-        $this->timeoutInfo = "./data/execution/timeout_$id";
+    public function setLogger(KLogger $log) {
+        $this->log = $log;
+    }
 
+    public function execute($input, $id) {
+        $this->log->LogInfo("Setting variables");
+        $this->output = "data/execution/gen_output$id";
+        $this->timeoutInfo = "data/execution/timeout_$id";
+
+        $this->log->LogInfo("Execute!!");
         $testTime = microtime(true);
-        system("./timeout -t $this->timeConstraint -m $this->memoryConstraint "
-                . "./$this->app $input $this->output 2>$this->timeoutInfo");
+        $command = "./timeout -t $this->timeConstraint -m $this->memoryConstraint "
+                . "$this->app < $input > $this->output 2>$this->timeoutInfo";
+        $this->log->LogInfo("$command");
+        exec($command);
         $testTimeFinal = microtime(true) - $testTime;
         $this->executionTime += round($testTimeFinal, 3);
         $this->memoryUsage += $this->getMemoryUsageByTest();
 
-        if (!$this->checkTestConstraints() || !$this->checkGeneralRunConstraints()) {
+        $this->log->LogInfo("Finish execution");
+        if (!$this->checkTestConstraints()) {
+            $this->log->LogError("Test doesn't follow the contraints.");
             return false;
+        } else {
+            if (!$this->checkGeneralRunConstraints()) {
+                $this->log->LogError("Solution doesn't follow the constraints.");
+                return false;
+            }
         }
 
         return true;
@@ -127,14 +143,17 @@ class Executor {
 
     private function checkGeneralRunConstraints() {
         if ($this->executionTime > $this->timeConstraint) {
+            $this->log->LogError("Time is bigger than the expected");
             $this->setTimeExceededError();
             return false;
         }
 
         if ($this->memoryUsage > $this->memoryConstraint) {
+            $this->log->LogError("Memory is bigger than the expected");
             $this->setMemoryExceededError();
             return false;
         }
+        return true;
     }
 
     private function setMemoryExceededError() {

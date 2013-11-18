@@ -1,5 +1,6 @@
 <?php
 
+require_once './monitor/KLogger.php';
 require './monitor/Zebra_Database.php';
 require './monitor/Compiler.php';
 require './monitor/Executor.php';
@@ -119,45 +120,54 @@ function getJobType($job) {
  * @param type $solutionID Solution to grade.
  */
 function gradeSolution($solutionID, Zebra_Database $database) {
+    $log = new KLogger("logs", KLogger::DEBUG);
+    $log->LogInfo("Grading solution: $solutionID");
     $solution = getSolutionData($database, $solutionID);
     if (empty($solution)) {
+        $log->LogError('Solution not found');
         throw new Exception("There isn't a solution with id: $solutionID");
     }
 
+    $log->LogInfo("Seaching problem");
     $problem = getProblemData($database, $solution['problem_problem_id']);
     if (empty($problem)) {
+        $log->LogError('Problem not found');
         throw new Exception("There isn't a problem with id: $solutionID");
     }
 
+    $log->LogInfo("Compiling...");
     $result = initializeData();
     $compiler = new Compiler($solution['solution_language'], $solution['solution_source_file'], $solutionID);
 
     if (!$compiler->compile()) {
+        $log->logError("Compilation failed.");
         $result['status'] = 'COMPILATION_ERROR';
         $result['error_message'] = $compiler->getError();
         $database->update('solution', $result, 'solution_id = ?', array($solutionID));
         return;
     }
 
-    $executor = new Executor($compiler->getOutput(), './monitor/scripts/default',
-                            $problem['time_constraint'], $problem['memory_constraint']);
+    $log->LogInfo("Executing...");
+    $executor = new Executor($compiler->getOutput(), './monitor/scripts/default', $problem['time_constraint'], $problem['memory_constraint']);
+    $executor->setLogger($log);
     $grade = 0;
     foreach ($problem['tests'] as $test) {
         if ($executor->execute($test['test_in'], $test['test_id'])) {
-            $output = $executor->getOuput();
+            $output = $executor->getOutput();
             $grade += Comparator::compare($test['test_out'], $output) ? $test['test_points'] : 0;
         } else {
+            $log->logError("Execution failed.");
             $result['status'] = $executor->getErrorType();
-            $result['error_message'] = $compiler->getError();
+            $result['error_message'] = $executor->getError();
             $database->update('solution', $result, 'solution_id = ?', array($solutionID));
             return;
         }
     }
 
-    $result['status'] = 'SUCCESS';    
-    $result['grade'] = $grade;    
-    $result['used_memory'] = $executor->getMemoryUsage();    
-    $result['runtime'] = $executor->getRuntime();    
+    $result['status'] = 'SUCCESS';
+    $result['grade'] = $grade;
+    $result['used_memory'] = $executor->getMemoryUsage();
+    $result['runtime'] = $executor->getExecutionTime();
     $database->update('solution', $result, 'solution_id = ?', array($solutionID));
     return;
 }
