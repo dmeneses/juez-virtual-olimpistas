@@ -14,7 +14,7 @@ class Compiler {
     private $input;
     private $output;
     private $solutionID = 0;
-    private $scriptPath = './monitor/scripts/';
+    private $scriptPath = 'monitor/scripts/';
 
     function __construct($language, $input, $solutionID) {
         $this->language = $language;

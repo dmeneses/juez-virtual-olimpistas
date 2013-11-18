@@ -1,6 +1,9 @@
 <?php
 
 require './monitor/Zebra_Database.php';
+require './monitor/Compiler.php';
+require './monitor/Executor.php';
+require './monitor/Comparator.php';
 
 //Set this constant to false if we ever need to debug the application in a terminal.
 define('QUEUESERVER_FORK', false);
@@ -84,12 +87,13 @@ while (1) {
  */
 function processJob($job, Zebra_Database $database) {
     $parsedJob = getJobType($job);
-    if (isset($parsedJob[JOB_ID]))
+    if (isset($parsedJob[JOB_ID])) {
         switch ($parsedJob[JOB_ID]) {
             case GRADE: gradeSolution($parsedJob[SOLUTION_ID], $database);
                 break;
             default : echo "Not recognized job";
         }
+    }
     return;
 }
 
@@ -115,95 +119,85 @@ function getJobType($job) {
  * @param type $solutionID Solution to grade.
  */
 function gradeSolution($solutionID, Zebra_Database $database) {
-    $database->select('*', 'solution', 'solution_id = ?', array($solutionID));
-    $solutionRecords = $database->fetch_assoc_all();
-    if (count($solutionRecords) == 1) {
-        $solution = $solutionRecords[0];
-        $database->select('file_in, file_out, time_constraint, memory_constraint', 'problem', 'problem_id = ?', array($solution['problem_problem_id']));
-        $problemRecords = $database->fetch_assoc_all();
+    $solution = getSolutionData($database, $solutionID);
+    if (empty($solution)) {
+        throw new Exception("There isn't a solution with id: $solutionID");
+    }
 
-        if (count($problemRecords) == 1) {
-            $problem = $problemRecords[0];
-            $output = 'data/execution/result' . $solution['solution_id'];
-            $command = prepareCommand($solution, $output, $problem);
-            exec($command);
-            parseAndSaveData($solutionID, $output, $database);
+    $problem = getProblemData($database, $solution['problem_problem_id']);
+    if (empty($problem)) {
+        throw new Exception("There isn't a problem with id: $solutionID");
+    }
+
+    $result = initializeData();
+    $compiler = new Compiler($solution['solution_language'], $solution['solution_source_file'], $solutionID);
+
+    if (!$compiler->compile()) {
+        $result['status'] = 'COMPILATION_ERROR';
+        $result['error_message'] = $compiler->getError();
+        $database->update('solution', $result, 'solution_id = ?', array($solutionID));
+        return;
+    }
+
+    $executor = new Executor($compiler->getOutput(), './monitor/scripts/default',
+                            $problem['time_constraint'], $problem['memory_constraint']);
+    $grade = 0;
+    foreach ($problem['tests'] as $test) {
+        if ($executor->execute($test['test_in'], $test['test_id'])) {
+            $output = $executor->getOuput();
+            $grade += Comparator::compare($test['test_out'], $output) ? $test['test_points'] : 0;
+        } else {
+            $result['status'] = $executor->getErrorType();
+            $result['error_message'] = $compiler->getError();
+            $database->update('solution', $result, 'solution_id = ?', array($solutionID));
+            return;
         }
     }
+
+    $result['status'] = 'SUCCESS';    
+    $result['grade'] = $grade;    
+    $result['used_memory'] = $executor->getMemoryUsage();    
+    $result['runtime'] = $executor->getRuntime();    
+    $database->update('solution', $result, 'solution_id = ?', array($solutionID));
+    return;
 }
 
-function prepareCommand(array $solution, $output, array $problem) {
-    return './vjgraderapp ' . $solution['solution_id'] . ' ' .
-            $solution['solution_source_file'] . ' ' .
-            $problem['file_in'] . ' ' .
-            $problem['file_out'] . ' ' .
-            $solution['solution_language'] . ' ' .
-            $problem['time_constraint'] . ' ' .
-            $problem['memory_constraint'] . ' > ' . $output;
-}
-
-function parseAndSaveData($solutionID, $output, Zebra_Database $database) {
-    $file_handle = fopen($output, "r");
-    $data = array(
+function initializeData() {
+    return array(
         'grade' => '0',
         'runtime' => '0',
         'used_memory' => '0',
         'status' => 'Executed',
         'error_message' => '',
     );
-    $error = false;
-    $errorMessage = '';
-    
-    while (!feof($file_handle)) {
-        $line = fgets($file_handle);
-        echo $line . PHP_EOL;
-        if ($error) {           
-            $errorMessage .= $line;
-        } else {           
-            if (!empty($line)) {
-                list($dataType, $result) = explode("-", $line);
-                
-                if ($dataType == "ERROR") {
-                    $error = true;
-                    $errorMessage .= $result;
-                } else {
-                    switch ($dataType) {
-                        case "STATUS":$data['status'] = statusToString($result);
-                            break;
-                        case "RUNTIME":$data['runtime'] = $result;
-                            break;
-                        case "MEMORY":$data['used_memory'] = $result;
-                            break;
-                        case "GRADE":$data['grade'] = $result;
-                            break;
-                        default:
-                    }
-                }
-            }
-        }
-    }
-
-    if ($errorMessage != '') {       
-        $data['error_message'] = $errorMessage;
-    }
-
-    fclose($file_handle);
-    unlink ($output);
-    $database->update(
-            'solution', $data, 'solution_id = ?', array($solutionID)
-    );
 }
 
-function statusToString($status) {
-    switch ($status) {
-        case 0: return 'SUCCESS';
-        case 1: return 'COMPILATION_ERROR';
-        case 2: return 'RUNTIME_ERROR';
-        case 3: return 'TIME_LIMIT_EXCEEDED';
-        case 4: return 'MEMORY_LIMIT_EXCEEDED';
-        case 5: return 'FAIL';
-        default: return '';
+function getSolutionData($database, $solutionID) {
+    $database->select('*', 'solution', 'solution_id = ?', array($solutionID));
+    $solutionRecords = $database->fetch_assoc_all();
+    if (count($solutionRecords) == 1) {
+        return $solutionRecords[0];
     }
+
+    return array();
+}
+
+function getProblemData($database, $problemID) {
+    $database->select('time_constraint, memory_constraint', 'problem', 'problem_id = ?', array($problemID));
+    $problemRecords = $database->fetch_assoc_all();
+
+    if (count($problemRecords) == 1) {
+        $problem = $problemRecords[0];
+        $database->select('*', 'test_case', 'problem_problem_id = ?', array($problemID));
+        $testCases = $database->fetch_assoc_all();
+        if (count($testCases) < 1) {
+            throw new Exception("The problem $problemID doesn't have defined a test case.");
+        }
+        $problem['tests'] = $testCases;
+        return $problem;
+    }
+
+    return array();
 }
 
 ?>
