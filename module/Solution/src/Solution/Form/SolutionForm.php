@@ -17,10 +17,10 @@ class SolutionForm extends Form {
 
         $language = new Element\Select('solution_language');
         $language->setValueOptions(array(
-            'c' => 'ANSI C',
-            'cpp' => 'C++',
+            'C' => 'ANSI C',
+            'CPP' => 'C++',
         ));
-        $language->setValue('cpp');  
+        $language->setValue('CPP');  
         
         $codFile = new Element\File('solution_source_file');
 
