@@ -1,0 +1,14 @@
+#!/bin/bash
+sudo rm -r data
+mkdir data
+mkdir data/solutions
+mkdir data/problems
+mkdir data/problems/descriptions
+mkdir data/problems/executions
+mkdir data/execution
+sudo chown www-data latex_processor
+sudo chown www-data data/problems/
+sudo chown www-data data/problems/executions
+sudo chown www-data data/problems/descriptions
+sudo chown www-data data/solutions/
+sudo rm -r build/app_coverage
