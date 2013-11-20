@@ -11,7 +11,4 @@ sudo chown www-data data/problems/
 sudo chown www-data data/problems/executions
 sudo chown www-data data/problems/descriptions
 sudo chown www-data data/solutions/
-cd grader;
-./cleanProject
-cd ..
-ant clean
+sudo rm -r build/app_coverage
