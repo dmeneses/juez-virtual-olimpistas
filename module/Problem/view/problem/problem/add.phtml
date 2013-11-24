@@ -46,9 +46,14 @@ $form->prepare();
             return true;
         }
         document.getElementById("pointsMsg").style.color = "red";
-        document.getElementById("addTestCase").focus();
-
         return false;
+    }
+
+    function add() {
+        var currentCount = $('form > div > fieldset > fieldset').length;
+        var template = $('form > div > fieldset > span').data('template');
+        template = template.replace(/__index__/g, currentCount);
+        $('form > div > fieldset').append(template);
     }
 </script>
 <div class="content">
@@ -74,7 +79,13 @@ $form->prepare();
             <td valign="mid"><label for="main_description">Descripcion</label></td>
             <td><?php echo $this->formFile($form->get('main_description')); ?></td>
             <td><?php echo $this->formElementErrors($form->get('main_description')); ?></td>
+            <td><button id="addImage" onclick="add()">Añadir Imagen</button></td>
         </tr>
+    </table>
+    <div id="addImageDiv">
+        <?php echo $this->formCollection($form->get('images')); ?>
+    </div>
+    <table>
         <tr>
             <td valign="mid"><label for="input_description">Descripcion de Entrada</label></td>
             <td><?php echo $this->formFile($form->get('input_description')); ?></td>

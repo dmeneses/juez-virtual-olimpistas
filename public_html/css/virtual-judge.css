@@ -260,7 +260,11 @@ form fieldset fieldset label{
     display: block;
     text-align: left;
 }
-form fieldset fieldset span{
+form fieldset label{
+    display: block;
+    text-align: left;
+}
+form fieldset span{
     float: left;
     width: 70px;
 }

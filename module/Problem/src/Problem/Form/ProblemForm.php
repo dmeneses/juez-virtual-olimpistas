@@ -61,6 +61,16 @@ class ProblemForm extends Form {
         ));
         $compareType->setValue('STRICT');
 
+        $file = new Element\File('file');
+        
+        $images = new Element\Collection('images');
+        $images->setLabel("Imagenes");
+        $images->setCount(0);
+        $images->allowAdd(true);
+        $images->allowRemove(true);
+        $images->setShouldCreateTemplate(true);
+        $images->setTargetElement($file);
+
         $tests = new Element\Collection('tests');
         $tests->setLabel("Pruebas");
         $tests->setCount(1);
@@ -86,8 +96,10 @@ class ProblemForm extends Form {
         $this->add($inputExample);
         $this->add($outputExample);
         $this->add($type);
+        $this->add($images);
         $this->add($tests);
         $this->add($compareType);
         $this->add($submit);
-    }    
+    }
+
 }
