@@ -5,6 +5,8 @@ namespace Problem\Form;
 use Zend\Form\Form;
 use Zend\Form\Element;
 use Problem\Form\TestCaseFieldset;
+use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\FileInput;
 
 class ProblemForm extends Form {
 
@@ -62,7 +64,8 @@ class ProblemForm extends Form {
         $compareType->setValue('STRICT');
 
         $file = new Element\File('file');
-        
+        $file->setAttribute('accept', '.png,.jpg');
+
         $images = new Element\Collection('images');
         $images->setLabel("Imagenes");
         $images->setCount(0);
@@ -100,6 +103,26 @@ class ProblemForm extends Form {
         $this->add($tests);
         $this->add($compareType);
         $this->add($submit);
+    }
+
+    public function isValid() {
+
+        $fileCollection = new InputFilter();
+        for ($i = 0; $i < count($this->get('images')); $i++) {
+            $file = new FileInput($i);
+            $file->setRequired(true);
+            $file->getFilterChain()->attachByName(
+                    'filerenameupload', array(
+                'target' => './public_html/problems/',
+                'overwrite' => true,
+                'use_upload_name' => true,
+                    )
+            );
+            $fileCollection->add($file);
+        }
+        $this->getInputFilter()->add($fileCollection, 'images');
+
+        return parent::isValid();
     }
 
 }

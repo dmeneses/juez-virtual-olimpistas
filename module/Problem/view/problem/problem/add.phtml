@@ -58,6 +58,7 @@ $form->prepare();
         var template = $('form > table > tbody > tr > td > div > fieldset > span').data('template');
         template = template.replace(/__index__/g, currentCount);
         $('form > table > tbody > tr > td > div > fieldset').append(template);
+        return false;
     }
 </script>
 <div class="content">
@@ -83,7 +84,7 @@ $form->prepare();
             <td valign="mid"><label for="main_description">Descripcion</label></td>
             <td><?php echo $this->formFile($form->get('main_description')); ?></td>
             <td><?php echo $this->formElementErrors($form->get('main_description')); ?></td>
-            <td><button id="addImage" onclick="addImages()">Añadir Imagen</button></td>
+            <td><button id="addImage" onclick="return addImages()">Añadir Imagen</button></td>
         </tr>
         <tr id="imagesRow" style="display:none;">
             <td colspan="4">
