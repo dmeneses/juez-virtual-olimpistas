@@ -49,11 +49,15 @@ $form->prepare();
         return false;
     }
 
-    function add() {
-        var currentCount = $('form > div > fieldset > fieldset').length;
-        var template = $('form > div > fieldset > span').data('template');
+    function addImages() {
+        if (document.getElementById("imagesRow").style.display == 'none') {
+            document.getElementById("imagesRow").style.display = '';
+        }
+
+        var currentCount = $('form > table > tbody > tr > td > div > fieldset > fieldset').length;
+        var template = $('form > table > tbody > tr > td > div > fieldset > span').data('template');
         template = template.replace(/__index__/g, currentCount);
-        $('form > div > fieldset').append(template);
+        $('form > table > tbody > tr > td > div > fieldset').append(template);
     }
 </script>
 <div class="content">
@@ -79,13 +83,15 @@ $form->prepare();
             <td valign="mid"><label for="main_description">Descripcion</label></td>
             <td><?php echo $this->formFile($form->get('main_description')); ?></td>
             <td><?php echo $this->formElementErrors($form->get('main_description')); ?></td>
-            <td><button id="addImage" onclick="add()">Añadir Imagen</button></td>
+            <td><button id="addImage" onclick="addImages()">Añadir Imagen</button></td>
         </tr>
-    </table>
-    <div id="addImageDiv">
-        <?php echo $this->formCollection($form->get('images')); ?>
-    </div>
-    <table>
+        <tr id="imagesRow" style="display:none;">
+            <td colspan="4">
+                <div id="addImageDiv">
+                    <?php echo $this->formCollection($form->get('images')); ?>
+                </div>            
+            </td>
+        </tr>
         <tr>
             <td valign="mid"><label for="input_description">Descripcion de Entrada</label></td>
             <td><?php echo $this->formFile($form->get('input_description')); ?></td>
