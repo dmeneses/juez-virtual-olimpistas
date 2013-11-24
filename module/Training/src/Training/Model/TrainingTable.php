@@ -95,6 +95,34 @@ class TrainingTable {
         $statement->execute();
     }
 
+    public function removeProblem($trainingID, $problemID) {
+        $dbAdapter = $this->tableGateway->getAdapter();
+        $sql = new Sql($dbAdapter);
+
+        $delete = $sql->delete('training_has_problem');
+        $delete->where(array(
+            'training_training_id' => $trainingID,
+            'problem_problem_id' => $problemID,
+        ));
+
+        $statement = $sql->prepareStatementForSqlObject($delete);
+        $statement->execute();
+    }
+
+    public function removeGroup($trainingID, $groupID) {
+        $dbAdapter = $this->tableGateway->getAdapter();
+        $sql = new Sql($dbAdapter);
+
+        $delete = $sql->delete('training_has_group');
+        $delete->where(array(
+            'training_training_id' => $trainingID,
+            'group_group_id' => $groupID,
+        ));
+
+        $statement = $sql->prepareStatementForSqlObject($delete);
+        $statement->execute();
+    }
+
     public function exist($trainingID) {
         $dbValidator = new RecordExists(array(
             'table' => 'training',
@@ -104,4 +132,5 @@ class TrainingTable {
 
         return $dbValidator->isValid($trainingID);
     }
+
 }

@@ -24,8 +24,8 @@ class AddValidator extends AbstractValidator {
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_EXIST => "Grupo no existe",
-        self::ALREADY_ADDED => "Grupo ya añadido",
+        self::NOT_EXIST => "No existe",
+        self::ALREADY_ADDED => "Ya añadido",
     );
     protected $dbAdapter;
     protected $trainingID;
