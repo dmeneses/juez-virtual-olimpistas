@@ -8,9 +8,9 @@ use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 
 /**
- * Validator when a training adds a problem.
+ * Validator when a trainings removes an element.
  */
-class AddProblemValidator extends AbstractValidator {
+class RemoveValidator extends AbstractValidator {
 
     /**
      * Error codes
@@ -24,11 +24,11 @@ class AddProblemValidator extends AbstractValidator {
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_EXIST => "Problema no existe",
-        self::ALREADY_ADDED => "Problema ya añadido",
+        self::NOT_EXIST => "No esta en el entrenamiento",
     );
     protected $dbAdapter;
     protected $trainingID;
+    protected $elementType;
 
     public function setDbAdapter($dbAdapter) {
         $this->dbAdapter = $dbAdapter;
@@ -36,6 +36,14 @@ class AddProblemValidator extends AbstractValidator {
 
     public function getDbAdapter() {
         return $this->dbAdapter;
+    }
+
+    public function getElementType() {
+        return $this->elementType;
+    }
+
+    public function setElementType($elementType) {
+        $this->elementType = $elementType;
     }
 
     public function setTrainingID($trainingID) {
@@ -49,34 +57,19 @@ class AddProblemValidator extends AbstractValidator {
     public function isValid($value) {
         $this->setValue((string) $value);
 
-        if ($this->notExist($value)) {
+        if (!$this->isAdded($value, $this->trainingID)) {
             $this->error(self::NOT_EXIST);
-            return false;
-        }
-
-        if ($this->isAdded($value, $this->trainingID)) {
-            $this->error(self::ALREADY_ADDED);
             return false;
         }
 
         return true;
     }
 
-    function notExist($problemID) {
-        $dbValidator = new NoRecordExists(array(
-            'table' => 'problem',
-            'field' => 'problem_id',
-            'adapter' => $this->dbAdapter,
-        ));
-
-        return $dbValidator->isValid($problemID);
-    }
-
-    function isAdded($problemID, $trainingID) {
+    function isAdded($groupID, $trainingID) {
         $select = new Select();
-        $select->from('training_has_problem')
-                ->where->equalTo('problem_problem_id', $problemID)
-                ->where->equalTo('training_training_id', $trainingID);
+        $select->from('training_has_' . $this->elementType)
+        ->where->equalTo($this->elementType . '_' . $this->elementType . '_id', $groupID)
+        ->where->equalTo('training_training_id', $trainingID);
 
         $sql = new Sql($this->getDbAdapter());
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -88,4 +81,5 @@ class AddProblemValidator extends AbstractValidator {
             return false;
         }
     }
+
 }

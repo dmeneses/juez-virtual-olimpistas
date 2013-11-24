@@ -6,8 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Training\Model\Training;
 use Training\Form\CreateTrainingForm;
-use Training\Form\AddProblemToTrainingForm;
-use Training\Form\AddGroupToTrainingForm;
+use Training\Form\AddElementToTraining;
 
 class TrainingController extends AbstractActionController {
 
@@ -90,18 +89,20 @@ class TrainingController extends AbstractActionController {
         }
 
         $training = $this->getTrainingTable()->get($id);
-        $problemForm = new AddProblemToTrainingForm();
-        $problemForm->get('training_id')->setValue($id);
-        $groupForm = new AddGroupToTrainingForm();
-        $groupForm->get('training_id')->setValue($id);
+        $problemForm = new AddElementToTraining($id, 'problem');
+        $groupForm = new AddElementToTraining($id, 'group');
         $request = $this->getRequest();
 
         if ($request->isPost()) {
             $postData = $request->getPost();
-            if (isset($postData['addGroup'])) {
+            if (isset($postData['addgroup'])) {
                 $this->addGroup($groupForm, $postData, $training);
-            } else {
+            } else if (isset($postData['addproblem'])) {
                 $this->addProblem($problemForm, $postData, $training);
+            } else if (isset($postData['removegroup'])) {
+                $this->removeGroup($groupForm, $postData, $training);
+            } else if (isset($postData['removeproblem'])) {
+                $this->removeProblem($problemForm, $postData, $training);
             }
         }
 
@@ -143,6 +144,27 @@ class TrainingController extends AbstractActionController {
         if ($groupForm->isValid()) {
             $newGroup = $groupForm->get('group_id')->getValue();
             $this->getTrainingTable()->addGroup($training->training_id, $newGroup);
+        }
+    }
+    private function removeProblem($problemForm, $postData, $training) {
+        $problemForm->setData($postData);
+        $problemForm->setValidateAdd(false);
+        $problemForm->setDbAdapter($this->getTrainingTable()->getDbAdapter());
+
+        if ($problemForm->isValid()) {
+            $problemID = $problemForm->get('problem_id')->getValue();
+            $this->getTrainingTable()->removeProblem($training->training_id, $problemID);
+        }
+    }
+
+    private function removeGroup($groupForm, $postData, $training) {
+        $groupForm->setData($postData);
+        $groupForm->setValidateAdd(false);
+        $groupForm->setDbAdapter($this->getTrainingTable()->getDbAdapter());
+
+        if ($groupForm->isValid()) {
+            $groupID = $groupForm->get('group_id')->getValue();
+            $this->getTrainingTable()->removeGroup($training->training_id, $groupID);
         }
     }
 
