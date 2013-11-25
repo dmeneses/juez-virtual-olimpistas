@@ -7,6 +7,8 @@ use Zend\Form\Element;
 use Problem\Form\TestCaseFieldset;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\FileInput;
+use Zend\Validator\File\Extension;
+use Zend\Filter;
 
 class ProblemForm extends Form {
 
@@ -106,18 +108,17 @@ class ProblemForm extends Form {
     }
 
     public function isValid() {
-
         $fileCollection = new InputFilter();
+        $pngExt = new Extension(array('png'));
         for ($i = 0; $i < count($this->get('images')); $i++) {
             $file = new FileInput($i);
             $file->setRequired(true);
-            $file->getFilterChain()->attachByName(
-                    'filerenameupload', array(
-                'target' => './public_html/problems/',
-                'overwrite' => true,
-                'use_upload_name' => true,
-                    )
-            );
+            $file->getValidatorChain()
+                    ->addValidator($pngExt);
+            $file->getFilterChain()
+                    ->attach(new Filter\File\RenameUpload(array(
+                        'target' => './public_html/problems/image.png',
+                        'randomize' => true,)));
             $fileCollection->add($file);
         }
         $this->getInputFilter()->add($fileCollection, 'images');

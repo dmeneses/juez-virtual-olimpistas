@@ -1,0 +1,13 @@
+#!/bin/bash
+
+FILE_NAME=$1
+
+for ((i = 2; i < $#; i++))
+do
+    NAME="${@:i:1}"
+    i=$(($i+1))
+    NEW_NAME="${@:i:1}"
+    perl -pi -e "s#$NAME#$NEW_NAME#g" $FILE_NAME
+    perl -pi -e "s#./public_html/#/#g" $FILE_NAME
+done
+
