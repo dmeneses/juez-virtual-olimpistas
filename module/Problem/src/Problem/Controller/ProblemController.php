@@ -104,7 +104,17 @@ class ProblemController extends AbstractActionController {
         $command .= $data['memory_constraint'] . ' ';
         $command .= $data['time_constraint'] . ' ';
         $command .= $data['source_constraint'] . ' ';
-        exec($command . ' > /tmp/holas');
+        exec($command);
+
+        if (isset($data['images']) && count($data['images'])) {
+            $rename = './rename ' . $descriptionOutput . ' ';
+
+            foreach ($data['images'] as $image) {
+                $rename .= $image['name'] . ' ' . $image['tmp_name'] . ' ';
+            }
+
+            exec($rename);
+        }
     }
 
     public function displayAction() {
@@ -125,11 +135,11 @@ class ProblemController extends AbstractActionController {
 
     public function solutionsAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
-        
+
         if (!$id) {
             return $this->redirect()->toRoute('problem', array('action' => 'add'));
         }
-        
+
         try {
             $solutions = $this->getProblemTable()->getProblemSolutions($id);
         } catch (\Exception $ex) {
@@ -138,4 +148,5 @@ class ProblemController extends AbstractActionController {
 
         return new ViewModel(array('solutions' => $solutions,));
     }
+
 }
