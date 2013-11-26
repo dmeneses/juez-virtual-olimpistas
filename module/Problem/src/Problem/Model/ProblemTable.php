@@ -84,10 +84,10 @@ class ProblemTable {
     }
 
     public function getProblemSolutions($id) {
-        $sql = "SELECT s.*, u.name, u.lastname FROM solution s, user u WHERE problem_problem_id = $id 
+        $sql = "SELECT s.*, u.name, u.lastname FROM solution s, user u WHERE problem_problem_id = 1
                 AND status='SUCCESS'
-                AND solution_submitter = user_id AND (solution_submitter, grade) IN
-                ( SELECT solution_submitter, MAX(grade) FROM solution GROUP BY solution_submitter)
+                AND solution_submitter = user_id AND (solution_submitter, grade, solution_date, runtime, used_memory) IN
+                ( SELECT solution_submitter, MAX(grade), MAX(solution_date), MIN(runtime), MIN(used_memory) FROM solution GROUP BY solution_submitter)
                 ORDER BY grade desc, solution_date desc";
         $resultSet = $this->getAdapter()->query($sql, \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
 
