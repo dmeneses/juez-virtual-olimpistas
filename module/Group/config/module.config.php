@@ -30,7 +30,7 @@ return array(
             'group' => __DIR__ . '/../view',
         ),
         'template_map' => array(
-            'paginator-slide' => __DIR__ . '/../view/group/group/slidePaginator.phtml',
+            'group-paginator' => __DIR__ . '/../view/group/group/slidePaginator.phtml',
         ),
     ),
 );

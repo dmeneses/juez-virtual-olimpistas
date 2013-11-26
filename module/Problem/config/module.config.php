@@ -30,7 +30,7 @@ return array(
             'problem' => __DIR__ . '/../view',
         ),
         'template_map' => array(
-            'paginator-slide' => __DIR__ . '/../view/problem/problem/slidePaginator.phtml',
+            'problem-paginator' => __DIR__ . '/../view/problem/problem/slidePaginator.phtml',
         ),
     ),
 );
