@@ -9,8 +9,10 @@ $form->prepare();
     window.onload = function() {
         if (document.getElementById("mult").checked) {
             document.getElementById('addTestCase').hidden = false;
+            document.getElementById('removeTestCase').hidden = false;
         } else {
             document.getElementById('addTestCase').hidden = true;
+            document.getElementById('removeTestCase').hidden = true;
         }
 
         if (($('form > table > tbody > tr > td > div > fieldset').children().length - 2) > 0) {
@@ -23,14 +25,33 @@ $form->prepare();
         var template = $('form > fieldset > span').data('template');
         template = template.replace(/__index__/g, currentCount);
         $('form > fieldset').append(template);
+        
+        if(currentCount === 1){
+            document.getElementById("removeTestCase").disabled = false;
+        }
+        return false;
+    }
+    
+    function removeTest() {
+        inputCount = $('form > fieldset').children().length;
+        
+        if (inputCount > 3) {
+            $('form > fieldset').children()[inputCount - 1].remove();
+        }
+        if (inputCount === 4) {
+            document.getElementById("removeTestCase").disabled = true;
+        }
+        
         return false;
     }
 
     function checkType() {
         if (document.getElementById("mult").checked) {
             document.getElementById('addTestCase').hidden = false;
+            document.getElementById('removeTestCase').hidden = false;
         } else {
             document.getElementById('addTestCase').hidden = true;
+            document.getElementById('removeTestCase').hidden = true;
             $('form > fieldset > fieldset').remove();
             var template = $('form > fieldset > span').data('template');
             template = template.replace(/__index__/g, 0);
@@ -64,6 +85,17 @@ $form->prepare();
         $('form > table > tbody > tr > td > div > fieldset').append(template);
         return false;
     }
+
+    function removeImages() {
+        inputCount = $('form > table > tbody > tr > td > div > fieldset').children().length;
+        if (inputCount > 2) {
+            $('form > table > tbody > tr > td > div > fieldset').children()[inputCount - 1].remove();
+        }
+        if (inputCount === 3) {
+            document.getElementById("imagesRow").style.display = 'none';
+        }
+        return false;
+    }
 </script>
 <div class="content">
     <h1><?php echo $this->escapeHtml($title); ?></h1>
@@ -89,6 +121,7 @@ $form->prepare();
             <td><?php echo $this->formFile($form->get('main_description')); ?></td>
             <td><?php echo $this->formElementErrors($form->get('main_description')); ?></td>
             <td><button id="addImage" onclick="return addImages()">Añadir Imagen</button></td>
+            <td><button id="removeImage" onclick="return removeImages()">Quitar Imagen</button></td>
         </tr>
         <tr id="imagesRow" style="display:none;">
             <td colspan="4">
@@ -159,6 +192,7 @@ $form->prepare();
             <td valign="mid"><label for="is_simple">Tipo</label></td>
             <td><?php echo $this->formRadio($form->get('is_simple')); ?>
                 <button id="addTestCase" hidden="true" onclick="return addTest()">Añadir test</button>
+                <button id="removeTestCase" disabled="true" hidden="true" onclick="return removeTest()">Quitar test</button>
             </td>
         </tr>
         <tr>
