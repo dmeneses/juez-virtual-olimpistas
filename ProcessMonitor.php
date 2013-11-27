@@ -157,6 +157,9 @@ function gradeSolution($solutionID, Zebra_Database $database) {
             $grade += Comparator::compare($test['test_out'], $output) ? $test['test_points'] : 0;
         } else {
             $log->logError("Execution failed.");
+            $result['grade'] = 0;
+            $result['used_memory'] = str_replace(',', '.', $executor->getMemoryUsage());
+            $result['runtime'] = str_replace(',', '.', $executor->getExecutionTime());
             $result['status'] = $executor->getErrorType();
             $result['error_message'] = $executor->getError();
             $database->update('solution', $result, 'solution_id = ?', array($solutionID));
@@ -166,8 +169,8 @@ function gradeSolution($solutionID, Zebra_Database $database) {
 
     $result['status'] = 'SUCCESS';
     $result['grade'] = $grade;
-    $result['used_memory'] = str_replace( ',', '.', $executor->getMemoryUsage());
-    $result['runtime'] = str_replace( ',', '.', $executor->getExecutionTime());
+    $result['used_memory'] = str_replace(',', '.', ($executor->getMemoryUsage())) ;
+    $result['runtime'] = str_replace(',', '.', $executor->getExecutionTime());
     $database->update('solution', $result, 'solution_id = ?', array($solutionID));
     return;
 }
