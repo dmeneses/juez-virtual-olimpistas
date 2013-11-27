@@ -29,7 +29,7 @@ class Executor {
     }
 
     public function getMemoryUsage() {
-        return $this->memoryUsage;
+        return $this->memoryUsage / 1024;
     }
 
     public function getExecutionTime() {
