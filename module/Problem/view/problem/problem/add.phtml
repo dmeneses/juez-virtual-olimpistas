@@ -12,6 +12,10 @@ $form->prepare();
         } else {
             document.getElementById('addTestCase').hidden = true;
         }
+
+        if (($('form > table > tbody > tr > td > div > fieldset').children().length - 2) > 0) {
+            document.getElementById("imagesRow").style.display = '';
+        }
     };
 
     function addTest() {
@@ -54,7 +58,7 @@ $form->prepare();
             document.getElementById("imagesRow").style.display = '';
         }
 
-        var currentCount = $('form > table > tbody > tr > td > div > fieldset > fieldset').length;
+        var currentCount = $('form > table > tbody > tr > td > div > fieldset').children().length - 2;
         var template = $('form > table > tbody > tr > td > div > fieldset > span').data('template');
         template = template.replace(/__index__/g, currentCount);
         $('form > table > tbody > tr > td > div > fieldset').append(template);
