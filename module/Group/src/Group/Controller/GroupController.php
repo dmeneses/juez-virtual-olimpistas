@@ -73,10 +73,6 @@ class GroupController extends AbstractActionController {
 
     public function editAction() {
         $userID = $this->getLoggedUserID();
-        if (!$userID) {
-            return $this->redirect()->toRoute('login');
-        }
-
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id || !$this->getGroupTable()->exist($id)) {
             return $this->redirect()->toRoute('group');
