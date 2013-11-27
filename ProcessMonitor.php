@@ -166,8 +166,8 @@ function gradeSolution($solutionID, Zebra_Database $database) {
 
     $result['status'] = 'SUCCESS';
     $result['grade'] = $grade;
-    $result['used_memory'] = $executor->getMemoryUsage();
-    $result['runtime'] = $executor->getExecutionTime();
+    $result['used_memory'] = str_replace( ',', '.', $executor->getMemoryUsage());
+    $result['runtime'] = str_replace( ',', '.', $executor->getExecutionTime());
     $database->update('solution', $result, 'solution_id = ?', array($solutionID));
     return;
 }
