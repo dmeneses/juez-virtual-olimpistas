@@ -140,12 +140,13 @@ class ProblemController extends AbstractActionController {
         }
 
         try {
+            $problem = $this->getProblemTable()->getProblem($id);
             $solutions = $this->getProblemTable()->getProblemSolutions($id);
         } catch (\Exception $ex) {
             return $this->redirect()->toRoute('problem');
         }
 
-        return new ViewModel(array('solutions' => $solutions,));
+        return new ViewModel(array('solutions' => $solutions, 'problem' => $problem));
     }
 
 }
