@@ -17,7 +17,7 @@ class SolutionTable {
     public function getDbAdapter() {
         return $this->tableGateway->getAdapter();
     }
-    
+
     public function fetchAll() {
         $resultSet = $this->tableGateway->select();
         return $resultSet;
@@ -56,14 +56,15 @@ class SolutionTable {
 
     public function getLast20Solution() {
         $select = new Select;
-        $select->from('solution');
-        $select->order(array('solution_id DESC')); 
-        $select->limit(20);
+        $select->from('solution')
+                ->join('problem', 'problem_problem_id = problem_id', array('problem_name'))
+                ->order(array('solution_id DESC'))
+                ->limit(20);
         $statement = $this->tableGateway->getAdapter()->createStatement();
         $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
 
         $resultSet = new ResultSet();
-        $resultSet->initialize($statement->execute());       
+        $resultSet->initialize($statement->execute());
         return $resultSet;
     }
 

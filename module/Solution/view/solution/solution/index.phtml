@@ -1,5 +1,5 @@
 <?php
-$title = 'Soluciones';
+$title = 'Soluciones en ejecucion';
 $this->headTitle($title);
 ?>
 
@@ -12,6 +12,7 @@ $this->headTitle($title);
                     <tr>
                         <th>ID</th>
                         <th>Date</th>
+                        <th>Problem</th>
                         <th>User</th>
                         <th>Grade</th>
                         <th>Result</th>
@@ -24,6 +25,9 @@ $this->headTitle($title);
                     <tr>
                         <td><?php echo $this->escapeHtml($solution->solution_id); ?></td>
                         <td><?php echo $this->escapeHtml($solution->solution_date); ?></td>
+                        <td>
+                            <a href="<?php echo $this->url('problem', array('action' => 'display', 'id' => $solution->problem_problem_id)); ?>"><?php echo $this->escapeHtml($solution->problem_name); ?></a>
+                        </td>
                         <td><?php echo $this->escapeHtml($solution->solution_submitter); ?></td>
                         <td><?php echo $this->escapeHtml($solution->grade); ?></td>
                         <td>
