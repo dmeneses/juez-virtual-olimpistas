@@ -7,6 +7,8 @@ use Zend\View\Model\ViewModel;
 use Training\Model\Training;
 use Training\Form\CreateTrainingForm;
 use Training\Form\AddElementToTraining;
+use Zend\Paginator\Paginator;
+use Zend\Paginator\Adapter\DbSelect;
 
 class TrainingController extends AbstractActionController {
 
@@ -52,7 +54,17 @@ class TrainingController extends AbstractActionController {
     }
 
     public function indexAction() {
-        return new ViewModel(array('trainings' => $this->getTrainingTable()->fetchAll()));
+        $paginator = new Paginator(new DbSelect($this->getTrainingTable()->fetchAllQuery(), $this->getTrainingTable()->getDbAdapter()));
+        $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
+
+        $paginator->setCurrentPageNumber($page)
+                ->setItemCountPerPage(10)
+                ->setPageRange(7);
+
+        return new ViewModel(array(
+            'page' => $page,
+            'paginator' => $paginator,
+        ));
     }
 
     public function createAction() {

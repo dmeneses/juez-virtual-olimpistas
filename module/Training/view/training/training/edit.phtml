@@ -64,52 +64,67 @@ function getFormattedTime($time) {
     ?>
     <center>
         <h2>Problemas Disponibles</h2>
-        <?php if (isset($trainingProblems)): ?>
+        <?php
+        if (isset($trainingProblems)) {
+            if (count($trainingProblems) > 0) {
+                ?>
+                <div style="margin-top: 20px;">
+                    <table class="table-bordered"  style="width: 50%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Problema</th>
+
+                            </tr>
+                        </thead>
+                        <?php foreach ($trainingProblems as $problem) : ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($problem->problem_id); ?></td>
+                                <td>
+                                    <a href="<?php echo $this->url('problem', array('action' => 'display', 'id' => $problem->problem_id)); ?>"><?php echo $this->escapeHtml($problem->problem_name); ?></a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+
+                <?php
+            } else {
+                echo "No existen problemas para este entrenamiento.";
+            }
+        } else {
+            echo "El entrenamiento aun no esta habilitado.</br>" .
+            "Los problemas estaran disponibles cuando el entrenamiento inicie.";
+        }
+        ?>
+
+        <h2>Grupos</h2>
+        <?php
+        if (count($trainingGroups) > 0) {
+            ?>
             <div style="margin-top: 20px;">
                 <table class="table-bordered"  style="width: 50%">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Problema</th>
-
+                            <th>Grupo</th>
                         </tr>
                     </thead>
-                    <?php foreach ($trainingProblems as $problem) : ?>
+                    <?php foreach ($trainingGroups as $group) : ?>
                         <tr>
-                            <td><?php echo $this->escapeHtml($problem->problem_id); ?></td>
+                            <td><?php echo $this->escapeHtml($group->group_id); ?></td>
                             <td>
-                                <a href="<?php echo $this->url('problem', array('action' => 'display', 'id' => $problem->problem_id)); ?>"><?php echo $this->escapeHtml($problem->problem_name); ?></a>
+                                <a href="<?php echo $this->url('group', array('action' => 'edit', 'id' => $group->group_id)); ?>"><?php echo $this->escapeHtml($group->group_name); ?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 </table>
             </div>
-        <?php else: ?>
-            <center>
-                <p>El entrenamiento aun no esta habilitado.</p>
-                <p>Los problemas estaran disponibles cuando el entrenamiento inicie.</p>
-            </center>
-        <?php endif; ?>
-
-        <h2>Grupos</h2>
-        <div style="margin-top: 20px;">
-            <table class="table-bordered"  style="width: 50%">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Grupo</th>
-                    </tr>
-                </thead>
-                <?php foreach ($trainingGroups as $group) : ?>
-                    <tr>
-                        <td><?php echo $this->escapeHtml($group->group_id); ?></td>
-                        <td>
-                            <a href="<?php echo $this->url('group', array('action' => 'edit', 'id' => $group->group_id)); ?>"><?php echo $this->escapeHtml($group->group_name); ?></a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-        </div>
+            <?php
+        }else {
+             echo "No existen grupos para este entrenamiento.";
+        }
+        ?>
     </center>
     <br/>
     <a style="margin-left: 25px" 
