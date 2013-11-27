@@ -25,23 +25,23 @@ $form->prepare();
         var template = $('form > fieldset > span').data('template');
         template = template.replace(/__index__/g, currentCount);
         $('form > fieldset').append(template);
-        
-        if(currentCount === 1){
+
+        if (currentCount === 1) {
             document.getElementById("removeTestCase").disabled = false;
         }
         return false;
     }
-    
+
     function removeTest() {
         inputCount = $('form > fieldset').children().length;
-        
+
         if (inputCount > 3) {
             $('form > fieldset').children()[inputCount - 1].remove();
         }
         if (inputCount === 4) {
             document.getElementById("removeTestCase").disabled = true;
         }
-        
+
         return false;
     }
 
@@ -77,6 +77,7 @@ $form->prepare();
     function addImages() {
         if (document.getElementById("imagesRow").style.display == 'none') {
             document.getElementById("imagesRow").style.display = '';
+            document.getElementById("removeImage").disabled = false;
         }
 
         var currentCount = $('form > table > tbody > tr > td > div > fieldset').children().length - 2;
@@ -93,6 +94,7 @@ $form->prepare();
         }
         if (inputCount === 3) {
             document.getElementById("imagesRow").style.display = 'none';
+            document.getElementById("removeImage").disabled = true;
         }
         return false;
     }
@@ -121,7 +123,7 @@ $form->prepare();
             <td><?php echo $this->formFile($form->get('main_description')); ?></td>
             <td><?php echo $this->formElementErrors($form->get('main_description')); ?></td>
             <td><button id="addImage" onclick="return addImages()">Añadir Imagen</button></td>
-            <td><button id="removeImage" onclick="return removeImages()">Quitar Imagen</button></td>
+            <td><button id="removeImage" disabled="true" onclick="return removeImages()">Quitar Imagen</button></td>
         </tr>
         <tr id="imagesRow" style="display:none;">
             <td colspan="4">
