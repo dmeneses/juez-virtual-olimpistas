@@ -6,24 +6,32 @@ $this->headTitle($title);
     <h1><?php echo $this->escapeHtml($title); ?></h1>
     <div style="margin-top: 20px;">
         <center>
-            <table style="width: 70%" class="table-bordered">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Grupo</th>
-                        <th>Creador</th>
-                    </tr>
-                </thead>
-                <?php foreach ($this->paginator as $group) : ?>
-                    <tr>
-                        <td><?php echo $this->escapeHtml($group->group_id); ?></td>
-                        <td>
-                            <a href="<?php echo $this->url('group', array('action' => 'edit', 'id' => $group->group_id)); ?>"><?php echo $this->escapeHtml($group->group_name); ?></a>
-                        </td>
-                        <td><?php echo $this->escapeHtml($group->name . ' ' . $group->lastname); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
+            <?php
+            if (count($this->paginator) > 0) {
+                ?>
+                <table style="width: 70%" class="table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Grupo</th>
+                            <th>Creador</th>
+                        </tr>
+                    </thead>
+                    <?php foreach ($this->paginator as $group) : ?>
+                        <tr>
+                            <td><?php echo $this->escapeHtml($group->group_id); ?></td>
+                            <td>
+                                <a href="<?php echo $this->url('group', array('action' => 'edit', 'id' => $group->group_id)); ?>"><?php echo $this->escapeHtml($group->group_name); ?></a>
+                            </td>
+                            <td><?php echo $this->escapeHtml($group->name . ' ' . $group->lastname); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+                <?php
+            }else {
+                echo "No existen grupos creados";
+            }
+            ?>
         </center>
     </div>	
     <?php
