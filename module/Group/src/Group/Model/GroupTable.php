@@ -7,7 +7,6 @@ use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Select;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Validator\Db\RecordExists;
-
 use User\Model\UserTable;
 
 /**
@@ -19,7 +18,6 @@ class GroupTable {
 
     protected $tableGateway;
     protected $userTable;
-    
 
     public function __construct(TableGateway $tableGateway, UserTable $userTable) {
         $this->tableGateway = $tableGateway;
@@ -40,7 +38,7 @@ class GroupTable {
 
         return $resultSet;
     }
-    
+
     public function fetchAllQuery() {
         $select = new Select;
         $select->columns(array('group_id', 'group_name'));
@@ -89,6 +87,21 @@ class GroupTable {
         ));
 
         $statement = $sql->prepareStatementForSqlObject($insert);
+        $statement->execute();
+    }
+
+    public function removeUser($groupID, $userEmail) {
+        $user = $this->userTable->getUserByEmail($userEmail);
+        $dbAdapter = $this->tableGateway->getAdapter();
+        $sql = new Sql($dbAdapter);
+
+        $delete = $sql->delete('user_has_group');
+        $delete->where(array(
+            'group_group_id' => $groupID,
+            'user_user_id' => $user->user_id,
+        ));
+
+        $statement = $sql->prepareStatementForSqlObject($delete);
         $statement->execute();
     }
 

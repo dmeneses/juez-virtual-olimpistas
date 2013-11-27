@@ -26,6 +26,7 @@ class GroupController extends AbstractActionController {
         }
         return $this->groupTable;
     }
+
     public function indexAction() {
         $paginator = new Paginator(new DbSelect($this->getGroupTable()->fetchAllQuery(), $this->getGroupTable()->getDbAdapter()));
         $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
@@ -39,7 +40,6 @@ class GroupController extends AbstractActionController {
             'paginator' => $paginator,
         ));
     }
-
 
     public function getLoggedUserID() {
         return $this->getServiceLocator()->get('LoggedUserID');
@@ -78,17 +78,17 @@ class GroupController extends AbstractActionController {
             return $this->redirect()->toRoute('group');
         }
 
-        $form = new EditGroupForm();
-        $form->get('group_id')->setValue($id);
+        $form = new EditGroupForm($id);
         $request = $this->getRequest();
 
         if ($request->isPost()) {
-            $form->setData($request->getPost());
+            $postData = $request->getPost();
+            $form->setData($postData);
             $form->setDbAdapter($this->getGroupTable()->getDbAdapter());
-
-            if ($form->isValid()) {
-                $newUser = $form->get('user_email')->getValue();
-                $this->getGroupTable()->addUser($id, $newUser);
+            if (isset($postData['add_user'])) {
+                $this->addUser($id, $form);
+            } else if (isset($postData['remove_user'])) {
+                $this->removeUser($id, $form);
             }
         }
 
@@ -100,6 +100,21 @@ class GroupController extends AbstractActionController {
             'users' => $users,
             'isOwner' => $userID == $group->group_owner,
         );
+    }
+
+    private function addUser($id, $form) {
+        if ($form->isValid()) {
+            $newUser = $form->get('user_email')->getValue();
+            $this->getGroupTable()->addUser($id, $newUser);
+        }
+    }
+
+    private function removeUser($id, $form) {
+        $form->setAddValidation(false);
+        if ($form->isValid()) {
+            $newUser = $form->get('user_email')->getValue();
+            $this->getGroupTable()->removeUser($id, $newUser);
+        }
     }
 
 }
