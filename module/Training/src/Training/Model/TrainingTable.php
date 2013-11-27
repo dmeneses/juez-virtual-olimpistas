@@ -34,6 +34,13 @@ class TrainingTable {
 
         return $resultSet;
     }
+    
+    public function fetchAllQuery() {
+        $select = new Select;
+        $select->from(array('t' => 'training',))
+                ->join(array('u' => 'user'), 'u.user_id = t.training_owner', array('name', 'lastname'));
+        return $select;
+    }
 
     public function get($trainingID) {
         $trainingID = (int) $trainingID;
