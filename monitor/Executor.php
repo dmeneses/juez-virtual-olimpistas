@@ -7,8 +7,8 @@
  */
 class Executor {
 
-    private $memoryUsage = 0;
-    private $executionTime = 0;
+    private $memoryUsage;
+    private $executionTime;
     private $timeConstraint;
     private $memoryConstraint;
     private $app;
@@ -24,6 +24,8 @@ class Executor {
         $this->memoryConstraint = $memoryConstraint * 1024;
         $this->app = $app;
         $this->script = $script;
+        $this->memoryUsage = 0;
+        $this->executionTime = 0;
     }
 
     public function getMemoryUsage() {
@@ -84,7 +86,8 @@ class Executor {
         $testTimeFinal = microtime(true) - $testTime;
         $this->executionTime += round($testTimeFinal, 3);
         $this->memoryUsage += $this->getMemoryUsageByTest();
-
+        $this->log->logInfo("ExecutionTime: $this->executionTime");
+        $this->log->logInfo("MemoryUsage: $this->memoryUsage");
         $this->log->LogInfo("Finish execution");
         if (!$this->checkTestConstraints()) {
             $this->log->LogError("Test doesn't follow the contraints.");
