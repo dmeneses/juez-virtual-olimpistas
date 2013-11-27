@@ -6,7 +6,7 @@ $this->headTitle($title);
     <h1><?php echo $this->escapeHtml($title); ?></h1>        
     <div style="margin-top: 20px;">
         <center>
-            <table class="table-bordered" style="width: 70%">
+            <table class="table-bordered" style="width: 80%">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -18,11 +18,11 @@ $this->headTitle($title);
                 <tbody>
                     <?php
                     foreach ($this->paginator as $problem) :
-                        $rating = $problem['solutions'] > 0 ? ($problem['accepted_solutions'] / $problem['solutions'] * 100) : 0
+                        $rating = $problem['solutions'] > 0 ? round(($problem['accepted_solutions'] / $problem['solutions'] * 100), 1): 0
                         ?>
                         <tr>
                             <td><?php echo $this->escapeHtml($problem['problem_id']); ?></td>
-                            <td>
+                            <td style="min-width: 100px">
                                 <a href="<?php echo $this->url('problem', array('action' => 'display', 'id' => $problem['problem_id'])); ?>"><?php echo $this->escapeHtml($problem['problem_name']); ?></a>
                             </td>
                             <td><?php echo $this->escapeHtml($problem['problem_author']); ?></td>
