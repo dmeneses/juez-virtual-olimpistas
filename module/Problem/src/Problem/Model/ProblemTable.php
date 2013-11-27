@@ -24,7 +24,12 @@ class ProblemTable {
     }
 
     public function fetchAll() {
-        $resultSet = $this->tableGateway->select();
+        $sql = "SELECT p.problem_id, p.problem_name, p.problem_author, count(s.solution_id) AS solutions,
+                (select count( distinct solution_submitter) from solution where status = 'SUCCESS' AND solution.problem_problem_id = p.problem_id) as accepted_solutions
+                FROM problem p  LEFT JOIN  solution s ON p.problem_id = s.problem_problem_id
+                GROUP BY p.problem_id";
+        $resultSet = $this->getAdapter()->query($sql, \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+
         return $resultSet;
     }
 
@@ -84,10 +89,9 @@ class ProblemTable {
     }
 
     public function getProblemSolutions($id) {
-        $sql = "SELECT s.*, u.name, u.lastname FROM solution s, user u WHERE problem_problem_id = 1
-                AND status='SUCCESS'
-                AND solution_submitter = user_id AND (solution_submitter, grade, solution_date, runtime, used_memory) IN
-                ( SELECT solution_submitter, MAX(grade), MAX(solution_date), MIN(runtime), MIN(used_memory) FROM solution GROUP BY solution_submitter)
+        $sql = "SELECT s.*, u.name, u.lastname FROM solution s, user u WHERE problem_problem_id = $id
+                AND status='SUCCESS' AND solution_submitter = user_id AND (solution_submitter, grade)
+                IN ( SELECT solution_submitter, MAX(grade) FROM solution GROUP BY solution_submitter)
                 ORDER BY grade desc, solution_date desc";
         $resultSet = $this->getAdapter()->query($sql, \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
 

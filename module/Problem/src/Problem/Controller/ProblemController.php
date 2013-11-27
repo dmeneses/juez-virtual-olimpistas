@@ -7,20 +7,19 @@ use Zend\View\Model\ViewModel;
 use Problem\Model\Problem;
 use Problem\Form\ProblemForm;
 use Zend\Paginator\Paginator;
-use Zend\Paginator\Adapter\DbTableGateway;
+use Zend\Paginator\Adapter\ArrayAdapter;
 
 class ProblemController extends AbstractActionController {
 
     protected $problemTable;
 
     public function indexAction() {
-        $paginator = new Paginator(new DbTableGateway($this->getProblemTable()->getTableGateway()));
+        $paginator = new Paginator(new ArrayAdapter($this->getProblemTable()->fetchAll()->toArray()));
         $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
 
         $paginator->setCurrentPageNumber($page)
                 ->setItemCountPerPage(10)
                 ->setPageRange(7);
-
         return new ViewModel(array('page' => $page, 'paginator' => $paginator,));
     }
 
