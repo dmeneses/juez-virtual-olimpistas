@@ -55,18 +55,6 @@ class ProblemTableTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function testFetchAllReturnsAllProblems() {
-        $resultSet = new ResultSet();
-        $mockTableGateway = $this->getMock('Zend\Db\TableGateway\TableGateway', array('select'), array(), '', false);
-        $mockTableGateway->expects($this->once())
-                ->method('select')
-                ->with()
-                ->will($this->returnValue($resultSet));
-
-        $problemTable = new ProblemTable($mockTableGateway);
-        $this->assertSame($resultSet, $problemTable->fetchAll());
-    }
-
     public function testCanRetrieveAnProblemByItsId() {
         $problem = $this->getProblem(self::BEFORE_SAVE);
         $resultSet = new ResultSet($this->getProblem(self::SIMPLE));
