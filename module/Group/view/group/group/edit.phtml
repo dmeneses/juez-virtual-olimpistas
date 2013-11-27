@@ -27,23 +27,25 @@ $form->prepare();
         echo $this->form()->closeTag();
     }
     ?>
-    <h2>Usuarios Agregados</h2>
-    <div style="margin-top: 20px;">
-        <table class="table-bordered" style="width: 50%">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <?php foreach ($users as $user) : ?>
-                <tr>
-                    <td><?php echo $this->escapeHtml($user->name . ' ' . $user->lastname); ?></td>
-                    <td><?php echo $this->escapeHtml($user->email); ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
-    </div>
+    <center>
+        <h2>Usuarios Agregados</h2>
+        <div style="margin-top: 20px;">
+            <table class="table-bordered" style="width: 50%">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <?php foreach ($users as $user) : ?>
+                    <tr>
+                        <td><?php echo $this->escapeHtml($user->name . ' ' . $user->lastname); ?></td>
+                        <td><?php echo $this->escapeHtml($user->email); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
+    </center>
     <br/><br/>
     <a href="<?php echo $this->url('group', array('action' => 'index',)); ?>" class="button">Volver</a>
 </div>
