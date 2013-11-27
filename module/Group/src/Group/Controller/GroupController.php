@@ -102,18 +102,18 @@ class GroupController extends AbstractActionController {
         );
     }
 
-    private function addUser($id, $form) {
+    private function addUser($groupID, $form) {
         if ($form->isValid()) {
             $newUser = $form->get('user_email')->getValue();
-            $this->getGroupTable()->addUser($id, $newUser);
+            $this->getGroupTable()->addUser($groupID, $newUser);
         }
     }
 
-    private function removeUser($id, $form) {
+    private function removeUser($groupID, $form) {
         $form->setAddValidation(false);
         if ($form->isValid()) {
             $newUser = $form->get('user_email')->getValue();
-            $this->getGroupTable()->removeUser($id, $newUser);
+            $this->getGroupTable()->removeUser($groupID, $newUser);
         }
     }
 
