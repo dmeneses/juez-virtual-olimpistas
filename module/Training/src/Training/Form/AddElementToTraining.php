@@ -22,6 +22,7 @@ class AddElementToTraining extends Form {
         $this->elementName = $elementName;
         $groupID = new Element\Text($elementName . '_id');
         $groupID->setAttribute('placeholder', $elementName . ' id to add or delete');
+        $groupID->setAttribute('id', $elementName . '_id');
 
         $submit = new Element\Submit('add' . $elementName);
         $submit->setValue('Agregar');

@@ -32,5 +32,6 @@ return array(
         'template_map' => array(
             'training-paginator' => __DIR__ . '/../view/training/training/slidePaginator.phtml',
         ),
+        'strategies' => array('ViewJsonStrategy',),
     ),
 );

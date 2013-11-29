@@ -33,6 +33,15 @@ class ProblemTable {
         return $resultSet;
     }
 
+    public function fetchAll2() {
+        $resultSet = $this->tableGateway->select();
+        $rows = array();
+        foreach ($resultSet as $row) {
+            $rows[] = $row;
+        } 
+        return $rows;
+    }
+
     public function getProblem($id) {
         $id = (int) $id;
         $rowset = $this->tableGateway->select(array('problem_id' => $id));
@@ -89,8 +98,7 @@ class ProblemTable {
     }
 
     public function getProblemSolutions($id) {
-        $sql = 
-"SELECT newone.* FROM 
+        $sql = "SELECT newone.* FROM 
     (SELECT s.*, u.name, u.lastname
     FROM solution s, user u 
     WHERE problem_problem_id = $id AND status='SUCCESS' AND solution_submitter = user_id AND (solution_submitter, grade) IN (
