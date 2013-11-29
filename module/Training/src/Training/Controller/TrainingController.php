@@ -199,12 +199,13 @@ class TrainingController extends AbstractActionController {
 
     public function autocompleteAction() {
 
+        $term = $this->params()->fromRoute('term', ' ');
         if (!$this->getRequest()->isXmlHttpRequest()) {
             return array();
         }
-        
+
         $JsonModel = new JsonModel(array(
-            'problems' => $this->getProblemTable()->fetchAll2(),
+            'problems' => $this->getProblemTable()->fetchByTerm($term),
         ));
 
         return $JsonModel;

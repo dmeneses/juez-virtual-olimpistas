@@ -4,6 +4,7 @@ namespace Problem\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Predicate\Like;
 use Zend\Db\ResultSet\ResultSet;
 
 class ProblemTable {
@@ -33,12 +34,21 @@ class ProblemTable {
         return $resultSet;
     }
 
-    public function fetchAll2() {
-        $resultSet = $this->tableGateway->select();
+    public function fetchByTerm($term) {
+        $select = new Select;
+
+        $select->from('problem')
+            ->where->addPredicate(new Like('problem_name', "%$term%"));
+        $statement = $this->tableGateway->getAdapter()->createStatement();
+        $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($statement->execute());
+
         $rows = array();
         foreach ($resultSet as $row) {
             $rows[] = $row;
-        } 
+        }
         return $rows;
     }
 

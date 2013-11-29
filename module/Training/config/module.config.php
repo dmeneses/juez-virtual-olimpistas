@@ -11,11 +11,12 @@ return array(
             'training' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/training[/:action][/:id][/page/:page]',
+                    'route' => '/training[/:action][/:id][/term/:term][/page/:page]',
                     'constraints' => array(
                         'action' => '(?!\bpage\b)[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
                         'page' => '[0-9]+',
+                        'term' => '[a-zA-Z]+'
                     ),
                     'defaults' => array(
                         'controller' => 'Training\Controller\Training',

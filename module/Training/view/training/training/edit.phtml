@@ -3,6 +3,7 @@ $title = 'Entrenamiento: ' . $trainingData->training_name;
 $this->headTitle($title);
 $problemForm->prepare();
 $groupForm->prepare();
+$host = $_SERVER['HTTP_HOST'];
 
 function getFormattedDate($date) {
     $phpdate = strtotime($date);
@@ -24,10 +25,9 @@ function getFormattedTime($time) {
             source: function(request, response) {
                 console.log(request);
                 $.ajax({
-                    url: "http://virtual-judge.org/training/autocomplete",
+                    url: "http://" + "<?php echo $host ?>" + "/training/autocomplete/term/" + request.term,
                     dataType: "json",
                     data: {
-                        term: request.term
                     },
                     success: function(data) {
                         console.log(data);
@@ -59,16 +59,16 @@ function getFormattedTime($time) {
         <tr>
             <td valign="mid"><label>Inicio:</label></td>
             <td><?php
-                echo $this->escapeHtml(getFormattedDate($trainingData->start_date) . ' ' .
-                        getFormattedTime($trainingData->start_time));
-                ?></td>
+echo $this->escapeHtml(getFormattedDate($trainingData->start_date) . ' ' .
+        getFormattedTime($trainingData->start_time));
+?></td>
         </tr>
         <tr>
             <td valign="mid"><label>Fin:</label></td>
             <td><?php
                 echo $this->escapeHtml(getFormattedDate($trainingData->end_date) . ' ' .
                         getFormattedTime($trainingData->end_time));
-                ?></td>
+?></td>
         </tr>
     </table>
     <?php
