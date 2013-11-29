@@ -1,0 +1,224 @@
+<?php
+$title = 'Proponer Problema';
+$this->headTitle($title);
+
+$form->setAttribute('action', $this->url('problem', array('action' => 'add')));
+$form->prepare();
+?>
+<script type="text/javascript">
+    window.onload = function() {
+        if (document.getElementById("mult").checked) {
+            document.getElementById('addTestCase').hidden = false;
+            document.getElementById('removeTestCase').hidden = false;
+        } else {
+            document.getElementById('addTestCase').hidden = true;
+            document.getElementById('removeTestCase').hidden = true;
+        }
+
+        if (($('form > table > tbody > tr > td > div > fieldset').children().length - 2) > 0) {
+            document.getElementById("imagesRow").style.display = '';
+        }
+    };
+
+    function addTest() {
+        var currentCount = $('form > fieldset > fieldset').length;
+        var template = $('form > fieldset > span').data('template');
+        template = template.replace(/__index__/g, currentCount);
+        $('form > fieldset').append(template);
+
+        if (currentCount === 1) {
+            document.getElementById("removeTestCase").disabled = false;
+        }
+        return false;
+    }
+
+    function removeTest() {
+        inputCount = $('form > fieldset').children().length;
+
+        if (inputCount > 3) {
+            $('form > fieldset').children()[inputCount - 1].remove();
+        }
+        if (inputCount === 4) {
+            document.getElementById("removeTestCase").disabled = true;
+        }
+
+        return false;
+    }
+
+    function checkType() {
+        if (document.getElementById("mult").checked) {
+            document.getElementById('addTestCase').hidden = false;
+            document.getElementById('removeTestCase').hidden = false;
+        } else {
+            document.getElementById('addTestCase').hidden = true;
+            document.getElementById('removeTestCase').hidden = true;
+            $('form > fieldset > fieldset').remove();
+            var template = $('form > fieldset > span').data('template');
+            template = template.replace(/__index__/g, 0);
+            $('form > fieldset').append(template);
+        }
+    }
+
+    function gradeCheck(form) {
+        var sum = 0;
+
+        $('form > fieldset > fieldset').each(function(index) {
+            var element = $(this)[0];
+            sum += parseInt(element.elements[1].value);
+        });
+
+        if (sum === 100) {
+            return true;
+        }
+        document.getElementById("pointsMsg").style.color = "red";
+        return false;
+    }
+
+    function addImages() {
+        if (document.getElementById("imagesRow").style.display == 'none') {
+            document.getElementById("imagesRow").style.display = '';
+            document.getElementById("removeImage").disabled = false;
+        }
+
+        var currentCount = $('form > table > tbody > tr > td > div > fieldset').children().length - 2;
+        var template = $('form > table > tbody > tr > td > div > fieldset > span').data('template');
+        template = template.replace(/__index__/g, currentCount);
+        $('form > table > tbody > tr > td > div > fieldset').append(template);
+        return false;
+    }
+
+    function removeImages() {
+        inputCount = $('form > table > tbody > tr > td > div > fieldset').children().length;
+        if (inputCount > 2) {
+            $('form > table > tbody > tr > td > div > fieldset').children()[inputCount - 1].remove();
+        }
+        if (inputCount === 3) {
+            document.getElementById("imagesRow").style.display = 'none';
+            document.getElementById("removeImage").disabled = true;
+        }
+        return false;
+    }
+</script>
+<div class="content">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    <?php
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('problem_id'));
+    ?>
+
+    <h2>Datos Principales</h2>
+    <table>	
+        <tr>
+            <td valign="mid"><label for="problem_name">Nombre</label></td>
+            <td><?php echo $this->formInput($form->get('problem_name')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('problem_name')); ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="problem_author">Autor</label></td>
+            <td><?php echo $this->formInput($form->get('problem_author')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('problem_author')); ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="main_description">Descripcion</label></td>
+            <td><?php echo $this->formFile($form->get('main_description')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('main_description')); ?></td>
+            <td><button id="addImage" onclick="return addImages()">Añadir Imagen</button></td>
+            <td><button id="removeImage" disabled="true" onclick="return removeImages()">Quitar Imagen</button></td>
+        </tr>
+        <tr id="imagesRow" style="display:none;">
+            <td colspan="4">
+                <div id="addImageDiv">
+                    <?php echo $this->formCollection($form->get('images')); ?>
+                </div>            
+            </td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="input_description">Descripcion de Entrada</label></td>
+            <td><?php echo $this->formFile($form->get('input_description')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('input_description')); ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="output_description">Descripcion de Salida</label></td>
+            <td><?php echo $this->formFile($form->get('output_description')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('output_description')); ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="input_example">Ejemplo de Entrada</label></td>
+            <td><?php echo $this->formFile($form->get('input_example')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('input_example')); ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="output_example">Ejemplo de Salida</label></td>
+            <td><?php echo $this->formFile($form->get('output_example')); ?></td>
+            <td><?php echo $this->formElementErrors($form->get('output_example')); ?></td>
+        </tr>
+    </table>
+
+    <h2>Restricciones</h2>
+
+    <table>	
+        <tr>
+            <td valign="mid"><label for="time_constraint">Tiempo</label></td>
+            <td><?php echo $this->formInput($form->get('time_constraint')); ?></td>
+            <td><label>Segundos</label></td>
+        </tr>
+        <tr>
+            <td/>
+            <td><?php echo $this->formElementErrors($form->get('time_constraint')); ?></td>
+        </tr>
+
+        <tr>
+            <td valign="mid"><label for="memory_constraint">Memoria</label></td>
+            <td><?php echo $this->formInput($form->get('memory_constraint')); ?></td>
+            <td><label>MB</label></td>
+        </tr>
+        <tr>
+            <td/>
+            <td><?php echo $this->formElementErrors($form->get('memory_constraint')); ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label for="source_constraint">Codigo</label></td>
+            <td><?php echo $this->formInput($form->get('source_constraint')); ?></td>
+            <td><label>Bytes</label></td>
+        </tr>
+        <tr>
+            <td/>
+            <td><?php echo $this->formElementErrors($form->get('source_constraint')); ?></td>
+        </tr>
+    </table>
+
+
+    <h2>Opciones de Juzgamiento</h2>
+    <table>
+        <tr>
+            <td valign="mid"><label for="is_simple">Tipo</label></td>
+            <td><?php echo $this->formRadio($form->get('is_simple')); ?>
+                <button id="addTestCase" hidden="true" onclick="return addTest()">Añadir test</button>
+                <button id="removeTestCase" disabled="true" hidden="true" onclick="return removeTest()">Quitar test</button>
+            </td>
+        </tr>
+        <tr>
+            <td/>
+            <td><p id="pointsMsg">El puntaje acumulado siempre tiene que ser 100pts.</p>
+            </td>
+        </tr>
+    </table>
+
+    <?php echo $this->formCollection($form->get('tests')); ?>
+    <table>
+        <tr><td style="padding-top: 10px"/></tr>
+        <tr>
+            <td><label for="compareType">Comparacion</label></td>
+            <td><?php echo $this->formRadio($form->get('compare_type')); ?></td>
+        </tr>
+    </table>
+
+    <?php
+    echo $this->formSubmit($form->get('submit'));
+    ?>
+    <a href="<?php echo $this->url('application', array('action' => 'index',)); ?>" class="button">Cancelar</a>
+    <?php
+    echo $this->form()->closeTag();
+    ?>   
+
+</div>

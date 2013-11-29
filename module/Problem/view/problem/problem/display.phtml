@@ -1,0 +1,15 @@
+<?php
+$title = $problemData->problem_name;
+$this->headTitle($title);
+?>
+
+<div class="content"> 
+    <p>
+        <?php echo file_get_contents("./data/problems/descriptions/problem" . $problemData->problem_id . ".html"); ?>
+    </p>
+    <br/>
+    <a href="<?php echo $this->url('solution', array('action' => 'add', 'id' => $problemData->problem_id)); ?>"
+       class="button">Subir Solucion</a>
+    <a href="<?php echo $this->url('problem', array('action' => 'solutions', 'id' => $problemData->problem_id)); ?>"
+       class="button">Soluciones Subidas</a>
+</div>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<phpdox xmlns="http://phpdox.de/config">
+ <project name="VirtualJudge" source="." workdir="build/phpdox">
+  <collector publiconly="false">
+   <include mask="*.php" />
+   <exclude mask="*autoload.php" />
+   <exclude mask="*test*" />
+   <exclude mask="*vendor*" />
+  </collector>
+
+  <generator output="build">
+   <build engine="html" enabled="true" output="docs"/>
+  </generator>
+ </project>
+</phpdox>

@@ -1,0 +1,133 @@
+<?php
+$title = 'Entrenamiento: ' . $trainingData->training_name;
+$this->headTitle($title);
+$problemForm->prepare();
+$groupForm->prepare();
+
+function getFormattedDate($date) {
+    $phpdate = strtotime($date);
+    return date('Y-m-d', $phpdate);
+}
+
+function getFormattedTime($time) {
+    $phpdate = strtotime($time);
+    return date('H:i', $phpdate);
+}
+?>
+<div class="content">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    <table style="margin-left: 15px">	      
+        <tr>
+            <td valign="mid"><label>Inicio:</label></td>
+            <td><?php
+                echo $this->escapeHtml(getFormattedDate($trainingData->start_date) . ' ' .
+                        getFormattedTime($trainingData->start_time));
+                ?></td>
+        </tr>
+        <tr>
+            <td valign="mid"><label>Fin:</label></td>
+            <td><?php
+                echo $this->escapeHtml(getFormattedDate($trainingData->end_date) . ' ' .
+                        getFormattedTime($trainingData->end_time));
+                ?></td>
+        </tr>
+    </table>
+    <?php
+    if ($isOwner) {
+        echo $this->form()->openTag($problemForm);
+        ?>
+        <h2>Agregar problema</h2>
+        <table>	      
+            <tr>
+                <td><?php echo $this->formInput($problemForm->get('problem_id')); ?></td>
+                <td><?php echo $this->formSubmit($problemForm->get('addproblem')); ?></td>
+                <td><?php echo $this->formSubmit($problemForm->get('removeproblem')); ?></td>
+                <td><?php echo $this->formElementErrors($problemForm->get('problem_id')); ?></td>
+            </tr>
+        </table>
+        <?php
+        echo $this->form()->closeTag();
+        echo $this->form()->openTag($groupForm);
+        ?>
+        <h2>Agregar grupo</h2>
+        <table>
+            <tr>
+                <td><?php echo $this->formInput($groupForm->get('group_id')); ?></td>
+                <td><?php echo $this->formSubmit($groupForm->get('addgroup')); ?></td>
+                <td><?php echo $this->formSubmit($groupForm->get('removegroup')); ?></td>
+                <td><?php echo $this->formElementErrors($groupForm->get('group_id')); ?></td>
+            </tr>
+        </table>
+        <?php
+        echo $this->form()->closeTag();
+    }
+    ?>
+    <center>
+        <h2>Problemas Disponibles</h2>
+        <?php
+        if (isset($trainingProblems)) {
+            if (count($trainingProblems) > 0) {
+                ?>
+                <div style="margin-top: 20px;">
+                    <table class="table-bordered"  style="width: 50%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Problema</th>
+
+                            </tr>
+                        </thead>
+                        <?php foreach ($trainingProblems as $problem) : ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($problem->problem_id); ?></td>
+                                <td>
+                                    <a href="<?php echo $this->url('problem', array('action' => 'display', 'id' => $problem->problem_id)); ?>"><?php echo $this->escapeHtml($problem->problem_name); ?></a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+
+                <?php
+            } else {
+                echo "No existen problemas para este entrenamiento.";
+            }
+        } else {
+            echo "El entrenamiento aun no esta habilitado.</br>" .
+            "Los problemas estaran disponibles cuando el entrenamiento inicie.";
+        }
+        ?>
+
+        <h2>Grupos</h2>
+        <?php
+        if (count($trainingGroups) > 0) {
+            ?>
+            <div style="margin-top: 20px;">
+                <table class="table-bordered"  style="width: 50%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Grupo</th>
+                        </tr>
+                    </thead>
+                    <?php foreach ($trainingGroups as $group) : ?>
+                        <tr>
+                            <td><?php echo $this->escapeHtml($group->group_id); ?></td>
+                            <td>
+                                <a href="<?php echo $this->url('group', array('action' => 'edit', 'id' => $group->group_id)); ?>"><?php echo $this->escapeHtml($group->group_name); ?></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+            <?php
+        }else {
+             echo "No existen grupos para este entrenamiento.";
+        }
+        ?>
+    </center>
+    <br/>
+    <a style="margin-left: 25px" 
+       href="<?php echo $this->url('training', array('action' => 'index',)); ?>" 
+       class="button">Volver</a>
+</div>

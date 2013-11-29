@@ -1,0 +1,55 @@
+<?php
+$title = 'Ranking';
+$this->headTitle($title);
+$count = 1;
+?>
+<div class="content">
+    <h1><?php echo $this->escapeHtml("$problem->problem_name - " . $title); ?></h1>        
+    <div style="margin-top: 20px;">
+        <center>
+            <table class="table-bordered" style="width: 70%">
+                <thead>
+                    <tr>
+                        <th>Puesto</th>
+                        <th>Fecha</th>
+                        <th>Usuario</th>
+                        <th>Resultado</th>
+                        <th>Tiempo</th>
+                        <th>Memoria</th>
+                        <th>Lenguaje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($this->solutions as $solution) : ?>
+                        <tr>
+                            <td>
+                                <?php
+                                echo $count;
+                                $count++;
+                                ?>
+                            </td>
+                            <td>
+                                <?php echo $this->escapeHtml($solution->solution_date) ?>
+                            </td>
+                            <td>
+                                <?php echo $this->escapeHtml($solution->name . ' ' . $solution->lastname) ?>
+                            </td>
+                            <td>
+                                <?php echo $this->escapeHtml($solution->grade) ?>
+                            </td>
+                            <td>
+                                <?php echo $this->escapeHtml($solution->runtime) ?>
+                            </td>
+                            <td>
+                                <?php echo $this->escapeHtml($solution->used_memory) ?>
+                            </td>
+                            <td>
+                                <?php echo $this->escapeHtml($solution->solution_language) ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </center>
+    </div>
+</div>
