@@ -9,6 +9,7 @@ use Training\Form\CreateTrainingForm;
 use Training\Form\AddElementToTraining;
 use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\DbSelect;
+use Zend\View\Model\JsonModel;
 
 class TrainingController extends AbstractActionController {
 
@@ -158,6 +159,7 @@ class TrainingController extends AbstractActionController {
             $this->getTrainingTable()->addGroup($training->training_id, $newGroup);
         }
     }
+
     private function removeProblem($problemForm, $postData, $training) {
         $problemForm->setData($postData);
         $problemForm->setValidateAdd(false);
@@ -193,6 +195,19 @@ class TrainingController extends AbstractActionController {
         }
 
         return true;
+    }
+
+    public function autocompleteAction() {
+
+        if (!$this->getRequest()->isXmlHttpRequest()) {
+            return array();
+        }
+        
+        $JsonModel = new JsonModel(array(
+            'problems' => $this->getProblemTable()->fetchAll2(),
+        ));
+
+        return $JsonModel;
     }
 
 }
