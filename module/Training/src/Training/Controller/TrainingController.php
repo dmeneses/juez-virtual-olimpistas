@@ -147,6 +147,7 @@ class TrainingController extends AbstractActionController {
         if ($problemForm->isValid()) {
             $newProblem = $problemForm->get('problem_id')->getValue();
             $this->getTrainingTable()->addProblem($training->training_id, $newProblem);
+            $problemForm->get('problem_id')->setValue('');
         }
     }
 
@@ -157,6 +158,7 @@ class TrainingController extends AbstractActionController {
         if ($groupForm->isValid()) {
             $newGroup = $groupForm->get('group_id')->getValue();
             $this->getTrainingTable()->addGroup($training->training_id, $newGroup);
+            $groupForm->get('group_id')->setValue('');
         }
     }
 
@@ -168,6 +170,7 @@ class TrainingController extends AbstractActionController {
         if ($problemForm->isValid()) {
             $problemID = $problemForm->get('problem_id')->getValue();
             $this->getTrainingTable()->removeProblem($training->training_id, $problemID);
+            $problemForm->get('problem_id')->setValue('');
         }
     }
 
@@ -179,6 +182,7 @@ class TrainingController extends AbstractActionController {
         if ($groupForm->isValid()) {
             $groupID = $groupForm->get('group_id')->getValue();
             $this->getTrainingTable()->removeGroup($training->training_id, $groupID);
+            $groupForm->get('group_id')->setValue('');
         }
     }
 
@@ -197,15 +201,28 @@ class TrainingController extends AbstractActionController {
         return true;
     }
 
-    public function autocompleteAction() {
-
+    public function autocomplete1Action() {
         $term = $this->params()->fromRoute('term', ' ');
         if (!$this->getRequest()->isXmlHttpRequest()) {
             return array();
         }
 
         $JsonModel = new JsonModel(array(
-            'problems' => $this->getProblemTable()->fetchByTerm($term),
+            'problems' => $this->getProblemTable()->fetchProblemByTerm($term),
+        ));
+
+        return $JsonModel;
+    }
+
+    public function autocomplete2Action() {
+        $term = $this->params()->fromRoute('term', ' ');
+        
+        if (!$this->getRequest()->isXmlHttpRequest()) {
+            return array();
+        }
+
+        $JsonModel = new JsonModel(array(
+            'groups' => $this->getGroupTable()->fetchGroupByTerm($term),
         ));
 
         return $JsonModel;
