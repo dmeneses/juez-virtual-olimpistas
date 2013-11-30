@@ -25,7 +25,7 @@ function getFormattedTime($time) {
             source: function(request, response) {
                 console.log(request);
                 $.ajax({
-                    url: "http://" + "<?php echo $host ?>" + "/training/autocomplete/term/" + request.term,
+                    url: "http://" + "<?php echo $host ?>" + "/training/autocomplete1/term/" + request.term,
                     dataType: "json",
                     data: {
                     },
@@ -43,6 +43,37 @@ function getFormattedTime($time) {
             minLength: 1,
             select: function(event, ui) {
                 (ui.item ? $("#project_id").val(ui.item.problem_id) : "");
+            },
+            open: function() {
+                $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+            },
+            close: function() {
+                $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+            }
+        });
+        
+        $("#group_id").autocomplete({
+            source: function(request, response) {
+                console.log(request);
+                $.ajax({
+                    url: "http://" + "<?php echo $host ?>" + "/training/autocomplete2/term/" + request.term,
+                    dataType: "json",
+                    data: {
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response($.map(data.groups, function(item) {
+                            return {
+                                label: item.group_id + " - " + item.group_name,
+                                value: item.group_id + " - " + item.group_name
+                            }
+                        }));
+                    }
+                });
+            },
+            minLength: 1,
+            select: function(event, ui) {
+                (ui.item ? $("#group_id").val(ui.item.group_id) : "");
             },
             open: function() {
                 $(this).removeClass("ui-corner-all").addClass("ui-corner-top");

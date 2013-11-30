@@ -8,6 +8,7 @@ use Zend\Db\Sql\Select;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Validator\Db\RecordExists;
 use User\Model\UserTable;
+use Zend\Db\Sql\Predicate\Like;
 
 /**
  * Database manager for groups.
@@ -145,4 +146,20 @@ class GroupTable {
         return $resultSet;
     }
 
+    public function fetchGroupByTerm($term) {
+        $select = new Select;
+        $select->from('group')
+            ->where->addPredicate(new Like('group_name', "%$term%"));
+        $statement = $this->tableGateway->getAdapter()->createStatement();
+        $select->prepareStatement($this->tableGateway->getAdapter(), $statement);
+
+        $resultSet = new ResultSet();
+        $resultSet->initialize($statement->execute());
+
+        $rows = array();
+        foreach ($resultSet as $row) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
 }

@@ -34,7 +34,7 @@ class ProblemTable {
         return $resultSet;
     }
 
-    public function fetchByTerm($term) {
+    public function fetchProblemByTerm($term) {
         $select = new Select;
 
         $select->from('problem')
