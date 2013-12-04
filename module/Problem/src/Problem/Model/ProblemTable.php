@@ -72,6 +72,7 @@ class ProblemTable {
             'source_constraint' => $problem->source_constraint,
             'is_simple' => $problem->is_simple,
             'compare_type' => $problem->compare_type,
+            'avoid_symbol' => $problem->avoid_symbol,
             'problem_creator' => $problem->problem_creator,
         );
 
