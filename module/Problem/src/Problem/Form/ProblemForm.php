@@ -9,6 +9,8 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\FileInput;
 use Zend\Validator\File\Extension;
 use Zend\Filter;
+use Zend\Validator\Regex;
+use Zend\InputFilter\Input;
 
 class ProblemForm extends Form {
 
@@ -60,10 +62,26 @@ class ProblemForm extends Form {
 
         $compareType = new Element\Radio('compare_type');
         $compareType->setValueOptions(array(
-            'STRICT' => 'Estricta',
-            'TOKEN' => 'Omitir token',
+            'STRICT' => array(
+                'label' => 'Estricta',
+                'value' => 'STRICT',
+                'attributes' => array(
+                    'id' => 'strict',
+                ),
+            ),
+            'TOKEN' => array(
+                'label' => 'Omitir token',
+                'value' => 'TOKEN',
+                'attributes' => array(
+                    'id' => 'token',
+                ),
+            ),
         ));
         $compareType->setValue('STRICT');
+        $compareType->setAttribute('onclick', 'checkComparation()');
+
+        $avoidSymbol = new Element\Text('avoid_symbol');
+        $avoidSymbol->setAttribute('placeholder', 'Simbolo que no se validara...');
 
         $file = new Element\File('file');
         $file->setAttribute('accept', '.png,.jpg');
@@ -104,6 +122,7 @@ class ProblemForm extends Form {
         $this->add($images);
         $this->add($tests);
         $this->add($compareType);
+        $this->add($avoidSymbol);
         $this->add($submit);
     }
 
@@ -120,6 +139,16 @@ class ProblemForm extends Form {
                         'target' => './public_html/problems/image.png',
                         'randomize' => true,)));
             $fileCollection->add($file);
+        }
+
+        if ($this->get('compare_type')->getValue() == 'TOKEN') {
+            $regex = new Regex('#^[[:punct:][:space:]]$#');
+            $regex->setMessage("Solo se permiten un simbolo de puntuacion o un espacio.", Regex::NOT_MATCH);
+            $nameValidator = new Input('avoid_symbol');
+            $nameValidator->setRequired(false);
+            $nameValidator->getValidatorChain()
+                    ->addValidator($regex);
+            $this->getInputFilter()->add($nameValidator);
         }
         $this->getInputFilter()->add($fileCollection, 'images');
 

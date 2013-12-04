@@ -18,6 +18,11 @@ $form->prepare();
         if (($('form > table > tbody > tr > td > div > fieldset').children().length - 2) > 0) {
             document.getElementById("imagesRow").style.display = '';
         }
+        if (document.getElementById("token").checked) {
+            document.getElementById("token_symbol").style.display = '';
+        } else {
+            document.getElementById("token_symbol").style.display = 'none';
+        }
     };
 
     function addTest() {
@@ -56,6 +61,14 @@ $form->prepare();
             var template = $('form > fieldset > span').data('template');
             template = template.replace(/__index__/g, 0);
             $('form > fieldset').append(template);
+        }
+    }
+
+    function checkComparation() {
+        if (document.getElementById("token").checked) {
+            document.getElementById("token_symbol").style.display = '';
+        } else {
+            document.getElementById("token_symbol").style.display = 'none';
         }
     }
 
@@ -210,6 +223,15 @@ $form->prepare();
         <tr>
             <td><label for="compareType">Comparacion</label></td>
             <td><?php echo $this->formRadio($form->get('compare_type')); ?></td>
+        </tr>
+        <tr id="token_symbol" style="display:none;">
+            <td></td>
+            <td>
+                <div id="addImageDiv">
+                    <?php echo $this->formInput($form->get('avoid_symbol')); ?>
+                </div>            
+            </td>
+            <td><?php echo $this->formElementErrors($form->get('avoid_symbol')); ?></td>
         </tr>
     </table>
 
