@@ -27,6 +27,7 @@ class Problem implements InputFilterAwareInterface {
     public $source_constraint;
     public $is_simple;
     public $compare_type;
+    public $avoid_symbol;
     public $problem_creator;
     public $tests;
     protected $inputFilter;
@@ -45,6 +46,7 @@ class Problem implements InputFilterAwareInterface {
         $this->source_constraint = (!empty($data['source_constraint'])) ? $data['source_constraint'] : null;
         $this->is_simple = (!empty($data['is_simple'])) ? $data['is_simple'] : null;
         $this->compare_type = (!empty($data['compare_type'])) ? $data['compare_type'] : null;
+        $this->avoid_symbol = (!empty($data['avoid_symbol'])) ? $data['avoid_symbol'] : null;
         $this->problem_creator = (!empty($data['problem_creator'])) ? $data['problem_creator'] : null;
         if (isset($data['tests'])) {
             $this->exchangeTests($data['tests']);

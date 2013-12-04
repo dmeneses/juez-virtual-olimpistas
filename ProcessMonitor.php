@@ -154,7 +154,7 @@ function gradeSolution($solutionID, Zebra_Database $database) {
     foreach ($problem['tests'] as $test) {
         if ($executor->execute($test['test_in'], $test['test_id'])) {
             $output = $executor->getOutput();
-            $grade += Comparator::compare($test['test_out'], $output) ? $test['test_points'] : 0;
+            $grade += Comparator::compare($test['test_out'], $output, $problem['compare_type'], $problem['avoid_symbol']) ? $test['test_points'] : 0;
         } else {
             $log->logError("Execution failed.");
             $result['grade'] = 0;
@@ -196,7 +196,7 @@ function getSolutionData($database, $solutionID) {
 }
 
 function getProblemData($database, $problemID) {
-    $database->select('time_constraint, memory_constraint', 'problem', 'problem_id = ?', array($problemID));
+    $database->select('compare_type, avoid_symbol, time_constraint, memory_constraint', 'problem', 'problem_id = ?', array($problemID));
     $problemRecords = $database->fetch_assoc_all();
 
     if (count($problemRecords) == 1) {
