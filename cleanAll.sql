@@ -1,260 +1,317 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+-- MySQL dump 10.13  Distrib 5.5.32, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: tis_mbravesoft
+-- ------------------------------------------------------
+-- Server version	5.5.32-0ubuntu0.13.04.1
 
-DROP SCHEMA IF EXISTS `tis_mbravesoft` ;
-CREATE SCHEMA IF NOT EXISTS `tis_mbravesoft` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `tis_mbravesoft` ;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- -----------------------------------------------------
--- Table `tis_mbravesoft`.`user`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `tis_mbravesoft`.`user` ;
+--
+-- Table structure for table `training`
+--
 
-CREATE  TABLE IF NOT EXISTS `tis_mbravesoft`.`user` (
-  `user_id` INT NOT NULL ,
-  `name` VARCHAR(50) NOT NULL ,
-  `lastname` VARCHAR(50) NOT NULL ,
-  `birth_date` DATETIME NOT NULL ,
-  `email` VARCHAR(50) NOT NULL ,
-  `password` VARCHAR(20) NOT NULL ,
-  `institution` VARCHAR(50) NULL ,
-  `city` VARCHAR(50) NULL ,
-  PRIMARY KEY (`user_id`) ,
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) )
-ENGINE = InnoDB;
+DROP TABLE IF EXISTS `training`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `training` (
+  `training_id` int(11) NOT NULL AUTO_INCREMENT,
+  `training_name` varchar(50) NOT NULL,
+  `start_date` datetime NOT NULL,
+  `start_time` varchar(45) NOT NULL,
+  `end_date` datetime NOT NULL,
+  `end_time` varchar(45) NOT NULL,
+  `training_owner` int(11) NOT NULL,
+  PRIMARY KEY (`training_id`),
+  UNIQUE KEY `training_name_UNIQUE` (`training_name`),
+  KEY `fk_training_user1` (`training_owner`),
+  CONSTRAINT `fk_training_user1` FOREIGN KEY (`training_owner`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `training`
+--
 
--- -----------------------------------------------------
--- Table `tis_mbravesoft`.`problem`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `tis_mbravesoft`.`problem` ;
+LOCK TABLES `training` WRITE;
+/*!40000 ALTER TABLE `training` DISABLE KEYS */;
+/*!40000 ALTER TABLE `training` ENABLE KEYS */;
+UNLOCK TABLES;
 
-CREATE  TABLE IF NOT EXISTS `tis_mbravesoft`.`problem` (
-  `problem_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `problem_name` VARCHAR(50) NOT NULL ,
-  `problem_author` VARCHAR(100) NOT NULL ,
-  `is_simple` TINYINT(1) NOT NULL DEFAULT 1 ,
-  `compare_type` VARCHAR(10) NOT NULL DEFAULT 'STRICT' ,
-  `time_constraint` INT UNSIGNED NULL DEFAULT 0 ,
-  `memory_constraint` INT UNSIGNED NULL DEFAULT 0 ,
-  `source_constraint` INT UNSIGNED NULL DEFAULT 0 ,
-  `problem_creator` INT NOT NULL ,
-  PRIMARY KEY (`problem_id`) ,
-  UNIQUE INDEX `problem_id_UNIQUE` (`problem_id` ASC) ,
-  UNIQUE INDEX `problem_name_UNIQUE` (`problem_name` ASC) ,
-  INDEX `fk_problem_user` (`problem_creator` ASC) ,
-  CONSTRAINT `fk_problem_user`
-    FOREIGN KEY (`problem_creator` )
-    REFERENCES `tis_mbravesoft`.`user` (`user_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = big5;
+--
+-- Table structure for table `group`
+--
 
+DROP TABLE IF EXISTS `group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `group` (
+  `group_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_name` varchar(50) NOT NULL,
+  `group_owner` int(11) NOT NULL,
+  PRIMARY KEY (`group_id`),
+  UNIQUE KEY `group_id_UNIQUE` (`group_id`),
+  UNIQUE KEY `group_name_UNIQUE` (`group_name`),
+  KEY `fk_group_user1` (`group_owner`),
+  CONSTRAINT `fk_group_user1` FOREIGN KEY (`group_owner`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- -----------------------------------------------------
--- Table `tis_mbravesoft`.`solution`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `tis_mbravesoft`.`solution` ;
+--
+-- Dumping data for table `group`
+--
 
-CREATE  TABLE IF NOT EXISTS `tis_mbravesoft`.`solution` (
-  `solution_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `solution_date` DATETIME NOT NULL ,
-  `solution_language` VARCHAR(5) NOT NULL ,
-  `solution_source_file` VARCHAR(200) NOT NULL ,
-  `grade` INT NULL DEFAULT 0 ,
-  `runtime` FLOAT UNSIGNED NULL DEFAULT 0 ,
-  `used_memory` INT UNSIGNED NULL DEFAULT 0 ,
-  `status` VARCHAR(45) NULL DEFAULT 'On Queue' ,
-  `error_message` TEXT NULL ,
-  `solution_submitter` INT NOT NULL ,
-  `problem_problem_id` INT UNSIGNED NOT NULL ,
-  PRIMARY KEY (`solution_id`) ,
-  UNIQUE INDEX `solution_id_UNIQUE` (`solution_id` ASC) ,
-  INDEX `fk_solution_user1` (`solution_submitter` ASC) ,
-  INDEX `fk_solution_problem1` (`problem_problem_id` ASC) ,
-  CONSTRAINT `fk_solution_user1`
-    FOREIGN KEY (`solution_submitter` )
-    REFERENCES `tis_mbravesoft`.`user` (`user_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_solution_problem1`
-    FOREIGN KEY (`problem_problem_id` )
-    REFERENCES `tis_mbravesoft`.`problem` (`problem_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+LOCK TABLES `group` WRITE;
+/*!40000 ALTER TABLE `group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `group` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `training_has_group`
+--
 
--- -----------------------------------------------------
--- Table `tis_mbravesoft`.`training`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `tis_mbravesoft`.`training` ;
+DROP TABLE IF EXISTS `training_has_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `training_has_group` (
+  `training_training_id` int(11) NOT NULL,
+  `group_group_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`training_training_id`,`group_group_id`),
+  KEY `fk_training_has_group_group1` (`group_group_id`),
+  KEY `fk_training_has_group_training1` (`training_training_id`),
+  CONSTRAINT `fk_training_has_group_training1` FOREIGN KEY (`training_training_id`) REFERENCES `training` (`training_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_training_has_group_group1` FOREIGN KEY (`group_group_id`) REFERENCES `group` (`group_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE  TABLE IF NOT EXISTS `tis_mbravesoft`.`training` (
-  `training_id` INT NOT NULL AUTO_INCREMENT ,
-  `training_name` VARCHAR(50) NOT NULL ,
-  `start_date` DATETIME NOT NULL ,
-  `start_time` VARCHAR(45) NOT NULL ,
-  `end_date` DATETIME NOT NULL ,
-  `end_time` VARCHAR(45) NOT NULL ,
-  `training_owner` INT NOT NULL ,
-  PRIMARY KEY (`training_id`) ,
-  UNIQUE INDEX `training_name_UNIQUE` (`training_name` ASC) ,
-  INDEX `fk_training_user1` (`training_owner` ASC) ,
-  CONSTRAINT `fk_training_user1`
-    FOREIGN KEY (`training_owner` )
-    REFERENCES `tis_mbravesoft`.`user` (`user_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+--
+-- Dumping data for table `training_has_group`
+--
 
+LOCK TABLES `training_has_group` WRITE;
+/*!40000 ALTER TABLE `training_has_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `training_has_group` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- -----------------------------------------------------
--- Table `tis_mbravesoft`.`training_has_problem`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `tis_mbravesoft`.`training_has_problem` ;
+--
+-- Table structure for table `solution`
+--
 
-CREATE  TABLE IF NOT EXISTS `tis_mbravesoft`.`training_has_problem` (
-  `training_training_id` INT NOT NULL ,
-  `problem_problem_id` INT UNSIGNED NOT NULL ,
-  PRIMARY KEY (`training_training_id`, `problem_problem_id`) ,
-  INDEX `fk_training_has_problem_problem1` (`problem_problem_id` ASC) ,
-  INDEX `fk_training_has_problem_training1` (`training_training_id` ASC) ,
-  CONSTRAINT `fk_training_has_problem_training1`
-    FOREIGN KEY (`training_training_id` )
-    REFERENCES `tis_mbravesoft`.`training` (`training_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_training_has_problem_problem1`
-    FOREIGN KEY (`problem_problem_id` )
-    REFERENCES `tis_mbravesoft`.`problem` (`problem_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+DROP TABLE IF EXISTS `solution`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `solution` (
+  `solution_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `solution_date` datetime NOT NULL,
+  `solution_language` varchar(5) NOT NULL,
+  `solution_source_file` varchar(200) NOT NULL,
+  `grade` int(11) DEFAULT '0',
+  `runtime` float unsigned DEFAULT '0',
+  `used_memory` int(10) unsigned DEFAULT '0',
+  `status` varchar(45) DEFAULT 'On Queue',
+  `error_message` text,
+  `solution_submitter` int(11) NOT NULL,
+  `problem_problem_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`solution_id`),
+  UNIQUE KEY `solution_id_UNIQUE` (`solution_id`),
+  KEY `fk_solution_user1` (`solution_submitter`),
+  KEY `fk_solution_problem1` (`problem_problem_id`),
+  CONSTRAINT `fk_solution_user1` FOREIGN KEY (`solution_submitter`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_solution_problem1` FOREIGN KEY (`problem_problem_id`) REFERENCES `problem` (`problem_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `solution`
+--
 
--- -----------------------------------------------------
--- Table `tis_mbravesoft`.`group`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `tis_mbravesoft`.`group` ;
-
-CREATE  TABLE IF NOT EXISTS `tis_mbravesoft`.`group` (
-  `group_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `group_name` VARCHAR(50) NOT NULL ,
-  `group_owner` INT NOT NULL ,
-  PRIMARY KEY (`group_id`) ,
-  UNIQUE INDEX `group_id_UNIQUE` (`group_id` ASC) ,
-  UNIQUE INDEX `group_name_UNIQUE` (`group_name` ASC) ,
-  INDEX `fk_group_user1` (`group_owner` ASC) ,
-  CONSTRAINT `fk_group_user1`
-    FOREIGN KEY (`group_owner` )
-    REFERENCES `tis_mbravesoft`.`user` (`user_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `tis_mbravesoft`.`user_has_group`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `tis_mbravesoft`.`user_has_group` ;
-
-CREATE  TABLE IF NOT EXISTS `tis_mbravesoft`.`user_has_group` (
-  `user_user_id` INT NOT NULL ,
-  `group_group_id` INT UNSIGNED NOT NULL ,
-  PRIMARY KEY (`user_user_id`, `group_group_id`) ,
-  INDEX `fk_user_has_group_group1` (`group_group_id` ASC) ,
-  INDEX `fk_user_has_group_user1` (`user_user_id` ASC) ,
-  CONSTRAINT `fk_user_has_group_user1`
-    FOREIGN KEY (`user_user_id` )
-    REFERENCES `tis_mbravesoft`.`user` (`user_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_has_group_group1`
-    FOREIGN KEY (`group_group_id` )
-    REFERENCES `tis_mbravesoft`.`group` (`group_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `tis_mbravesoft`.`training_has_group`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `tis_mbravesoft`.`training_has_group` ;
-
-CREATE  TABLE IF NOT EXISTS `tis_mbravesoft`.`training_has_group` (
-  `training_training_id` INT NOT NULL ,
-  `group_group_id` INT UNSIGNED NOT NULL ,
-  PRIMARY KEY (`training_training_id`, `group_group_id`) ,
-  INDEX `fk_training_has_group_group1` (`group_group_id` ASC) ,
-  INDEX `fk_training_has_group_training1` (`training_training_id` ASC) ,
-  CONSTRAINT `fk_training_has_group_training1`
-    FOREIGN KEY (`training_training_id` )
-    REFERENCES `tis_mbravesoft`.`training` (`training_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_training_has_group_group1`
-    FOREIGN KEY (`group_group_id` )
-    REFERENCES `tis_mbravesoft`.`group` (`group_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `tis_mbravesoft`.`test_case`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `tis_mbravesoft`.`test_case` ;
-
-CREATE  TABLE IF NOT EXISTS `tis_mbravesoft`.`test_case` (
-  `test_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `test_in` VARCHAR(200) NOT NULL ,
-  `test_out` VARCHAR(200) NOT NULL ,
-  `test_points` INT UNSIGNED NOT NULL ,
-  `problem_problem_id` INT UNSIGNED NOT NULL ,
-  PRIMARY KEY (`test_id`) ,
-  UNIQUE INDEX `test_id_UNIQUE` (`test_id` ASC) ,
-  INDEX `fk_test_problem1` (`problem_problem_id` ASC) ,
-  CONSTRAINT `fk_test_problem1`
-    FOREIGN KEY (`problem_problem_id` )
-    REFERENCES `tis_mbravesoft`.`problem` (`problem_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-USE `tis_mbravesoft`;
-
-DELIMITER $$
-
-USE `tis_mbravesoft`$$
-DROP TRIGGER IF EXISTS `tis_mbravesoft`.`save_solution_date` $$
-USE `tis_mbravesoft`$$
-
-
-CREATE TRIGGER `save_solution_date` BEFORE INSERT ON `solution` FOR EACH ROW
+LOCK TABLES `solution` WRITE;
+/*!40000 ALTER TABLE `solution` DISABLE KEYS */;
+/*!40000 ALTER TABLE `solution` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `save_solution_date` BEFORE INSERT ON `solution` FOR EACH ROW
 BEGIN
     SET NEW.solution_date = NOW();
-END$$
-
-
+END */;;
 DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
+--
+-- Table structure for table `training_has_problem`
+--
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+DROP TABLE IF EXISTS `training_has_problem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `training_has_problem` (
+  `training_training_id` int(11) NOT NULL,
+  `problem_problem_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`training_training_id`,`problem_problem_id`),
+  KEY `fk_training_has_problem_problem1` (`problem_problem_id`),
+  KEY `fk_training_has_problem_training1` (`training_training_id`),
+  CONSTRAINT `fk_training_has_problem_training1` FOREIGN KEY (`training_training_id`) REFERENCES `training` (`training_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_training_has_problem_problem1` FOREIGN KEY (`problem_problem_id`) REFERENCES `problem` (`problem_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- -----------------------------------------------------
--- Data for table `tis_mbravesoft`.`user`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `tis_mbravesoft`;
-INSERT INTO `tis_mbravesoft`.`user` (`user_id`, `name`, `lastname`, `birth_date`, `email`, `password`, `institution`, `city`) VALUES (1, 'Daniela', 'Meneses', '1990-12-01', 'daniela11290@gmail.com', '1121990', 'UMSS', 'CBBA');
-INSERT INTO `tis_mbravesoft`.`user` (`user_id`, `name`, `lastname`, `birth_date`, `email`, `password`, `institution`, `city`) VALUES (2, 'Fabio', 'Arandia', '1990-12-01', 'fabio@gmail.com', '1234567', 'UMSS', 'CBBA');
-INSERT INTO `tis_mbravesoft`.`user` (`user_id`, `name`, `lastname`, `birth_date`, `email`, `password`, `institution`, `city`) VALUES (3, 'Richi', 'Daza', '1990-12-01', 'richi@gmail.com', '1234567', 'UMSS', 'CBBA');
+--
+-- Dumping data for table `training_has_problem`
+--
 
-COMMIT;
+LOCK TABLES `training_has_problem` WRITE;
+/*!40000 ALTER TABLE `training_has_problem` DISABLE KEYS */;
+/*!40000 ALTER TABLE `training_has_problem` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user` (
+  `user_id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `birth_date` datetime NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(20) NOT NULL,
+  `institution` varchar(50) DEFAULT NULL,
+  `city` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `email_UNIQUE` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'Daniela','Meneses','1990-12-01 00:00:00','daniela11290@gmail.com','1121990','UMSS','CBBA'),(2,'Fabio','Arandia','1990-12-01 00:00:00','fabio@gmail.com','1234567','UMSS','CBBA'),(3,'Richi','Daza','1990-12-01 00:00:00','richi@gmail.com','1234567','UMSS','CBBA');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_has_group`
+--
+
+DROP TABLE IF EXISTS `user_has_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_has_group` (
+  `user_user_id` int(11) NOT NULL,
+  `group_group_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`user_user_id`,`group_group_id`),
+  KEY `fk_user_has_group_group1` (`group_group_id`),
+  KEY `fk_user_has_group_user1` (`user_user_id`),
+  CONSTRAINT `fk_user_has_group_user1` FOREIGN KEY (`user_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_has_group_group1` FOREIGN KEY (`group_group_id`) REFERENCES `group` (`group_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_has_group`
+--
+
+LOCK TABLES `user_has_group` WRITE;
+/*!40000 ALTER TABLE `user_has_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_has_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `problem`
+--
+
+DROP TABLE IF EXISTS `problem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `problem` (
+  `problem_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `problem_name` varchar(50) NOT NULL,
+  `problem_author` varchar(100) NOT NULL,
+  `is_simple` tinyint(1) NOT NULL DEFAULT '1',
+  `compare_type` varchar(10) NOT NULL DEFAULT 'STRICT',
+  `avoid_symbol` varchar(1) DEFAULT NULL,
+  `time_constraint` int(10) unsigned DEFAULT '0',
+  `memory_constraint` int(10) unsigned DEFAULT '0',
+  `source_constraint` int(10) unsigned DEFAULT '0',
+  `problem_creator` int(11) NOT NULL,
+  PRIMARY KEY (`problem_id`),
+  UNIQUE KEY `problem_id_UNIQUE` (`problem_id`),
+  UNIQUE KEY `problem_name_UNIQUE` (`problem_name`),
+  KEY `fk_problem_user` (`problem_creator`),
+  CONSTRAINT `fk_problem_user` FOREIGN KEY (`problem_creator`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=big5;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `problem`
+--
+
+LOCK TABLES `problem` WRITE;
+/*!40000 ALTER TABLE `problem` DISABLE KEYS */;
+/*!40000 ALTER TABLE `problem` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `test_case`
+--
+
+DROP TABLE IF EXISTS `test_case`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `test_case` (
+  `test_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `test_in` varchar(200) NOT NULL,
+  `test_out` varchar(200) NOT NULL,
+  `test_points` int(10) unsigned NOT NULL,
+  `problem_problem_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`test_id`),
+  UNIQUE KEY `test_id_UNIQUE` (`test_id`),
+  KEY `fk_test_problem1` (`problem_problem_id`),
+  CONSTRAINT `fk_test_problem1` FOREIGN KEY (`problem_problem_id`) REFERENCES `problem` (`problem_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test_case`
+--
+
+LOCK TABLES `test_case` WRITE;
+/*!40000 ALTER TABLE `test_case` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test_case` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2013-12-06  1:42:31
