@@ -54,7 +54,7 @@ int main()
             i++;
         }
 
-        printf("%d %d %d\n", temp_i, temp_j, max_cycle_length);
+        printf("%d %d %d \n", temp_i, temp_j, max_cycle_length);
     }
 
     return 0;
