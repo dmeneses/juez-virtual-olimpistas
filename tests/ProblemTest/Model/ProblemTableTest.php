@@ -28,6 +28,7 @@ class ProblemTableTest extends PHPUnit_Framework_TestCase {
         'memory_constraint' => 6,
         'source_constraint' => 6,
         'problem_creator' => 1,
+        'avoid_symbol' => NULL,
     );
     
     private $dataAfterSave = array(
@@ -39,6 +40,7 @@ class ProblemTableTest extends PHPUnit_Framework_TestCase {
         'memory_constraint' => 6,
         'source_constraint' => 6,
         'problem_creator' => 1,
+        'avoid_symbol' => NULL,
     );
 
     private function getProblem($problemType) {
